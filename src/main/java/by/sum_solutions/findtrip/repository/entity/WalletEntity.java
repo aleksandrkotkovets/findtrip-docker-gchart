@@ -4,25 +4,27 @@ import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Builder
 @Table(name = "wallet")
 public class WalletEntity extends BaseEntity {
 
-    @Column(name = "sum")
     @NotNull
+    @Column(name = "sum")
     private Long sum;
 
+    @NotNull
     @OneToOne(optional = false, mappedBy = "wallet")
     private UserEntity owner;
 
-    public WalletEntity(@NotNull Long sum, UserEntity owner) {
-        this.sum = sum;
-        this.owner = owner;
+    public WalletEntity() {
     }
 
-    public WalletEntity() {
+    public WalletEntity(@NotNull Long sum, @NotNull UserEntity owner) {
+        this.sum = sum;
+        this.owner = owner;
     }
 
     public Long getSum() {
@@ -41,5 +43,27 @@ public class WalletEntity extends BaseEntity {
         this.owner = owner;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WalletEntity that = (WalletEntity) o;
+        return Objects.equals(sum, that.sum) &&
+                Objects.equals(owner, that.owner);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(sum, owner);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("WalletEntity{");
+        sb.append("sum=").append(sum);
+        sb.append(", owner=").append(owner);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -4,7 +4,9 @@ import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
+//import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Builder
@@ -18,18 +20,23 @@ public class TicketEntity extends BaseEntity {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "order_date",columnDefinition = "timestamp")
-    private Timestamp orderDate;
+    private Date orderDate;
 
-    @NotNull
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     private UserEntity owner;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id")
+    @NotNull
     private FlightEntity flight;
 
-    public TicketEntity(@NotNull Integer seat, @NotNull Timestamp orderDate, @NotNull UserEntity owner, FlightEntity flight) {
+    public TicketEntity() {
+    }
+
+    public TicketEntity(@NotNull Integer seat, @NotNull Date orderDate, @NotNull UserEntity owner, @NotNull FlightEntity flight) {
         this.seat = seat;
         this.orderDate = orderDate;
         this.owner = owner;
@@ -44,11 +51,11 @@ public class TicketEntity extends BaseEntity {
         this.seat = seat;
     }
 
-    public Timestamp getOrderDate() {
+    public Date getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Timestamp orderDate) {
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -68,5 +75,30 @@ public class TicketEntity extends BaseEntity {
         this.flight = flight;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TicketEntity that = (TicketEntity) o;
+        return Objects.equals(seat, that.seat) &&
+                Objects.equals(orderDate, that.orderDate) &&
+                Objects.equals(owner, that.owner) &&
+                Objects.equals(flight, that.flight);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(seat, orderDate, owner, flight);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TicketEntity{");
+        sb.append("seat=").append(seat);
+        sb.append(", orderDate=").append(orderDate);
+        sb.append(", owner=").append(owner);
+        sb.append(", flight=").append(flight);
+        sb.append('}');
+        return sb.toString();
+    }
 }

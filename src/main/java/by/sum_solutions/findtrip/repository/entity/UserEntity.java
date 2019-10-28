@@ -4,6 +4,7 @@ import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -45,14 +46,18 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;*/
 
-    @Column(name = "role")
+
     @NotNull
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_id")
     private WalletEntity wallet;
+
+    public UserEntity() {
+    }
 
     public UserEntity(@NotNull String email, @NotNull String password, @NotNull String firstName, @NotNull String secondName, @NotNull String patronymic, @NotNull Long phoneNumber, Set<TicketEntity> tickets, @NotNull Role role, WalletEntity wallet) {
         this.email = email;
@@ -64,9 +69,6 @@ public class UserEntity extends BaseEntity {
         this.tickets = tickets;
         this.role = role;
         this.wallet = wallet;
-    }
-
-    public UserEntity() {
     }
 
     public String getEmail() {
@@ -141,4 +143,40 @@ public class UserEntity extends BaseEntity {
         this.wallet = wallet;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(email, that.email) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(secondName, that.secondName) &&
+                Objects.equals(patronymic, that.patronymic) &&
+                Objects.equals(phoneNumber, that.phoneNumber) &&
+                Objects.equals(tickets, that.tickets) &&
+                role == that.role &&
+                Objects.equals(wallet, that.wallet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password, firstName, secondName, patronymic, phoneNumber, tickets, role, wallet);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("UserEntity{");
+        sb.append("email='").append(email).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", secondName='").append(secondName).append('\'');
+        sb.append(", patronymic='").append(patronymic).append('\'');
+        sb.append(", phoneNumber=").append(phoneNumber);
+        sb.append(", tickets=").append(tickets);
+        sb.append(", role=").append(role);
+        sb.append(", wallet=").append(wallet);
+        sb.append('}');
+        return sb.toString();
+    }
 }

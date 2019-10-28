@@ -1,3 +1,4 @@
+/*
 package by.sum_solutions.findtrip;
 
 import org.junit.jupiter.api.Test;
@@ -10,4 +11,6 @@ class FindtripApplicationTests {
     void contextLoads() {
     }
 
+
 }
+*/
