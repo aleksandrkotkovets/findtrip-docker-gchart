@@ -4,19 +4,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "company")
-public class CompanyEntity  extends BaseEntity{
+@Table(name = "transport")
+public class PlainEntity extends BaseEntity{
 
     @NotNull
     @Column(name = "name")
     private String name;
 
-    @Column(name = "rating")
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Rating rating;
-
-
+    private CompanyEntity company;
 
 
 }
