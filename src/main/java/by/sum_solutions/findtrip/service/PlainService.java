@@ -5,7 +5,7 @@ import by.sum_solutions.findtrip.repository.entity.PlainEntity;
 
 import java.util.List;
 
-public interface IPlainService {
+public interface PlainService {
 
     PlainEntity add(PlainEntity plain);
 

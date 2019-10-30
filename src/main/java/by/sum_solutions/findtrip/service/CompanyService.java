@@ -1,13 +1,11 @@
 package by.sum_solutions.findtrip.service;
 
 import by.sum_solutions.findtrip.repository.entity.CompanyEntity;
-import by.sum_solutions.findtrip.repository.entity.Rating;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
-public interface ICompanyService {
+public interface CompanyService {
 
     CompanyEntity add(CompanyEntity company);
     void deleteById(Long id);
@@ -16,6 +14,5 @@ public interface ICompanyService {
     CompanyEntity update(CompanyEntity company);
     List<CompanyEntity> getAll();
     List<CompanyEntity> getCompaniesByRating(String rating);
-    List<CompanyEntity> getCompanyWithMaxRating();
 
 }

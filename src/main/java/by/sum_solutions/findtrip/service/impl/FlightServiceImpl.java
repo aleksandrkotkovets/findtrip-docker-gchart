@@ -1,6 +1,6 @@
 package by.sum_solutions.findtrip.service.impl;
 
-import by.sum_solutions.findtrip.service.IFlightService;
+import by.sum_solutions.findtrip.service.FlightService;
 
-public class FlightServiceImpl implements IFlightService {
+public class FlightServiceImpl implements FlightService {
 }

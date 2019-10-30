@@ -1,6 +1,6 @@
 package by.sum_solutions.findtrip.service.impl;
 
-import by.sum_solutions.findtrip.service.IWalletService;
+import by.sum_solutions.findtrip.service.WalletService;
 
-public class WalletServiceImpl implements IWalletService {
+public class WalletServiceImpl implements WalletService {
 }

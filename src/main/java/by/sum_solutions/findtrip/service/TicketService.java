@@ -1,4 +1,4 @@
 package by.sum_solutions.findtrip.service;
 
-public interface IUserService {
+public interface TicketService {
 }

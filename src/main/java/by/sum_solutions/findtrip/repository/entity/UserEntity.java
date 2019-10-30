@@ -1,19 +1,19 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 import java.util.Set;
 
 
 @Entity
-@Builder
 @Table(name = "app_user")
 public class UserEntity extends BaseEntity {
 
     @NotNull
+    @Column(name = "login")
+    private String login;
+
     @Column(name = "email")
     private String email;
 
@@ -26,49 +26,51 @@ public class UserEntity extends BaseEntity {
     private String firstName;
 
     @NotNull
-    @Column(name = "second_name")
-    private String secondName;
+    @Column(name = "last_name")
+    private String lastName;
 
-    @NotNull
     @Column(name = "patronymic")
     private String patronymic;
 
     @NotNull
     @Column(name = "phone_number")
-    private Long phoneNumber;
+    private String phoneNumber;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private Set<TicketEntity> tickets;
-
- /*       @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;*/
-
 
     @NotNull
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_id")
     private WalletEntity wallet;
 
-    public UserEntity() {
-    }
-
-    public UserEntity(@NotNull String email, @NotNull String password, @NotNull String firstName, @NotNull String secondName, @NotNull String patronymic, @NotNull Long phoneNumber, Set<TicketEntity> tickets, @NotNull Role role, WalletEntity wallet) {
+    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, String patronymic, @NotNull String phoneNumber, Set<TicketEntity> tickets, @NotNull Role role, WalletEntity wallet) {
+        this.login = login;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
-        this.secondName = secondName;
+        this.lastName = lastName;
         this.patronymic = patronymic;
         this.phoneNumber = phoneNumber;
         this.tickets = tickets;
         this.role = role;
         this.wallet = wallet;
+    }
+
+    public UserEntity() {
+
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getEmail() {
@@ -95,12 +97,12 @@ public class UserEntity extends BaseEntity {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPatronymic() {
@@ -111,11 +113,11 @@ public class UserEntity extends BaseEntity {
         this.patronymic = patronymic;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -143,40 +145,5 @@ public class UserEntity extends BaseEntity {
         this.wallet = wallet;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
-        return Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(secondName, that.secondName) &&
-                Objects.equals(patronymic, that.patronymic) &&
-                Objects.equals(phoneNumber, that.phoneNumber) &&
-                Objects.equals(tickets, that.tickets) &&
-                role == that.role &&
-                Objects.equals(wallet, that.wallet);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, password, firstName, secondName, patronymic, phoneNumber, tickets, role, wallet);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("UserEntity{");
-        sb.append("email='").append(email).append('\'');
-        sb.append(", password='").append(password).append('\'');
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", secondName='").append(secondName).append('\'');
-        sb.append(", patronymic='").append(patronymic).append('\'');
-        sb.append(", phoneNumber=").append(phoneNumber);
-        sb.append(", tickets=").append(tickets);
-        sb.append(", role=").append(role);
-        sb.append(", wallet=").append(wallet);
-        sb.append('}');
-        return sb.toString();
-    }
 }
