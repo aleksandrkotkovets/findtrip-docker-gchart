@@ -1,24 +1,23 @@
 package by.sum_solutions.findtrip.service.impl;
 
 
-import by.sum_solutions.findtrip.repository.ICompanyRepository;
-import by.sum_solutions.findtrip.repository.IPlainRepository;
-import by.sum_solutions.findtrip.repository.entity.CompanyEntity;
+import by.sum_solutions.findtrip.repository.CompanyRepository;
+import by.sum_solutions.findtrip.repository.PlainRepository;
 import by.sum_solutions.findtrip.repository.entity.PlainEntity;
-import by.sum_solutions.findtrip.service.IPlainService;
+import by.sum_solutions.findtrip.service.PlainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PlainServiceImpl  implements IPlainService {
+public class PlainServiceImpl  implements PlainService {
 
     @Autowired
-    IPlainRepository plainRepository;
+    PlainRepository plainRepository;
 
     @Autowired
-    ICompanyRepository companyRepository;
+    CompanyRepository companyRepository;
 
 
     @Override

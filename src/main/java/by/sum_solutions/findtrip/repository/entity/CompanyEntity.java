@@ -1,6 +1,5 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,7 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Builder
 @Table(name = "company")
 public class CompanyEntity  extends BaseEntity{
 

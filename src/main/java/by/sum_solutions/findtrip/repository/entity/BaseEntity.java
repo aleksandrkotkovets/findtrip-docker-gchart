@@ -1,7 +1,10 @@
 package by.sum_solutions.findtrip.repository.entity;
 
+<<<<<<< HEAD
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+=======
+>>>>>>> 156dd177bbc43cade9847023676af96a014e70d0
 import javax.persistence.*;
 
 
@@ -9,7 +12,7 @@ import javax.persistence.*;
 public abstract class BaseEntity extends AbstractPersistable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

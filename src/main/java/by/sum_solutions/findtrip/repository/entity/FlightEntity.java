@@ -1,10 +1,13 @@
 package by.sum_solutions.findtrip.repository.entity;
 
 
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+<<<<<<< HEAD
+=======
+import java.util.Objects;
+>>>>>>> 156dd177bbc43cade9847023676af96a014e70d0
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -14,7 +17,6 @@ import static javax.persistence.CascadeType.ALL;
 //import java.sql.Timestamp;
 
 @Entity
-@Builder
 @Table(name = "flight")
 public class FlightEntity extends BaseEntity {
 

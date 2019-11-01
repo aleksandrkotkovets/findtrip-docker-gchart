@@ -1,15 +1,12 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-//import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Builder
 @Table(name = "ticket")
 public class TicketEntity extends BaseEntity {
 

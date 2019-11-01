@@ -1,6 +1,5 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Builder
 @Table(name = "airport")
 public class AirportEntity extends BaseEntity {
 

@@ -1,13 +1,11 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-@Builder
 @Table(name = "wallet")
 public class WalletEntity extends BaseEntity {
 
@@ -16,7 +14,7 @@ public class WalletEntity extends BaseEntity {
     private Long sum;
 
     @NotNull
-    @OneToOne(optional = false, mappedBy = "wallet")
+    @OneToOne(mappedBy = "wallet")
     private UserEntity owner;
 
     public WalletEntity() {

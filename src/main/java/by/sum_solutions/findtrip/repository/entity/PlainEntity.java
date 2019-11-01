@@ -1,7 +1,5 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import com.sun.xml.bind.v2.util.FlattenIterator;
-import lombok.Builder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,7 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Builder
 @Table(name = "transport")
 public class PlainEntity extends BaseEntity{
 

@@ -1,29 +1,23 @@
-# ===============================
-# = DATA SOURCE
-# ===============================
+
+#JPA PROPERTIES
+spring:
+  jpa:
+      database: POSTGRESQL
+      show-sql: true
+      hibernate:
+        ddl-auto: none
+        #create-drop
+---
+#DATABASE
 spring:
   datasource:
+    platform: postgres
     url: jdbc:postgresql://localhost:5432/findtrip-db
     username: postgres
     password: postgres
----
-spring:
-   jpa:
-     properties:
-      hibernate:
-       jdbc:
-         lob:
-           non_contextual_creation: true
-         ddl-auto: create-drop
-#spring.jpa.hibernate.ddl-auto=update
-      generate-ddl: true
-      show-sql: true
+    driverClassName: org.postgresql.Driver
 
 ---
-
-# ===============================
-# = Thymeleaf configurations
-# ===============================
 spring:
   thymeleaf:
     mode: LEGACYHTML5

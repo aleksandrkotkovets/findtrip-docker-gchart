@@ -1,18 +1,18 @@
 package by.sum_solutions.findtrip.service.impl;
 
-import by.sum_solutions.findtrip.repository.ICompanyRepository;
+import by.sum_solutions.findtrip.repository.CompanyRepository;
 import by.sum_solutions.findtrip.repository.entity.CompanyEntity;
-import by.sum_solutions.findtrip.service.ICompanyService;
+import by.sum_solutions.findtrip.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CompanyServiceImpl implements ICompanyService {
+public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
-    ICompanyRepository companyRepository;
+    CompanyRepository companyRepository;
 
     @Override
     public CompanyEntity add(CompanyEntity company) {
