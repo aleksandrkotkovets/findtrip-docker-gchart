@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     @Min(0)
     protected Long id;

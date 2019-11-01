@@ -2,6 +2,7 @@ package by.sum_solutions.findtrip.repository.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull
     @Column(name = "patronymic")
     private String patronymic;
 
