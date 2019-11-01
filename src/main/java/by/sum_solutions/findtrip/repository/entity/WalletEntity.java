@@ -62,7 +62,6 @@ public class WalletEntity extends BaseEntity {
         final StringBuilder sb = new StringBuilder("WalletEntity{");
         sb.append("sum=").append(sum);
         sb.append(", owner=").append(owner);
-        sb.append(", id=").append(id);
         sb.append('}');
         return sb.toString();
     }

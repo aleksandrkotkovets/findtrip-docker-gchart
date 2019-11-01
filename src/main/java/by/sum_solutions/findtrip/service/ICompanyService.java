@@ -15,7 +15,6 @@ public interface ICompanyService {
     CompanyEntity getByName(String name);
     CompanyEntity update(CompanyEntity company);
     List<CompanyEntity> getAll();
-    List<CompanyEntity> getCompaniesByRating(String rating);
-    List<CompanyEntity> getCompanyWithMaxRating();
+
 
 }

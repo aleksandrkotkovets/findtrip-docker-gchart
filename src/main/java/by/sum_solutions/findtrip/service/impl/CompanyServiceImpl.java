@@ -46,13 +46,5 @@ public class CompanyServiceImpl implements ICompanyService {
         return companyRepository.findAll();
     }
 
-    @Override
-    public List<CompanyEntity> getCompaniesByRating(String rating) {
-        return companyRepository.getCompanyEntitiesByRating(rating);
-    }
 
-    @Override
-    public List<CompanyEntity> getCompanyWithMaxRating() {
-        return companyRepository.getCompanyEntitiesByRating_FiveStarsLike();
-    }
 }

@@ -1,0 +1,32 @@
+# ===============================
+# = DATA SOURCE
+# ===============================
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/findtrip-db
+    username: postgres
+    password: postgres
+---
+spring:
+   jpa:
+     properties:
+      hibernate:
+       jdbc:
+         lob:
+           non_contextual_creation: true
+         ddl-auto: create-drop
+#spring.jpa.hibernate.ddl-auto=update
+      generate-ddl: true
+      show-sql: true
+
+---
+
+# ===============================
+# = Thymeleaf configurations
+# ===============================
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+
+

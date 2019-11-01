@@ -1,21 +1,17 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 
 
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity extends AbstractPersistable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @Min(0)
-    protected Long id;
+    private Long id;
 
     public Long getId() {
         return id;

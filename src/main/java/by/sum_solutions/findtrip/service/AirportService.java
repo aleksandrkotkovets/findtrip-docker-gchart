@@ -1,4 +1,4 @@
 package by.sum_solutions.findtrip.service;
 
-public interface IAirportService {
+public interface AirportService {
 }
