@@ -1,6 +1,7 @@
 package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.AdminDTO;
+import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
 import by.sum_solutions.findtrip.service.UserService;
@@ -26,41 +27,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    public String registerUserAccount(@ModelAttribute("admin") @Valid AdminDTO adminDTO,
-            BindingResult result, WebRequest request, Errors errors) {
-        UserEntity registered = new UserEntity();
-        if (!result.hasErrors()) {
-            registered = createUserAccount(adminDTO, result);
-        }
-        if (registered == null) {
-            result.rejectValue("email", "message.regError");
-        }
-        return "adminRegistration";
-    }
-
-    private UserEntity createUserAccount(AdminDTO accountDto, BindingResult result) {
-        UserEntity registered = null;
-        UserEntity newUser = null;
-        newUser.setLogin(accountDto.getLogin());
-        newUser.setPassword(accountDto.getPassword());
-        newUser.setPatronymic(accountDto.getPatronymic());
-        newUser.setLastName(accountDto.getLastName());
-        newUser.setFirstName(accountDto.getFirstName());
-        newUser.setPhoneNumber(accountDto.getPhoneNumber());
-        newUser.setRole(Role.ROLE_ADMIN);
-
-        try {
-            registered = userService.save(newUser);
-        } catch (Exception e) {
-            return null;
-        }
-        return registered;
-    }
-
     @GetMapping(value = "/adminRegistration")
     public String showAdminRegistrationForm(Model model){
-        AdminDTO   adminDTO = new AdminDTO();
-        model.addAttribute("admin", adminDTO);
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("admin", userDTO);
         return "adminRegistration";
     }
+
+
 }

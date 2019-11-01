@@ -3,7 +3,7 @@ package by.sum_solutions.findtrip.controller.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class AdminDTO {
+public class UserDTO {
 
     @NotNull
     @NotEmpty
