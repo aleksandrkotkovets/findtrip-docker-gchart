@@ -1,44 +1,39 @@
 package by.sum_solutions.findtrip.controller.dto;
 
 import by.sum_solutions.findtrip.repository.entity.Role;
+import org.assertj.core.internal.bytebuddy.asm.Advice;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 public class UserDTO {
 
     private Long id;
 
-    @Size(min = 5,max = 14, message = "Login mast be at least 5 characters long")
-    @NotBlank(message="Login is required")
+    @NotNull
+    @Pattern(regexp = "^([a-zA-Z])([a-zA-Z0-9]{4,13})$", message = "Login must start with a letter\nLogin must be longer than 5 characters and shorter than 14")
     private String login;
 
-    @Email(message = "invalid email")
-    @NotBlank(message = "email is required")
-    private String email;
-
-    @Size(min = 5,max = 14, message = "Password mast be at least 5 characters long")
-    @NotBlank(message="password is required")
+    @NotNull
+    @Size(min = 5, max = 14, message = "Password must be longer than 5 characters and shorter than 14")
     private String password;
 
-    @Size(min = 3,max = 14, message = "First name mast be at least 5 characters long")
-    @NotBlank(message="First name is required")
+    @NotNull
+    @Email(message = "Invalid email")
+    private String email;
+
+    @NotNull
+    //@Size(min = 3, max = 10, message = "First name must be longer than 3 characters and shorter than 10")
+    @Pattern(regexp = "^[A-Z]([a-z]{2,9})$", message = "F Err")
     private String firstName;
 
-    @Size(min = 3,max = 14, message = "Last name mast be at least 5 characters long")
-    @NotBlank(message="Last name is required")
+    @Size(min = 3, max = 10, message = "Last name must be longer than 3 characters and shorter than 10")
     private String lastName;
 
-    @Size(min = 3,max = 14, message = "Patronymic mast be at least 5 characters long")
-    @NotBlank(message="Patronymic is required")
+    @Size(min = 3, max = 10, message = "Patronymic name must be longer than 3 characters and shorter than 10")
     private String patronymic;
 
-    @Size(min = 12,max = 12, message = "Phone number mast has 12 characters ")
-    @NotBlank(message="Phone number is required")
-    @Pattern(regexp = "^375(17|25|29|33|44)([0-9]{7})$")
+    @Pattern(message = "Phone number is required",regexp = "^375(17|25|29|33|44)([0-9]{7})$")
     private String phoneNumber;
 
     private Role role;
@@ -46,19 +41,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, @Size(min = 5, max = 14, message = "Login mast be at least 5 characters long") @NotBlank(message = "Login is required") String login, @Email(message = "{user.email.invalid}") @NotBlank(message = "email is required") String email, @Size(min = 5, max = 14, message = "Password mast be at least 5 characters long") @NotBlank(message = "password is required") String password, @Size(min = 3, max = 14, message = "First name mast be at least 5 characters long") @NotBlank(message = "First name is required") String firstName, @Size(min = 3, max = 14, message = "Last name mast be at least 5 characters long") @NotBlank(message = "Last name is required") String lastName, @Size(min = 3, max = 14, message = "Patronymic mast be at least 5 characters long") @NotBlank(message = "Patronymic is required") String patronymic, @Size(min = 12, max = 12, message = "Phone number mast has 12 characters ") @NotBlank(message = "Phone number is required") @Pattern(regexp = "^375(17|25|29|33|44)([0-9]{7})$") String phoneNumber, Role role) {
-        this.id = id;
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
-    }
-
-    public UserDTO(@Size(min = 5, max = 14, message = "Login mast be at least 5 characters long") @NotBlank(message = "Login is required") String login, @Email(message = "{user.email.invalid}") @NotBlank(message = "email is required") String email, @Size(min = 5, max = 14, message = "Password mast be at least 5 characters long") @NotBlank(message = "password is required") String password, @Size(min = 3, max = 14, message = "First name mast be at least 5 characters long") @NotBlank(message = "First name is required") String firstName, @Size(min = 3, max = 14, message = "Last name mast be at least 5 characters long") @NotBlank(message = "Last name is required") String lastName, @Size(min = 3, max = 14, message = "Patronymic mast be at least 5 characters long") @NotBlank(message = "Patronymic is required") String patronymic, @Size(min = 12, max = 12, message = "Phone number mast has 12 characters ") @NotBlank(message = "Phone number is required") @Pattern(regexp = "^375(17|25|29|33|44)([0-9]{7})$") String phoneNumber, Role role) {
+    public UserDTO(@NotNull @Pattern(regexp = "^([a-zA-Z])([a-zA-Z0-9]{1,13})$", message = "Login must be longer than 5 characters and shorter than 14") String login, @NotNull @NotBlank(message = "Email is required") @Email(message = "Invalid email") String email, @NotNull @NotBlank(message = "Password is required") @Size(min = 5, max = 14, message = "Password must be longer than 5 characters and shorter than 14") String password, @NotNull @NotBlank(message = "First name is required") @Size(min = 3, max = 10, message = "First name must be longer than 3 characters and shorter than 10") String firstName, @Size(min = 3, max = 10, message = "Last name must be longer than 3 characters and shorter than 10") @NotBlank(message = "Last name is required") String lastName, @Size(min = 3, max = 10, message = "Patronymic name must be longer than 3 characters and shorter than 10") @NotBlank(message = "Patronymic is required") String patronymic, @Pattern(message = "Phone number is required", regexp = "^375(17|25|29|33|44)([0-9]{7})$") String phoneNumber, Role role) {
         this.login = login;
         this.email = email;
         this.password = password;
