@@ -61,17 +61,7 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <scope>test</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -102,12 +92,13 @@
             <version>1.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.webjars/jquery-maskedinput -->
+        <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery-maskedinput</artifactId>
-            <version>1.3.1</version>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
+
 
     </dependencies>
 
