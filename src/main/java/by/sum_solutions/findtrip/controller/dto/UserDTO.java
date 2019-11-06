@@ -11,29 +11,24 @@ public class UserDTO {
     private Long id;
 
     @NotNull
-    @Pattern(regexp = "^([a-zA-Z])([a-zA-Z0-9]{4,13})$", message = "Login must start with a letter\nLogin must be longer than 5 characters and shorter than 14")
     private String login;
 
     @NotNull
-    @Size(min = 5, max = 14, message = "Password must be longer than 5 characters and shorter than 14")
     private String password;
 
     @NotNull
-    @Email(message = "Invalid email")
     private String email;
 
     @NotNull
-    //@Size(min = 3, max = 10, message = "First name must be longer than 3 characters and shorter than 10")
-    @Pattern(regexp = "^[A-Z]([a-z]{2,9})$", message = "F Err")
     private String firstName;
 
-    @Size(min = 3, max = 10, message = "Last name must be longer than 3 characters and shorter than 10")
+    @NotNull
     private String lastName;
 
-    @Size(min = 3, max = 10, message = "Patronymic name must be longer than 3 characters and shorter than 10")
+    @NotNull
     private String patronymic;
 
-    @Pattern(message = "Phone number is required",regexp = "^375(17|25|29|33|44)([0-9]{7})$")
+    @NotNull
     private String phoneNumber;
 
     private Role role;
@@ -41,10 +36,22 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(@NotNull @Pattern(regexp = "^([a-zA-Z])([a-zA-Z0-9]{1,13})$", message = "Login must be longer than 5 characters and shorter than 14") String login, @NotNull @NotBlank(message = "Email is required") @Email(message = "Invalid email") String email, @NotNull @NotBlank(message = "Password is required") @Size(min = 5, max = 14, message = "Password must be longer than 5 characters and shorter than 14") String password, @NotNull @NotBlank(message = "First name is required") @Size(min = 3, max = 10, message = "First name must be longer than 3 characters and shorter than 10") String firstName, @Size(min = 3, max = 10, message = "Last name must be longer than 3 characters and shorter than 10") @NotBlank(message = "Last name is required") String lastName, @Size(min = 3, max = 10, message = "Patronymic name must be longer than 3 characters and shorter than 10") @NotBlank(message = "Patronymic is required") String patronymic, @Pattern(message = "Phone number is required", regexp = "^375(17|25|29|33|44)([0-9]{7})$") String phoneNumber, Role role) {
+    public UserDTO(@NotNull String login, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Role role) {
         this.login = login;
-        this.email = email;
         this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+    }
+
+    public UserDTO(Long id, @NotNull String login, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Role role) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.patronymic = patronymic;

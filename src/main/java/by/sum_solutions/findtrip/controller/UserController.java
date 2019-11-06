@@ -57,9 +57,7 @@ public class UserController {
 
             return "registration";
 
-
         }
-
         admin.setRole(Role.ROLE_ADMIN);
         userService.save(admin);
         return "redirect:/users/adminRegistration";
