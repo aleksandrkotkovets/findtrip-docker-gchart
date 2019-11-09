@@ -27,4 +27,34 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userEntity);
     }
 
+    @Override
+    public String isUserExistByCriteria(String email, String login, String phoneNumber){
+        if(userRepository.existsUserEntityByLogin(login)){
+            return "Login already exist";
+        }
+        if(userRepository.existsUserEntityByEmail(email)){
+            return "Email already exist";
+        }
+        if(userRepository.existsUserEntityByPhoneNumber(phoneNumber)){
+            return "Phone number already exist";
+        }
+
+        return null;
+    }
+
+    @Override
+    public String existsUserByLogin(String login){
+        return userRepository.existsUserEntityByLogin(login) ? "Login already exist" : null;
+    }
+
+    @Override
+    public String existsUserByEmail(String email){
+        return userRepository.existsUserEntityByEmail(email) ? "Email already exist" : null;
+    }
+
+    @Override
+    public String existsUserByPhoneNumber(String phoneNumber){
+        return userRepository.existsUserEntityByPhoneNumber(phoneNumber) ? "Phone number already exist" : null;
+    }
+
 }
