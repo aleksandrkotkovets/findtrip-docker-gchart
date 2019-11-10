@@ -23,7 +23,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
     // show registration form for administrator
     @GetMapping(value = "/adminRegistration")
     public String showAdminRegistrationForm(Model model) {
@@ -34,7 +33,7 @@ public class UserController {
     // create userEntity with ROLE_ADMIN
     @PostMapping(path = "/adminRegistration")
     @ResponseStatus(HttpStatus.OK)
-    public String createAdmin(@Valid @ModelAttribute("admin") UserDTO admin, BindingResult result, Model model)  {
+    public String createAdmin(@Valid @ModelAttribute("admin") UserDTO admin, BindingResult result, Model model) {
 
         if (userService.getUserByCriteria(admin.getEmail(), null, null) != null) {
             throw new RegistrationParameterIsExistException("User with this email already exist");
@@ -53,5 +52,12 @@ public class UserController {
         return "redirect:/users/adminRegistration";
     }
 
+
+    @GetMapping
+    public String getAllUsersByRole(@RequestParam(value = "role") Role role, Model model) {
+        List<UserDTO> users = userService.getUsersByRole(role);
+        model.addAttribute("users", users.size() == 0 ? null : users);
+        return "showUsers";
+    }
 
 }

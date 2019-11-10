@@ -2,10 +2,14 @@ package by.sum_solutions.findtrip.service.impl;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.repository.UserRepository;
+import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
 import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,6 +49,29 @@ public class UserServiceImpl implements UserService {
         }
 
         return userEntity;
+    }
+
+    @Override
+    public List<UserDTO> getUsersByRole(Role role) {
+        List<UserDTO> userDTOList = new ArrayList<>();
+        UserDTO userDTO;
+        List<UserEntity> userEntityList = userRepository.findAllByRole(role);
+
+        for(UserEntity entity: userEntityList){
+            userDTO = new UserDTO();
+            userDTO.setId(entity.getId());
+            userDTO.setEmail(entity.getEmail());
+            userDTO.setLogin(entity.getLogin());
+            userDTO.setPassword(entity.getPassword());
+            userDTO.setFirstName(entity.getFirstName());
+            userDTO.setLastName(entity.getLastName());
+            userDTO.setPatronymic(entity.getPatronymic());
+            userDTO.setPhoneNumber(entity.getPhoneNumber());
+            userDTO.setRole(entity.getRole());
+            userDTOList.add(userDTO);
+        }
+        return userDTOList;
+
     }
 
 
