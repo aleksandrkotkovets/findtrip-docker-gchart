@@ -2,6 +2,7 @@ package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
+import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,15 @@ public class UserController {
         List<UserDTO> users = userService.getUsersByRole(role);
         model.addAttribute("users", users.size() == 0 ? null : users);
         return "showUsers";
+    }
+
+//    @DeleteMapping(path = "/delete/{id}")
+    @GetMapping(path = "/delete/{id}")
+    public String deleteEmployeeById(Model model, @PathVariable("id") Long id) throws UserNotFoundException
+    {
+        //Доьавить возращение сущности и userNotFoundException, если удаление было, вернуть юзера удалившегося
+        userService.deleteUserById(id);
+        return "redirect:/";
     }
 
 }

@@ -13,4 +13,6 @@ public interface UserService {
     UserEntity getUserByCriteria(String email, String login, String phoneNumber);
 
     List<UserDTO> getUsersByRole(Role role);
+
+    void deleteUserById(Long id);
 }

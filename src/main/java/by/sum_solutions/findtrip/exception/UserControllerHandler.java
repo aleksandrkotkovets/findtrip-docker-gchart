@@ -32,6 +32,15 @@ public class UserControllerHandler  {
         return modelAndView;
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleUserNotFound(UserNotFoundException ex, WebRequest request) {
+        String error = ex.getMessage();
+        ApiError apiError =
+                new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
    /* @ExceptionHandler(RegistrationParameterIsExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ResponseEntity<Object> handleEmailExist(RegistrationParameterIsExistException ex, WebRequest request) {
