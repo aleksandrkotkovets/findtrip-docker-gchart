@@ -1,18 +1,17 @@
 package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.service.UserService;
-import by.sum_solutions.findtrip.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,39 +24,30 @@ public class UserController {
     UserService userService;
 
 
+    // show registration form for administrator
     @GetMapping(value = "/adminRegistration")
     public String showAdminRegistrationForm(Model model) {
         model.addAttribute("admin", new UserDTO());
         return "registration";
     }
 
+    // create userEntity with ROLE_ADMIN
     @PostMapping(path = "/adminRegistration")
-    public String createAdmin(@Valid @ModelAttribute("admin") UserDTO admin, BindingResult result, Model model) {
+    @ResponseStatus(HttpStatus.OK)
+    public String createAdmin(@Valid @ModelAttribute("admin") UserDTO admin, BindingResult result, Model model)  {
 
-        if (result.hasErrors()) {
-            List<FieldError> errors = result.getFieldErrors();
-            for (FieldError error : errors) {
-                System.out.println(error.getObjectName() + " - " + error.getDefaultMessage());
-            }
-            return "registration";
+        if (userService.getUserByCriteria(admin.getEmail(), null, null) != null) {
+            throw new RegistrationParameterIsExistException("User with this email already exist");
         }
 
-        if (userService.existsUserByLogin(admin.getLogin()) != null
-                || userService.existsUserByEmail(admin.getEmail()) != null
-                || userService.existsUserByPhoneNumber(admin.getPhoneNumber()) != null) {
-
-            String existLoginError = userService.existsUserByLogin(admin.getLogin());
-            model.addAttribute("existLoginError", existLoginError);
-
-            String existEmailError = userService.existsUserByEmail(admin.getEmail());
-            model.addAttribute("existEmailError", existEmailError);
-
-            String existPhoneError = userService.existsUserByPhoneNumber(admin.getPhoneNumber());
-            model.addAttribute("existPhoneError", existPhoneError);
-
-            return "registration";
-
+        if (userService.getUserByCriteria(null, admin.getLogin(), null) != null) {
+            throw new RegistrationParameterIsExistException("This login is exist");
         }
+
+        if (userService.getUserByCriteria(null, null, admin.getPhoneNumber()) != null) {
+            throw new RegistrationParameterIsExistException("This phone number already exist");
+        }
+
         admin.setRole(Role.ROLE_ADMIN);
         userService.save(admin);
         return "redirect:/users/adminRegistration";

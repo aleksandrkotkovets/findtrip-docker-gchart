@@ -5,11 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    boolean existsUserEntityByLogin (String login);
+    UserEntity findUserEntityByEmail(String email);
 
-    boolean existsUserEntityByEmail(String email);
+    UserEntity findUserEntityByLogin(String login);
 
-    boolean existsUserEntityByPhoneNumber(String phoneNumber);
-
+    UserEntity findUserEntityByPhoneNumber(String phoneNumber);
 
 }

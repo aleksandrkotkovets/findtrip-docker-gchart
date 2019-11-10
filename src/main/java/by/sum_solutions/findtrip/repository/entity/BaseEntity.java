@@ -1,15 +1,10 @@
 package by.sum_solutions.findtrip.repository.entity;
 
-<<<<<<< HEAD
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
-=======
->>>>>>> 156dd177bbc43cade9847023676af96a014e70d0
 import javax.persistence.*;
 
 
 @MappedSuperclass
-public abstract class BaseEntity extends AbstractPersistable {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -7,11 +7,5 @@ public interface UserService {
 
     UserEntity save(UserDTO userDTO);
 
-    String isUserExistByCriteria(String email, String login, String phoneNumber);
-
-    String existsUserByLogin(String login);
-
-    String existsUserByEmail(String email);
-
-    String existsUserByPhoneNumber(String phoneNumber);
+    UserEntity getUserByCriteria(String email, String login, String phoneNumber);
 }
