@@ -21,7 +21,7 @@
 
         <div th:switch="${users}" class="container my-9">
             <p class="my-9">
-                <a href="/edit" class="btn btn-primary">
+                <a href="/users/adminRegistration" class="btn btn-primary">
                 <i class="fas fa-user-plus ml-2"> Add User </i></a>
             </p>
             <div class="col-md-4">
@@ -51,7 +51,7 @@
                                 <td th:text="${user.patronymic}"></td>
                                 <td th:text="${user.phoneNumber}"></td>
                                 <td>
-                                    <a th:href="@{/edit/{id}(id=${user.id})}"
+                                    <a th:href="@{ /users/edit/{id} (id=${user.id}) }"
                                              class="btn btn-primary">
                                         <i class="fas fa-user-edit ml-2"></i>
                                     </a>

@@ -13,6 +13,7 @@ import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/users")
@@ -40,14 +42,13 @@ public class UserController {
     @GetMapping(value = "/adminRegistration")
     public String showAdminRegistrationForm(Model model) {
         LOGGER.info("Show registration form by admin");
-        model.addAttribute("admin", new UserDTO());
+        model.addAttribute("user", new UserDTO());
         return "registration";
     }
 
     // create userEntity with ROLE_ADMIN
     @PostMapping(path = "/adminRegistration")
-    @ResponseStatus(HttpStatus.OK)
-    public String createAdmin(@Valid @ModelAttribute("admin") UserDTO admin, BindingResult result, Model model) {
+    public String createAdmin(@Valid @ModelAttribute("user") UserDTO admin, BindingResult result, Model model) {
 
         if (userService.getUserByCriteria(admin.getEmail(), null, null) != null) {
             throw new RegistrationParameterIsExistException("User with this email already exist");
@@ -63,7 +64,7 @@ public class UserController {
 
         admin.setRole(Role.ROLE_ADMIN);
         userService.save(admin);
-        return "redirect:/users/adminRegistration";
+        return "redirect:/users";
     }
 
   /*  @GetMapping(value="/{id}")
@@ -103,18 +104,48 @@ public class UserController {
 
 
     @GetMapping
-    public String getAllUsersByRole(@RequestParam(value = "role") Role role, Model model) {
+    public String getAllUsersByRole(@RequestParam(value = "role", defaultValue = "ROLE_ADMIN") Role role, Model model) {
         List<UserDTO> users = userService.getUsersByRole(role);
         model.addAttribute("users", users.size() == 0 ? null : users);
         return "showUsers";
     }
 
-//    @DeleteMapping(path = "/delete/{id}")
+    //    @DeleteMapping(path = "/delete/{id}")
     @GetMapping(path = "/delete/{id}")
-    public String deleteEmployeeById(Model model, @PathVariable("id") Long id) throws UserNotFoundException
-    {
+    public String deleteEmployeeById(Model model, @PathVariable("id") Long id) throws UserNotFoundException {
         userService.deleteUserById(id);
-        return "redirect:/";
+        return "redirect:/users";
+    }
+
+    @GetMapping(path = "/edit/{id}")
+    public String editUser(Model model, @PathVariable("id") Long id) throws UserNotFoundException {
+        UserDTO userDTO = userService.findUserById(id);
+        if (userDTO != null) {
+            model.addAttribute("user", userDTO);
+        } else {
+            throw new UserNotFoundException("User with id=" + id + " not found");
+        }
+        return "registration";
+    }
+
+    @PostMapping(path = "/edit")
+    public String editUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+
+       /* if (userService.getUserByCriteria(user.getEmail(), null, null) != null) {
+            throw new RegistrationParameterIsExistException("User with this email already exist");
+        }
+
+        if (userService.getUserByCriteria(null, user.getLogin(), null) != null) {
+            throw new RegistrationParameterIsExistException("This login is exist");
+        }
+
+        if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
+            throw new RegistrationParameterIsExistException("This phone number already exist");
+        }*/
+
+        user.setRole(Role.ROLE_ADMIN);
+        userService.save(user);
+        return "redirect:/users";
     }
 
 }

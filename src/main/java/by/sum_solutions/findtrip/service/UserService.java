@@ -5,6 +5,7 @@ import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -15,4 +16,6 @@ public interface UserService {
     List<UserDTO> getUsersByRole(Role role);
 
     void deleteUserById(Long id);
+
+    UserDTO findUserById(Long id);
 }

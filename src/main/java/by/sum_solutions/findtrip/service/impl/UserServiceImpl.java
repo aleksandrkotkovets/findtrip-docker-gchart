@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getUsersByRole(Role role) {
         List<UserDTO> userDTOList = new ArrayList<>();
         UserDTO userDTO;
-        List<UserEntity> userEntityList =  userRepository.findAllByRole(role);
+        List<UserEntity> userEntityList = userRepository.findAllByRole(role);
 
         for (UserEntity entity : userEntityList) {
             userDTO = new UserDTO();
@@ -82,14 +82,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long id) throws UserNotFoundException{
+    public void deleteUserById(Long id) throws UserNotFoundException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
 
-        if(userEntity.isPresent()){
+        if (userEntity.isPresent()) {
             userRepository.deleteById(id);
-        }else {
-            throw new UserNotFoundException("User with id="+id+" not found");
+        } else {
+            throw new UserNotFoundException("User with id=" + id + " not found");
         }
+    }
+
+    @Override
+    public UserDTO findUserById(Long id) {
+        UserDTO userDTO = null;
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        if (userEntity.isPresent()) {
+            userDTO = new UserDTO();
+            userDTO.setId(userEntity.get().getId());
+            userDTO.setEmail(userEntity.get().getEmail());
+            userDTO.setLogin(userEntity.get().getLogin());
+            userDTO.setPassword(userEntity.get().getPassword());
+            userDTO.setFirstName(userEntity.get().getFirstName());
+            userDTO.setLastName(userEntity.get().getLastName());
+            userDTO.setPatronymic(userEntity.get().getPatronymic());
+            userDTO.setPhoneNumber(userEntity.get().getPhoneNumber());
+            userDTO.setRole(userEntity.get().getRole());
+        }
+        return userDTO;
     }
 
 }
