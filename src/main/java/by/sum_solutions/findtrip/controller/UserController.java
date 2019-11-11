@@ -113,8 +113,6 @@ public class UserController {
     @GetMapping(path = "/delete/{id}")
     public String deleteEmployeeById(Model model, @PathVariable("id") Long id) throws UserNotFoundException
     {
-        //Доьавить возращение сущности и userNotFoundException, если удаление было, вернуть юзера удалившегося
-
         userService.deleteUserById(id);
         return "redirect:/";
     }

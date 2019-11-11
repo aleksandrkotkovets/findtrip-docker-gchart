@@ -1,6 +1,7 @@
 package by.sum_solutions.findtrip.service.impl;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.UserRepository;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
@@ -9,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,19 +39,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserByCriteria(String email, String login, String phoneNumber){
+    public UserEntity getUserByCriteria(String email, String login, String phoneNumber) {
 
         UserEntity userEntity = null;
 
-        if(email != null && !email.equals("")){
+        if (email != null && !email.equals("")) {
             userEntity = userRepository.findUserEntityByEmail(email);
         }
 
-        if(login !=null && !login.equals("")){
+        if (login != null && !login.equals("")) {
             userEntity = userRepository.findUserEntityByLogin(login);
         }
 
-        if(phoneNumber != null && !phoneNumber.equals("")){
+        if (phoneNumber != null && !phoneNumber.equals("")) {
             userEntity = userRepository.findUserEntityByPhoneNumber(phoneNumber);
         }
 
@@ -58,9 +62,9 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getUsersByRole(Role role) {
         List<UserDTO> userDTOList = new ArrayList<>();
         UserDTO userDTO;
-        List<UserEntity> userEntityList = userRepository.findAllByRole(role);
+        List<UserEntity> userEntityList =  userRepository.findAllByRole(role);
 
-        for(UserEntity entity: userEntityList){
+        for (UserEntity entity : userEntityList) {
             userDTO = new UserDTO();
             userDTO.setId(entity.getId());
             userDTO.setEmail(entity.getEmail());
@@ -78,8 +82,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long id){
-        userRepository.deleteUserEntityById(id);
+    public void deleteUserById(Long id) throws UserNotFoundException{
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+
+        if(userEntity.isPresent()){
+            userRepository.deleteById(id);
+        }else {
+            throw new UserNotFoundException("User with id="+id+" not found");
+        }
     }
 
 }
