@@ -13,11 +13,6 @@ public class UserNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public UserNotFoundException(String string,Long id) {
-        super(string + id);
-    }
-
-
     public UserNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
@@ -26,3 +21,4 @@ public class UserNotFoundException extends RuntimeException {
         super(cause);
     }
 }
+

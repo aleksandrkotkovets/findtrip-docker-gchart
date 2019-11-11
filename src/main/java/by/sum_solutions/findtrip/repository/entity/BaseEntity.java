@@ -1,7 +1,6 @@
 package by.sum_solutions.findtrip.repository.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 
 
 @MappedSuperclass
@@ -10,8 +9,7 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    @Min(0)
-    protected Long id;
+    private Long id;
 
     public Long getId() {
         return id;

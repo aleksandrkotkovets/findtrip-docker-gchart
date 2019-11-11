@@ -8,7 +8,12 @@ import by.sum_solutions.findtrip.service.impl.UserServiceImpl;
 import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
+import by.sum_solutions.findtrip.exception.UserNotFoundException;
+import by.sum_solutions.findtrip.repository.entity.Role;
+import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +36,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    // show registration form for administrator
     @GetMapping(value = "/adminRegistration")
     public String showAdminRegistrationForm(Model model) {
         LOGGER.info("Show registration form by admin");
@@ -38,39 +44,29 @@ public class UserController {
         return "registration";
     }
 
+    // create userEntity with ROLE_ADMIN
     @PostMapping(path = "/adminRegistration")
+    @ResponseStatus(HttpStatus.OK)
     public String createAdmin(@Valid @ModelAttribute("admin") UserDTO admin, BindingResult result, Model model) {
 
-        if (result.hasErrors()) {
-            List<FieldError> errors = result.getFieldErrors();
-            for (FieldError error : errors) {
-                System.out.println(error.getObjectName() + " - " + error.getDefaultMessage());
-            }
-            return "registration";
+        if (userService.getUserByCriteria(admin.getEmail(), null, null) != null) {
+            throw new RegistrationParameterIsExistException("User with this email already exist");
         }
 
-        if (userService.existsUserByLogin(admin.getLogin()) != null
-                || userService.existsUserByEmail(admin.getEmail()) != null
-                || userService.existsUserByPhoneNumber(admin.getPhoneNumber()) != null) {
-
-            String existLoginError = userService.existsUserByLogin(admin.getLogin());
-            model.addAttribute("existLoginError", existLoginError);
-
-            String existEmailError = userService.existsUserByEmail(admin.getEmail());
-            model.addAttribute("existEmailError", existEmailError);
-
-            String existPhoneError = userService.existsUserByPhoneNumber(admin.getPhoneNumber());
-            model.addAttribute("existPhoneError", existPhoneError);
-
-            return "registration";
-
+        if (userService.getUserByCriteria(null, admin.getLogin(), null) != null) {
+            throw new RegistrationParameterIsExistException("This login is exist");
         }
+
+        if (userService.getUserByCriteria(null, null, admin.getPhoneNumber()) != null) {
+            throw new RegistrationParameterIsExistException("This phone number already exist");
+        }
+
         admin.setRole(Role.ROLE_ADMIN);
         userService.save(admin);
         return "redirect:/users/adminRegistration";
     }
 
-    @GetMapping(value="/{id}")
+  /*  @GetMapping(value="/{id}")
     public String getUser(@PathVariable("id") Long id, Model model) throws Exception{
 
         if(id==1){
@@ -90,9 +86,9 @@ public class UserController {
             throw new Exception("Generic Exception, id="+id);
         }
 
-    }
+    }*/
 
-    @ExceptionHandler(UserNotFoundException.class)
+    /*@ExceptionHandler(UserNotFoundException.class)
     public ModelAndView handleEmployeeNotFoundException(HttpServletRequest request, Exception ex){
         LOGGER.error("Requested URL="+request.getRequestURL());
         LOGGER.error("Exception Raised="+ex);
@@ -103,7 +99,24 @@ public class UserController {
 
         modelAndView.setViewName("error");
         return modelAndView;
+    }*/
+
+
+    @GetMapping
+    public String getAllUsersByRole(@RequestParam(value = "role") Role role, Model model) {
+        List<UserDTO> users = userService.getUsersByRole(role);
+        model.addAttribute("users", users.size() == 0 ? null : users);
+        return "showUsers";
     }
 
+//    @DeleteMapping(path = "/delete/{id}")
+    @GetMapping(path = "/delete/{id}")
+    public String deleteEmployeeById(Model model, @PathVariable("id") Long id) throws UserNotFoundException
+    {
+        //Доьавить возращение сущности и userNotFoundException, если удаление было, вернуть юзера удалившегося
+
+        userService.deleteUserById(id);
+        return "redirect:/";
+    }
 
 }

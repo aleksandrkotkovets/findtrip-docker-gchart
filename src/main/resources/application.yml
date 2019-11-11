@@ -1,3 +1,4 @@
+
 #JPA PROPERTIES
 spring:
   jpa:
@@ -33,11 +34,6 @@ logging:
     org.springframework.web: ERROR
     com.howtodoinjava: DEBUG
     org.hibernate: ERROR
-
-
-
-
-
 
 
 

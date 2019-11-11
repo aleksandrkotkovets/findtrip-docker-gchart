@@ -13,6 +13,5 @@ public interface CompanyService {
     CompanyEntity getByName(String name);
     CompanyEntity update(CompanyEntity company);
     List<CompanyEntity> getAll();
-    List<CompanyEntity> getCompaniesByRating(String rating);
 
 }

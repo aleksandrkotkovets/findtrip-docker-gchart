@@ -1,17 +1,18 @@
 package by.sum_solutions.findtrip.service;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
+
+import java.util.List;
 
 public interface UserService {
 
     UserEntity save(UserDTO userDTO);
 
-    String isUserExistByCriteria(String email, String login, String phoneNumber);
+    UserEntity getUserByCriteria(String email, String login, String phoneNumber);
 
-    String existsUserByLogin(String login);
+    List<UserDTO> getUsersByRole(Role role);
 
-    String existsUserByEmail(String email);
-
-    String existsUserByPhoneNumber(String phoneNumber);
+    void deleteUserById(Long id);
 }

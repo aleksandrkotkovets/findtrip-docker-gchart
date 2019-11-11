@@ -1,10 +1,8 @@
 package by.sum_solutions.findtrip.controller.dto;
 
 import by.sum_solutions.findtrip.repository.entity.Role;
-import org.assertj.core.internal.bytebuddy.asm.Advice;
 
-import javax.validation.constraints.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
 public class UserDTO {
 

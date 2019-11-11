@@ -2,12 +2,19 @@ package by.sum_solutions.findtrip.service.impl;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.repository.UserRepository;
+import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
 import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -28,33 +35,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String isUserExistByCriteria(String email, String login, String phoneNumber){
-        if(userRepository.existsUserEntityByLogin(login)){
-            return "Login already exist";
-        }
-        if(userRepository.existsUserEntityByEmail(email)){
-            return "Email already exist";
-        }
-        if(userRepository.existsUserEntityByPhoneNumber(phoneNumber)){
-            return "Phone number already exist";
+    public UserEntity getUserByCriteria(String email, String login, String phoneNumber){
+
+        UserEntity userEntity = null;
+
+        if(email != null && !email.equals("")){
+            userEntity = userRepository.findUserEntityByEmail(email);
         }
 
-        return null;
+        if(login !=null && !login.equals("")){
+            userEntity = userRepository.findUserEntityByLogin(login);
+        }
+
+        if(phoneNumber != null && !phoneNumber.equals("")){
+            userEntity = userRepository.findUserEntityByPhoneNumber(phoneNumber);
+        }
+
+        return userEntity;
     }
 
     @Override
-    public String existsUserByLogin(String login){
-        return userRepository.existsUserEntityByLogin(login) ? "Login already exist" : null;
+    public List<UserDTO> getUsersByRole(Role role) {
+        List<UserDTO> userDTOList = new ArrayList<>();
+        UserDTO userDTO;
+        List<UserEntity> userEntityList = userRepository.findAllByRole(role);
+
+        for(UserEntity entity: userEntityList){
+            userDTO = new UserDTO();
+            userDTO.setId(entity.getId());
+            userDTO.setEmail(entity.getEmail());
+            userDTO.setLogin(entity.getLogin());
+            userDTO.setPassword(entity.getPassword());
+            userDTO.setFirstName(entity.getFirstName());
+            userDTO.setLastName(entity.getLastName());
+            userDTO.setPatronymic(entity.getPatronymic());
+            userDTO.setPhoneNumber(entity.getPhoneNumber());
+            userDTO.setRole(entity.getRole());
+            userDTOList.add(userDTO);
+        }
+        return userDTOList;
+
     }
 
     @Override
-    public String existsUserByEmail(String email){
-        return userRepository.existsUserEntityByEmail(email) ? "Email already exist" : null;
-    }
-
-    @Override
-    public String existsUserByPhoneNumber(String phoneNumber){
-        return userRepository.existsUserEntityByPhoneNumber(phoneNumber) ? "Phone number already exist" : null;
+    public void deleteUserById(Long id){
+        userRepository.deleteUserEntityById(id);
     }
 
 }

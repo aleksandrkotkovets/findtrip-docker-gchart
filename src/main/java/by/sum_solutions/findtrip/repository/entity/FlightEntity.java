@@ -4,11 +4,14 @@ package by.sum_solutions.findtrip.repository.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
+
 import java.util.Date;
 import java.util.Set;
 
+import static java.util.Objects.hash;
 import static javax.persistence.CascadeType.ALL;
+
+
 
 @Entity
 @Table(name = "flight")
@@ -159,7 +162,7 @@ public class FlightEntity extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(freeSeats, allSeats, price, departureDate, arrivalDate, tickets, plain, airport_departure, airport_arrival);
+        return hash(freeSeats, allSeats, price, departureDate, arrivalDate, tickets, plain, airport_departure, airport_arrival);
     }
 
     @Override

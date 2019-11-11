@@ -25,5 +25,4 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     void deleteById(Long id);
 
-    List<CompanyEntity> getCompanyEntitiesByRating(String rating);
 }
