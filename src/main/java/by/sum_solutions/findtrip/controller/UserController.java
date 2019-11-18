@@ -1,33 +1,21 @@
 package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.exception.EditParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.service.UserService;
-import by.sum_solutions.findtrip.service.impl.UserServiceImpl;
-import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
-import by.sum_solutions.findtrip.exception.UserNotFoundException;
-import by.sum_solutions.findtrip.repository.entity.Role;
-import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/users")
@@ -43,7 +31,7 @@ public class UserController {
     public String showAdminRegistrationForm(Model model) {
         LOGGER.info("Show registration form by admin");
         model.addAttribute("user", new UserDTO());
-        return "registration";
+        return "adminRegistration";
     }
 
     // create userEntity with ROLE_ADMIN
@@ -125,26 +113,29 @@ public class UserController {
         } else {
             throw new UserNotFoundException("User with id=" + id + " not found");
         }
-        return "registration";
+        return "editUser";
     }
 
     @PostMapping(path = "/edit")
-    public String editUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+    public String editUser(@ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
 
-       /* if (userService.getUserByCriteria(user.getEmail(), null, null) != null) {
-            throw new RegistrationParameterIsExistException("User with this email already exist");
+        System.out.println(user);
+        if (userService.getUserByCriteria(user.getEmail(), null, null) != null
+                && userService.getUserByCriteria(user.getEmail(), null, null).getId() != user.getId()) {
+            throw new EditParameterIsExistException("User with this email already exist");
         }
 
-        if (userService.getUserByCriteria(null, user.getLogin(), null) != null) {
-            throw new RegistrationParameterIsExistException("This login is exist");
+        if (userService.getUserByCriteria(null, user.getLogin(), null) != null
+                && userService.getUserByCriteria(null, user.getLogin(), null).getId() != user.getId()) {
+            throw new EditParameterIsExistException("This login is exist");
         }
 
-        if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
-            throw new RegistrationParameterIsExistException("This phone number already exist");
-        }*/
+        if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null
+                && userService.getUserByCriteria(null, null, user.getPhoneNumber()).getId() != user.getId()) {
+            throw new EditParameterIsExistException("This phone number already exist");
+        }
 
-        user.setRole(Role.ROLE_ADMIN);
-        userService.save(user);
+        userService.update(user);
         return "redirect:/users";
     }
 

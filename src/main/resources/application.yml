@@ -1,4 +1,8 @@
-
+#Configuration
+server:
+  servlet:
+    context-path: /api
+---
 #JPA PROPERTIES
 spring:
   jpa:
@@ -18,12 +22,14 @@ spring:
     driverClassName: org.postgresql.Driver
 
 ---
+#Thymeleaf
 spring:
   thymeleaf:
     mode: HTML
     cache: false
 
 ---
+#Log4j
 logging:
   file:
     name: C:\Users\alekot\Desktop\kotkovets\findtrip\src\main\resources\logs\dev_app.log

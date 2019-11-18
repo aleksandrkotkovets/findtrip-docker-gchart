@@ -1,6 +1,5 @@
 package by.sum_solutions.findtrip.exception;
 
-import by.sum_solutions.findtrip.controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -8,31 +7,18 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.sql.SQLException;
 import by.sum_solutions.findtrip.controller.dto.ApiError;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.naming.Binding;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
 
 @ControllerAdvice
 public class UserControllerHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerHandler.class);
 
+    //Registration parameter
     @ExceptionHandler(RegistrationParameterIsExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ModelAndView handleRegistrationParameterIsExist(RegistrationParameterIsExistException ex, WebRequest request) {
@@ -41,9 +27,23 @@ public class UserControllerHandler {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("apiError", apiError);
-        modelAndView.setViewName("registration");
+        modelAndView.setViewName("adminRegistration");
         return modelAndView;
     }
+
+    //Edit parameter
+    @ExceptionHandler(EditParameterIsExistException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handleRegistrationParameterIsExist(EditParameterIsExistException ex, WebRequest request) {
+        String error = ex.getMessage();
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("apiError", apiError);
+        modelAndView.setViewName("showUsers");
+        return modelAndView;
+    }
+
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

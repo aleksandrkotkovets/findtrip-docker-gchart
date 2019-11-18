@@ -1,6 +1,7 @@
 package by.sum_solutions.findtrip.service.impl;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.UserRepository;
 import by.sum_solutions.findtrip.repository.entity.Role;
@@ -109,6 +110,42 @@ public class UserServiceImpl implements UserService {
             userDTO.setRole(userEntity.get().getRole());
         }
         return userDTO;
+    }
+
+    @Override
+    public void update(UserDTO user) {
+        UserEntity newUserEntity = new UserEntity();
+        newUserEntity.setId(user.getId());
+        newUserEntity.setLogin(user.getLogin());
+        newUserEntity.setPassword(user.getPassword());
+        newUserEntity.setEmail(user.getEmail());
+        newUserEntity.setFirstName(user.getFirstName());
+        newUserEntity.setLastName(user.getFirstName());
+        newUserEntity.setPatronymic(user.getPatronymic());
+        newUserEntity.setPhoneNumber(user.getPhoneNumber());
+        newUserEntity.setRole(user.getRole());
+
+        if(newUserEntity.getId() == null){
+            userRepository.save(newUserEntity);
+        }else {
+            UserEntity editUserEntity = new UserEntity();
+           if( userRepository.findById(newUserEntity.getId()).isPresent()){
+               editUserEntity = userRepository.findById(newUserEntity.getId()).get();
+               editUserEntity.setId(newUserEntity.getId());
+               editUserEntity.setLogin(newUserEntity.getLogin());
+               editUserEntity.setPassword(newUserEntity.getPassword());
+               editUserEntity.setEmail(newUserEntity.getEmail());
+               editUserEntity.setFirstName(newUserEntity.getFirstName());
+               editUserEntity.setLastName(newUserEntity.getFirstName());
+               editUserEntity.setPatronymic(newUserEntity.getPatronymic());
+               editUserEntity.setPhoneNumber(newUserEntity.getPhoneNumber());
+               editUserEntity.setRole(newUserEntity.getRole());
+               userRepository.save(editUserEntity);
+           }else {
+               throw new UserNotFoundException("User with id="+newUserEntity.getId()+" not found");
+           }
+
+        }
     }
 
 }

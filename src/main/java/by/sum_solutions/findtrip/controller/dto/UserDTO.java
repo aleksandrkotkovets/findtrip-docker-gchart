@@ -132,6 +132,7 @@ public class UserDTO {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("UserDTO{");
+        sb.append(", id='").append(id).append('\'');
         sb.append(", login='").append(login).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", password='").append(password).append('\'');
