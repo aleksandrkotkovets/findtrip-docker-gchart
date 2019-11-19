@@ -119,22 +119,21 @@ public class UserController {
     @PostMapping(path = "/edit")
     public String editUser(@ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
 
-        System.out.println(user);
         if (userService.getUserByCriteria(user.getEmail(), null, null) != null
                 && userService.getUserByCriteria(user.getEmail(), null, null).getId() != user.getId()) {
-            throw new EditParameterIsExistException("User with this email already exist");
+            throw new EditParameterIsExistException("User with this email already exist" , user.getId());
         }
 
         if (userService.getUserByCriteria(null, user.getLogin(), null) != null
                 && userService.getUserByCriteria(null, user.getLogin(), null).getId() != user.getId()) {
-            throw new EditParameterIsExistException("This login is exist");
+//            return "redirect:/users/edit/"+(user.getId());
+            throw new EditParameterIsExistException("This login is exist",user.getId());
         }
 
         if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null
                 && userService.getUserByCriteria(null, null, user.getPhoneNumber()).getId() != user.getId()) {
-            throw new EditParameterIsExistException("This phone number already exist");
+            throw new EditParameterIsExistException("This phone number already exist,", user.getId());
         }
-
         userService.update(user);
         return "redirect:/users";
     }

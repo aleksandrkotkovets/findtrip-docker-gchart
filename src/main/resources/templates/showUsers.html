@@ -58,7 +58,7 @@
                                 </td>
                                 <td>
                                     <a th:href="@{/users/delete/{id}(id=${user.id})}"
-                                              class="btn btn-primary">
+                                              class="btn btn-primary" onclick="return confirm('Are you sure?')">
                                         <i class="fas fa-user-times ml-2"></i>
                                     </a>
                                 </td>

@@ -34,14 +34,12 @@ public class UserControllerHandler {
     //Edit parameter
     @ExceptionHandler(EditParameterIsExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ModelAndView handleRegistrationParameterIsExist(EditParameterIsExistException ex, WebRequest request) {
+    public String handleRegistrationParameterIsExist(EditParameterIsExistException ex, WebRequest request) {
         String error = ex.getMessage();
-        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("apiError", apiError);
-        modelAndView.setViewName("showUsers");
-        return modelAndView;
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        System.out.println(ex.idUser);
+        return "redirect:/users/edit/"+ex.idUser;
     }
 
 
