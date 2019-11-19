@@ -18,28 +18,18 @@ public class UserControllerHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerHandler.class);
 
-    //Registration parameter
+    //Edit parameter
     @ExceptionHandler(RegistrationParameterIsExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ModelAndView handleRegistrationParameterIsExist(RegistrationParameterIsExistException ex, WebRequest request) {
+    public ModelAndView handleEditOrRegistrationParameterIsExist(RegistrationParameterIsExistException ex, WebRequest request) {
         String error = ex.getMessage();
-        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
 
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("apiError", apiError);
-        modelAndView.setViewName("adminRegistration");
+        modelAndView.setViewName("addEditUser");
+        modelAndView.addObject("user", ex.userDTO);
+        modelAndView.addObject("apiError",apiError);
         return modelAndView;
-    }
-
-    //Edit parameter
-    @ExceptionHandler(EditParameterIsExistException.class)
-    @ResponseStatus(value = HttpStatus.CONFLICT)
-    public String handleRegistrationParameterIsExist(EditParameterIsExistException ex, WebRequest request) {
-        String error = ex.getMessage();
-
-        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
-        System.out.println(ex.idUser);
-        return "redirect:/users/edit/"+ex.idUser;
     }
 
 
