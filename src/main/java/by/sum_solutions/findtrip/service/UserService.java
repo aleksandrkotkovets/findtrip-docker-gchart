@@ -20,4 +20,6 @@ public interface UserService {
     UserDTO findUserById(Long id);
 
     void update(UserDTO user);
+
+    boolean findUserByCriteria(Optional<String> login, Optional<String> password);
 }

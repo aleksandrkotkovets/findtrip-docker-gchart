@@ -5,6 +5,7 @@ import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.service.UserService;
+import org.dom4j.rule.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
-    public String addOrEditUser(Model model, @PathVariable("id") Optional<Long> id) throws UserNotFoundException {
+    public String getAddOrEditUserView(Model model, @PathVariable("id") Optional<Long> id) throws UserNotFoundException {
 
         if (id.isPresent()) {
             UserDTO userDTO = userService.findUserById(id.get());
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/edit")
-    public String editUser(@ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+    public String addOrEditUser(@ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
         if (user.getId() != null) {
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null
                     && userService.getUserByCriteria(user.getEmail(), null, null).getId() != user.getId()) {
@@ -91,6 +92,26 @@ public class UserController {
             userService.save(user);
         }
         return "redirect:/users";
+    }
+
+    @GetMapping(path = "/login")
+    public String showLoginForm(){
+        return "login";
+    }
+
+    @PostMapping(path = "login")
+    public String login(Model model, Optional<String> login, Optional<String> password){
+        if(login.isPresent() && password.isPresent()){
+            if(userService.findUserByCriteria(login,password)){
+                model.addAttribute("message","success");
+                return "login";
+            }else{
+                throw new UserNotFoundException("Incorrect login or password!");
+            }
+        }else {
+            throw new RegistrationParameterIsExistException("Incorrect login or password!");
+        }
+        return "showUsers";
     }
 
 }

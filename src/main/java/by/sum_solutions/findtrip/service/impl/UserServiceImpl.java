@@ -148,4 +148,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean findUserByCriteria(Optional<String> login, Optional<String> password) {
+        return false;
+    }
+
 }
