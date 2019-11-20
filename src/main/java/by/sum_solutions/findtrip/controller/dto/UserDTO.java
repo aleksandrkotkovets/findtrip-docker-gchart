@@ -1,32 +1,44 @@
 package by.sum_solutions.findtrip.controller.dto;
 
 import by.sum_solutions.findtrip.repository.entity.Role;
+import org.intellij.lang.annotations.RegExp;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class UserDTO {
 
     private Long id;
 
     @NotNull
+    @Size(min = 3,max = 14, message = "Login must have between {min} and {max} characters.")
     private String login;
 
     @NotNull
+    @Size(min = 8,max = 14, message = "Password must have between {min} and {max} characters.")
     private String password;
 
     @NotNull
+    @Email(message = "This field must contain an E-Mail in the format example@site.com")
     private String email;
 
     @NotNull
+    @Size(min = 3,max = 14, message = "First name must have between {min} and {max} characters.")
     private String firstName;
 
     @NotNull
+    @Size(min = 3,max = 14, message = "Last name must have between {min} and {max} characters.")
     private String lastName;
 
     @NotNull
+    @Size(min = 3,max = 14, message = "Patronymic must have between {min} and {max} characters.")
     private String patronymic;
 
     @NotNull
+    @Pattern(regexp = "^375[(](17|25|29|33|44)[)]([0-9]{7})$", message = "The phone number should be similar to example 375(17|25|29|33|44)3885668")
     private String phoneNumber;
 
     private Role role;

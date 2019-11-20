@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>User</title>
-<!--    <link rel="stylesheet" type="text/css" href="..\css\sasha.css">-->
+    <!--    <link rel="stylesheet" type="text/css" href="..\css\sasha.css">-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" th:href="@{ /css/error.css }"
           href="../../resources/static/css/error.css">
@@ -22,15 +22,21 @@
     <div class="card">
         <div class="card-body">
             <div class="col-md-10">
-                <form  data-th-action="@{/users/edit}"  data-th-object="${user}" method="post" >
+                <form data-th-action="@{/users/edit}" data-th-object="${user}" method="post">
                     <input type="hidden" data-th-value="${user?.id}" data-th-name="id">
                     <input type="hidden" data-th-value="${user?.role}" data-th-name="role">
+                    <div th:if="${#fields.hasErrors()}">
+                     <span class="error">
+                     Please correct the problems below and resubmit.
+                     </span>
+                    </div>
                     <span class="error" th:text="${apiError?.getMessage()}">Nothing</span>
+
                     <div class="row">
 
                         <div class="form-group col-md-8">
                             <label for="login" class="col-form-label">Login</label>
-                            <input type="text"  th:value="${user?.login}" th:name="login" class="form-control"
+                            <input type="text" th:value="${user?.login}" th:name="login" class="form-control"
                                    id="login" placeholder="Login" autofocus required
                                    pattern="([a-zA-Z])([a-zA-Z0-9]{4,13})" maxlength="14"/>
                             <span class="form__error">This field must start with a letter and contain only letters and numbers</span>
@@ -53,7 +59,7 @@
 
                         <div class="form-group col-md-8">
                             <label for="firstName" class="col-form-label">First Name</label>
-                            <input type="text" th:value="${user?.firstName}"  th:name="firstName" class="form-control"
+                            <input type="text" th:value="${user?.firstName}" th:name="firstName" class="form-control"
                                    id="firstName" placeholder="First name" autofocus required
                                    pattern="[A-Z]([a-z-']{2,13})" minlength="3" maxlength="14"/>
                             <span class="form__error">The first name must begin with a capital letter and contain only letters</span>

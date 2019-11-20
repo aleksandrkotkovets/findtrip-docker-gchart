@@ -1,19 +1,21 @@
 package by.sum_solutions.findtrip.controller;
 
+import by.sum_solutions.findtrip.controller.dto.ApiError;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.service.UserService;
-import org.dom4j.rule.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +59,20 @@ public class UserController {
     }
 
     @PostMapping(path = "/edit")
-    public String addOrEditUser(@ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+    public String addOrEditUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            ApiError apiError = new ApiError();
+            String message = "";
+            for (FieldError str : result.getFieldErrors()) {
+                message += str.getDefaultMessage();
+                apiError.setMessage(message);
+            }
+            model.addAttribute("user",user);
+            model.addAttribute("apiError",apiError);
+            return "addEditUser";
+        }
+
         if (user.getId() != null) {
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null
                     && userService.getUserByCriteria(user.getEmail(), null, null).getId() != user.getId()) {
@@ -96,7 +111,7 @@ public class UserController {
 
     @GetMapping(path = "/login")
     public String showLoginForm(){
-        return "login";
+        return "login2";
     }
 
     @PostMapping(path = "login")
@@ -104,14 +119,15 @@ public class UserController {
         if(login.isPresent() && password.isPresent()){
             if(userService.findUserByCriteria(login,password)){
                 model.addAttribute("message","success");
-                return "login";
+                return "login2";
             }else{
                 throw new UserNotFoundException("Incorrect login or password!");
             }
         }else {
             throw new RegistrationParameterIsExistException("Incorrect login or password!");
         }
-        return "showUsers";
+       // return "showUsers";
     }
+    ///
 
 }
