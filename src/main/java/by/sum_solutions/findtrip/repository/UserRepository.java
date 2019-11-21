@@ -1,6 +1,6 @@
 package by.sum_solutions.findtrip.repository;
 
-import by.sum_solutions.findtrip.repository.entity.Role;
+import by.sum_solutions.findtrip.repository.entity.RoleEntity;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,9 +15,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findUserEntityByPhoneNumber(String phoneNumber);
 
-    List<UserEntity> findAllByRole(Role role);
+    List<UserEntity> findAllByRoleEntity_Role(String role);
 
     void deleteById(Long id);
 
     Optional<UserEntity> findById(Long id);
+
+    UserEntity findByLogin(String login);
 }

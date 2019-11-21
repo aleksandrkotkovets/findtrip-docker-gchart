@@ -1,8 +1,8 @@
 package by.sum_solutions.findtrip.service.impl;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
-import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
+import by.sum_solutions.findtrip.repository.RoleRepository;
 import by.sum_solutions.findtrip.repository.UserRepository;
 import by.sum_solutions.findtrip.repository.entity.Role;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +23,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
     @Override
     public UserEntity save(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setLastName(userDTO.getLastName());
         userEntity.setPatronymic(userDTO.getPatronymic());
         userEntity.setPhoneNumber(userDTO.getPhoneNumber());
-        userEntity.setRole(userDTO.getRole());
+        userEntity.setRoleEntity(roleRepository.findByRole(String.valueOf(Role.ROLE_ADMIN)));
         return userRepository.save(userEntity);
     }
 
@@ -60,10 +61,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getUsersByRole(Role role) {
+    public List<UserDTO> getUsersByRole(String  role) {
         List<UserDTO> userDTOList = new ArrayList<>();
         UserDTO userDTO;
-        List<UserEntity> userEntityList = userRepository.findAllByRole(role);
+        List<UserEntity> userEntityList = userRepository.findAllByRoleEntity_Role(role);
 
         for (UserEntity entity : userEntityList) {
             userDTO = new UserDTO();
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
             userDTO.setLastName(entity.getLastName());
             userDTO.setPatronymic(entity.getPatronymic());
             userDTO.setPhoneNumber(entity.getPhoneNumber());
-            userDTO.setRole(entity.getRole());
+            userDTO.setRole(entity.getRoleEntity().getRole());
             userDTOList.add(userDTO);
         }
         return userDTOList;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
             userDTO.setLastName(userEntity.get().getLastName());
             userDTO.setPatronymic(userEntity.get().getPatronymic());
             userDTO.setPhoneNumber(userEntity.get().getPhoneNumber());
-            userDTO.setRole(userEntity.get().getRole());
+            userDTO.setRole(userEntity.get().getRoleEntity().getRole());
         }
         return userDTO;
     }
@@ -123,7 +124,7 @@ public class UserServiceImpl implements UserService {
         newUserEntity.setLastName(user.getFirstName());
         newUserEntity.setPatronymic(user.getPatronymic());
         newUserEntity.setPhoneNumber(user.getPhoneNumber());
-        newUserEntity.setRole(user.getRole());
+        newUserEntity.setRoleEntity(roleRepository.findByRole(user.getRole()));
 
         if(newUserEntity.getId() == null){
             userRepository.save(newUserEntity);
@@ -139,7 +140,7 @@ public class UserServiceImpl implements UserService {
                editUserEntity.setLastName(newUserEntity.getFirstName());
                editUserEntity.setPatronymic(newUserEntity.getPatronymic());
                editUserEntity.setPhoneNumber(newUserEntity.getPhoneNumber());
-               editUserEntity.setRole(newUserEntity.getRole());
+               editUserEntity.setRoleEntity(newUserEntity.getRoleEntity());
                userRepository.save(editUserEntity);
            }else {
                throw new UserNotFoundException("User with id="+newUserEntity.getId()+" not found");

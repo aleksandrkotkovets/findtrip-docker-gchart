@@ -1,9 +1,5 @@
 package by.sum_solutions.findtrip.controller.dto;
 
-import by.sum_solutions.findtrip.repository.entity.Role;
-import org.intellij.lang.annotations.RegExp;
-
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -41,12 +37,12 @@ public class UserDTO {
     @Pattern(regexp = "^375[(](17|25|29|33|44)[)]([0-9]{7})$", message = "The phone number should be similar to example 375(17|25|29|33|44)3885668")
     private String phoneNumber;
 
-    private Role role;
+    private String role;
 
     public UserDTO() {
     }
 
-    public UserDTO(@NotNull String login, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Role role) {
+    public UserDTO(@NotNull String login, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, String role) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -57,7 +53,7 @@ public class UserDTO {
         this.role = role;
     }
 
-    public UserDTO(Long id, @NotNull String login, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Role role) {
+    public UserDTO(Long id, @NotNull String login, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, String role) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -133,11 +129,11 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

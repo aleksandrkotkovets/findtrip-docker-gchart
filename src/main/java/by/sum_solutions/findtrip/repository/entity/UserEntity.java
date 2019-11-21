@@ -41,16 +41,17 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private Set<TicketEntity> tickets;
 
-    @NotNull
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_id")
     private WalletEntity wallet;
 
-    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, String patronymic, @NotNull String phoneNumber, Set<TicketEntity> tickets, @NotNull Role role, WalletEntity wallet) {
+
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    @NotNull
+    private RoleEntity roleEntity;
+
+    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Set<TicketEntity> tickets, WalletEntity wallet, @NotNull RoleEntity roleEntity) {
         this.login = login;
         this.email = email;
         this.password = password;
@@ -59,12 +60,11 @@ public class UserEntity extends BaseEntity {
         this.patronymic = patronymic;
         this.phoneNumber = phoneNumber;
         this.tickets = tickets;
-        this.role = role;
         this.wallet = wallet;
+        this.roleEntity = roleEntity;
     }
 
     public UserEntity() {
-
     }
 
     public String getLogin() {
@@ -131,20 +131,20 @@ public class UserEntity extends BaseEntity {
         this.tickets = tickets;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public WalletEntity getWallet() {
         return wallet;
     }
 
     public void setWallet(WalletEntity wallet) {
         this.wallet = wallet;
+    }
+
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
+    }
+
+    public void setRoleEntity(RoleEntity role) {
+        this.roleEntity = role;
     }
 
 
