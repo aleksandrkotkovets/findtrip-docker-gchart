@@ -105,19 +105,19 @@
             <scope>compile</scope>
         </dependency>
 
-    <!--    &lt;!&ndash; Spring Security &ndash;&gt;
+<!--         Spring Security-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>-->
+        </dependency>
 
-        <!-- опционально, библиотека добавит полезные теги для SPRING SECURITY в Thymeleaf шаблонах -->
-        <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4 -->
-        <!--<dependency>
+<!--         опционально, библиотека добавит полезные теги для SPRING SECURITY в Thymeleaf шаблонах-->
+<!--         https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4-->
+        <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
             <version>3.0.4.RELEASE</version>
-        </dependency>-->
+        </dependency>
 
     </dependencies>
 

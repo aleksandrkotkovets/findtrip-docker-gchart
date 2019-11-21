@@ -21,4 +21,6 @@ public interface UserService {
     void update(UserDTO user);
 
     boolean findUserByCriteria(Optional<String> login, Optional<String> password);
+
+    Optional<UserEntity> findByLogin(String login);
 }

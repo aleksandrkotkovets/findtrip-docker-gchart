@@ -154,4 +154,9 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public Optional<UserEntity> findByLogin(String login) {
+        return Optional.ofNullable(userRepository.findByLogin(login));
+    }
+
 }

@@ -4,6 +4,7 @@ package by.sum_solutions.findtrip.repository.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -64,7 +65,19 @@ public class UserEntity extends BaseEntity {
         this.roleEntity = roleEntity;
     }
 
+    public UserEntity(String login, String email, String password) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+    }
+
     public UserEntity() {
+    }
+
+    public UserEntity(UserEntity user) {
+        this.login = user.getLogin();
+        this.password = user.getPassword();
+//        this.roleEntity = user.getRoleEntity();
     }
 
     public String getLogin() {
