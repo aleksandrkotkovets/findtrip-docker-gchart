@@ -1,3 +1,4 @@
+/*
 package by.sum_solutions.findtrip.service.security;
 
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
@@ -26,3 +27,4 @@ public class CustomUserDetailService implements UserDetailsService {
                 .map(CustomUserDetail::new).get();
     }
 }
+*/

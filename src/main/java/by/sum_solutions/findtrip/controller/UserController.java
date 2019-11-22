@@ -1,14 +1,17 @@
 package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.ApiError;
+import by.sum_solutions.findtrip.controller.dto.RoleDTO;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.entity.RoleEntity;
+import by.sum_solutions.findtrip.service.RoleService;
 import by.sum_solutions.findtrip.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,10 +19,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/users")
@@ -30,9 +30,25 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping
-    public String getAllUsersByRole(@RequestParam(value = "role", defaultValue = "ROLE_ADMIN") String role, Model model) {
+    @Autowired
+    RoleService roleService;
+
+   /* @GetMapping
+    public String getAllUsers(Model model) {
+        List<UserDTO> users = new ArrayList<>(); // = userService.getUsersByRole(roleShow);
+        List<RoleDTO> roles = roleService.findAllRoles();
+        model.addAttribute("roles", roles);
+        model.addAttribute("selectedRole",roles.get(0));
+        model.addAttribute("users", users.size() == 0 ? null : users);
+        return "showUsers";
+    }*/
+
+    @GetMapping()
+    public String getAllUsersByRole(@RequestParam(value = "role") String role,  Model model) {
         List<UserDTO> users = userService.getUsersByRole(role);
+        List<RoleDTO> roles = roleService.findAllRoles();
+        model.addAttribute("roles", roles);
+        model.addAttribute("selectedRole", role);
         model.addAttribute("users", users.size() == 0 ? null : users);
         return "showUsers";
     }

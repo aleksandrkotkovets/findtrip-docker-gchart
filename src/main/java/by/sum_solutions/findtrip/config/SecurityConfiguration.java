@@ -1,3 +1,4 @@
+/*
 package by.sum_solutions.findtrip.config;
 
 import by.sum_solutions.findtrip.repository.UserRepository;
@@ -33,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/sign-up").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+//                .loginPage("/login")
                 .permitAll();
     }
 
@@ -50,4 +51,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             }
         };
     }
-}
+}*/
