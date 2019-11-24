@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h2><a th:href="@{/homeAdmin}"> Home Admin Page</a></h2>
+        <h2><a th:href="@{/homeWorker}">Home Worker Page</a></h2>
+        <h2><a th:href="@{/homeClient}">Home Client Page</a></h2>
+        <h2><a th:href="@{/#}">Open main Page</a></h2>
+    </div>
+
+    <p>Find Trip Page | Page without permissions </p>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="footer :: footer"/>
+
+</body>
+</html>

@@ -11,6 +11,12 @@
 
 <body>
 <div th:replace="workerHeader :: worker-header"/>
-<p>Worker</p>
+<div class="starter-template">
+        <h1>Home Worker Page (Spring Security protected)</h1>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+
+    </div>
+
+<div th:replace="footer :: footer"/>
 </body>
 </html>

@@ -11,6 +11,13 @@
 
 <body>
 <div th:replace="clientHeader :: client-header"/>
-<p>Client</p>
+
+<div class="starter-template">
+        <h1>Home Client Page (Spring Security protected)</h1>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+
+    </div>
+
+<div th:replace="footer :: footer"/>
 </body>
 </html>

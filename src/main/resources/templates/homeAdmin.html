@@ -11,6 +11,14 @@
 
 <body>
 <div th:replace="adminHeader :: admin-header"/>
-<p>Admin</p>
+
+<div class="starter-template">
+        <h1>Admin Home Page (Spring Security protected)</h1>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+
+    </div>
+
+    <div th:replace="footer :: footer"/>
 </body>
+
 </html>

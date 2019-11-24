@@ -1,17 +1,14 @@
 package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.ApiError;
-import by.sum_solutions.findtrip.controller.dto.RoleDTO;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
-import by.sum_solutions.findtrip.repository.entity.RoleEntity;
 import by.sum_solutions.findtrip.service.RoleService;
 import by.sum_solutions.findtrip.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -128,9 +125,9 @@ public class UserController {
         return redirect;
     }
 
-    @GetMapping(path = "/login")
+   /* @GetMapping(path = "/login")
     public String showLoginForm(){
-        return "login";
+        return "login1";
     }
 
     @PostMapping(path = "login")
@@ -138,7 +135,7 @@ public class UserController {
         if(login.isPresent() && password.isPresent()){
             if(userService.findUserByCriteria(login,password)){
                 model.addAttribute("message","success");
-                return "login";
+                return "login1";
             }else{
                 throw new UserNotFoundException("Incorrect login or password!");
             }
@@ -147,6 +144,6 @@ public class UserController {
         }
       //  return "showUsers";
     }
-    ///
+    ///*/
 
 }

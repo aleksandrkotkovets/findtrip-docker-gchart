@@ -51,8 +51,8 @@
            <a th:href="@{/homeAdmin/edit/{id}(id=${1})}"
                                                  class="btn btn-info" style="margin-right:10px" >
                                                   <i class="fas fa-user-edit ml-2"></i></a>
-        </form>
-    <form class="form-inline my-2 my-lg-0">
+    </form>
+    <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log out</button>
     </form>
   </div>

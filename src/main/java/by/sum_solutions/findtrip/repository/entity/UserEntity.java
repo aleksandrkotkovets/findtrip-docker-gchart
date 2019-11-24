@@ -47,7 +47,7 @@ public class UserEntity extends BaseEntity {
     private WalletEntity wallet;
 
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;
 
@@ -74,9 +74,15 @@ public class UserEntity extends BaseEntity {
     }
 
     public UserEntity(UserEntity user) {
+        this.setId(user.getId());
         this.login = user.getLogin();
         this.password = user.getPassword();
-//        this.roleEntity = user.getRoleEntity();
+        this.roleEntity = user.getRoleEntity();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.patronymic = user.getPatronymic();
+        this.phoneNumber = user.getPhoneNumber();
+
     }
 
     public String getLogin() {
