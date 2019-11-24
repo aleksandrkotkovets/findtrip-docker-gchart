@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    UserEntity save(UserDTO userDTO);
+    UserEntity save(UserDTO userDTO, String role);
 
     UserEntity getUserByCriteria(String email, String login, String phoneNumber);
 

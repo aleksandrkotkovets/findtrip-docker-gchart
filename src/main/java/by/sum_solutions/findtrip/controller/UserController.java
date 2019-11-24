@@ -33,34 +33,31 @@ public class UserController {
     @Autowired
     RoleService roleService;
 
-   /* @GetMapping
-    public String getAllUsers(Model model) {
-        List<UserDTO> users = new ArrayList<>(); // = userService.getUsersByRole(roleShow);
-        List<RoleDTO> roles = roleService.findAllRoles();
-        model.addAttribute("roles", roles);
-        model.addAttribute("selectedRole",roles.get(0));
-        model.addAttribute("users", users.size() == 0 ? null : users);
-        return "showUsers";
-    }*/
 
     @GetMapping()
     public String getAllUsersByRole(@RequestParam(value = "role") String role,  Model model) {
-        List<UserDTO> users = userService.getUsersByRole(role);
-        List<RoleDTO> roles = roleService.findAllRoles();
-        model.addAttribute("roles", roles);
-        model.addAttribute("selectedRole", role);
+      //  List<UserDTO> users = userService.getUsersByRole(role);
+        List<UserDTO> users = roleService.getUsersByRole(role);
+        model.addAttribute("role", role);
         model.addAttribute("users", users.size() == 0 ? null : users);
         return "showUsers";
     }
 
-    @GetMapping(path = "/delete/{id}")
-    public String deleteEmployeeById(Model model, @PathVariable("id") Long id) throws UserNotFoundException {
+    @GetMapping(path = "/delete")
+    public String deleteEmployeeById(Model model,
+                                     @RequestParam("id") Long id,
+                                     @RequestParam(value = "role") String role ) throws UserNotFoundException {
         userService.deleteUserById(id);
-        return "redirect:/users";
+        String redirect = "redirect:/users?&role="+role;
+        return redirect;
     }
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
-    public String getAddOrEditUserView(Model model, @PathVariable("id") Optional<Long> id) throws UserNotFoundException {
+    public String getAddOrEditUserView(
+                                       Model model,
+                                       @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
+                                       @PathVariable(value = "id") Optional<Long> id
+                                       ) throws UserNotFoundException {
 
         if (id.isPresent()) {
             UserDTO userDTO = userService.findUserById(id.get());
@@ -71,13 +68,18 @@ public class UserController {
             }
             return "addEditUser";
         } else {
-            model.addAttribute("user", new UserDTO());
+            UserDTO userDTO = new UserDTO();
+            userDTO.setRole(role);
+            model.addAttribute("user", userDTO);
             return "addEditUser";
         }
     }
 
     @PostMapping(path = "/edit")
-    public String addOrEditUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+    public String addOrEditUser(@Valid @ModelAttribute("user") UserDTO user,
+                                @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
+                                BindingResult result,
+                                Model model) {
 
         if (result.hasErrors()) {
             ApiError apiError = new ApiError();
@@ -119,10 +121,11 @@ public class UserController {
             if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
                 throw new RegistrationParameterIsExistException("This phone number already exist",user);
             }
+            userService.save(user, role);
 
-            userService.save(user);
         }
-        return "redirect:/users";
+        String redirect = "redirect:/users?&role="+role;
+        return redirect;
     }
 
     @GetMapping(path = "/login")

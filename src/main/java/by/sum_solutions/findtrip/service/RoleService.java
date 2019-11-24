@@ -2,6 +2,7 @@ package by.sum_solutions.findtrip.service;
 
 
 import by.sum_solutions.findtrip.controller.dto.RoleDTO;
+import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.repository.entity.RoleEntity;
 import org.hibernate.validator.constraints.URL;
 
@@ -18,4 +19,5 @@ public interface RoleService {
 
     RoleEntity findByRole(String role);
 
+    List<UserDTO> getUsersByRole(String role);
 }

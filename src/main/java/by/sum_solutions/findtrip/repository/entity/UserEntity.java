@@ -49,10 +49,9 @@ public class UserEntity extends BaseEntity {
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    @NotNull
     private RoleEntity roleEntity;
 
-    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Set<TicketEntity> tickets, WalletEntity wallet, @NotNull RoleEntity roleEntity) {
+    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Set<TicketEntity> tickets, WalletEntity wallet, RoleEntity roleEntity) {
         this.login = login;
         this.email = email;
         this.password = password;

@@ -5,7 +5,9 @@ import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.repository.RoleRepository;
 import by.sum_solutions.findtrip.repository.UserRepository;
 import by.sum_solutions.findtrip.repository.entity.Role;
+import by.sum_solutions.findtrip.repository.entity.RoleEntity;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
+import by.sum_solutions.findtrip.service.RoleService;
 import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,17 +19,17 @@ import java.util.Optional;
 
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleService roleService;
 
+    @Transactional
     @Override
-    public UserEntity save(UserDTO userDTO) {
+    public UserEntity save(UserDTO userDTO, String role) {
         UserEntity userEntity = new UserEntity();
         userEntity.setLogin(userDTO.getLogin());
         userEntity.setEmail(userDTO.getEmail());
@@ -36,10 +38,11 @@ public class UserServiceImpl implements UserService {
         userEntity.setLastName(userDTO.getLastName());
         userEntity.setPatronymic(userDTO.getPatronymic());
         userEntity.setPhoneNumber(userDTO.getPhoneNumber());
-        userEntity.setRoleEntity(roleRepository.findByRole(String.valueOf(Role.ROLE_ADMIN)));
-        return userRepository.save(userEntity);
+        userEntity.setRoleEntity(roleService.findByRole(role));
+       return userRepository.save(userEntity);
     }
 
+    @Transactional
     @Override
     public UserEntity getUserByCriteria(String email, String login, String phoneNumber) {
 
@@ -60,6 +63,7 @@ public class UserServiceImpl implements UserService {
         return userEntity;
     }
 
+    @Transactional
     @Override
     public List<UserDTO> getUsersByRole(String  role) {
         List<UserDTO> userDTOList = new ArrayList<>();
@@ -83,6 +87,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional
     @Override
     public void deleteUserById(Long id) throws UserNotFoundException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -94,6 +99,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public UserDTO findUserById(Long id) {
         UserDTO userDTO = null;
@@ -113,6 +119,7 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
+    @Transactional
     @Override
     public void update(UserDTO user) {
         UserEntity newUserEntity = new UserEntity();
@@ -124,7 +131,7 @@ public class UserServiceImpl implements UserService {
         newUserEntity.setLastName(user.getFirstName());
         newUserEntity.setPatronymic(user.getPatronymic());
         newUserEntity.setPhoneNumber(user.getPhoneNumber());
-        newUserEntity.setRoleEntity(roleRepository.findByRole(user.getRole()));
+        newUserEntity.setRoleEntity(roleService.findByRole(user.getRole()));
 
         if(newUserEntity.getId() == null){
             userRepository.save(newUserEntity);
@@ -149,11 +156,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public boolean findUserByCriteria(Optional<String> login, Optional<String> password) {
         return false;
     }
 
+    @Transactional
     @Override
     public Optional<UserEntity> findByLogin(String login) {
         return Optional.ofNullable(userRepository.findByLogin(login));

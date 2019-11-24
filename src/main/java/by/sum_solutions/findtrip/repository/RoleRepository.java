@@ -1,6 +1,7 @@
 package by.sum_solutions.findtrip.repository;
 
 
+import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.repository.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,7 +12,6 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
         RoleEntity findByRole(String role);
 
         List<RoleEntity> findAll();
-
 
 
 }
