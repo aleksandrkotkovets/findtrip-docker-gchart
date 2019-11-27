@@ -16,16 +16,15 @@
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <form th:action="@{/login}" method="post">
                 <fieldset>
-                    <h1>Please Sign In</h1>
-
+                    <h1 th:text="#{text.sign-in}"></h1>
                     <div th:if="${param.error}">
                         <div class="alert alert-danger">
-                            Invalid username and password.
+                           <span th:text="#{invalid.password.login}"></span>
                         </div>
                     </div>
                     <div th:if="${param.logout}">
                         <div class="alert alert-info">
-                            You have been logged out.
+                            <span th:text="#{text.logout}"></span>
                         </div>
                     </div>
 
@@ -40,10 +39,10 @@
 
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/>
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" th:value="#{bt.sign-in}"/>
                         </div>
                         <div>
-                        <a href="/api/registration">Sign up</a>
+                        <a href="/api/registration"><span th:text="#{bt.sign-up}"></span></a>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
                         </div>

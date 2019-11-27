@@ -41,12 +41,6 @@ logging:
     com.howtodoinjava: DEBUG
     org.hibernate: ERROR
 
-#---
-#i18n
-#spring:
- #   messages:
-  #       basename: messages
-   #      encoding: UTF-8
 ---
 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly.
 spring:
