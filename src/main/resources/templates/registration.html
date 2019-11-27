@@ -18,11 +18,11 @@
 <!--/*@thymesVar id="user" type="by.sum_solutions.findtrip.controller.dto.UserDTO"*/-->
 <!--/*@thymesVar id="apiError" type="by.sum_solutions.findtrip.exception.UserControllerHandler"*/-->
 <div class="container my-5">
-    <h3>User</h3>
+    <h3>Registration</h3>
     <div class="card">
         <div class="card-body">
             <div class="col-md-10">
-                <form data-th-action="@{/users/edit}" data-th-object="${user}" method="post">
+                <form data-th-action="@{/registration}" data-th-object="${user}" method="post">
 
                     <div th:if="${#fields.hasErrors()}">
                      <span class="error">
@@ -93,7 +93,6 @@
                         <div class="col-md-6">
                             <input type="submit" class="btn btn-primary" value=" Sign Up ">
                         </div>
-
                     </div>
                 </form>
             </div>

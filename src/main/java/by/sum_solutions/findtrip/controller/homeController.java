@@ -1,13 +1,30 @@
 package by.sum_solutions.findtrip.controller;
 
+import by.sum_solutions.findtrip.controller.dto.ApiError;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
+import by.sum_solutions.findtrip.service.RoleService;
+import by.sum_solutions.findtrip.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 public class homeController {
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RoleService roleService;
 
     @GetMapping(value = "/homeAdmin")
     public String getMainAdminView() {
@@ -40,15 +57,54 @@ public class homeController {
         return "login";
     }
 
-    @GetMapping(value ="/sign-up")
+
+    @GetMapping(value ="/registration")
     public String getSignUpView(Model model){
         UserDTO userDTO = new UserDTO();
         model.addAttribute("user", userDTO);
-        return "signUp";
+        return "registration";
     }
+
+    @PostMapping(path = "/registration")
+    public String registrationClient(@Valid @ModelAttribute("user") UserDTO client,
+                                BindingResult result,
+                                Model model) {
+        if (result.hasErrors()) {
+            ApiError apiError = new ApiError();
+            String message = "";
+            for (FieldError str : result.getFieldErrors()) {
+                message += str.getDefaultMessage();
+                apiError.setMessage(message);
+            }
+            model.addAttribute("user",client);
+            model.addAttribute("apiError",apiError);
+            return "registration";
+        }
+            if (userService.getUserByCriteria(client.getEmail(), null, null) != null) {
+                throw new RegistrationParameterIsExistException("User with this email already exist", client);
+            }
+
+            if (userService.getUserByCriteria(null, client.getLogin(), null) != null) {
+                throw new RegistrationParameterIsExistException("This login is exist", client);
+            }
+
+            if (userService.getUserByCriteria(null, null, client.getPhoneNumber()) != null) {
+                throw new RegistrationParameterIsExistException("This phone number already exist",client);
+            }
+            userService.save(client, "ROLE_CLIENT");
+
+        return "redirect:/";
+    }
+
+
     @GetMapping("/403")
     public String error403() {
         return "403";
+    }
+
+    @GetMapping("/international")
+    public String getInternationalPage() {
+        return "international";
     }
 
 }
