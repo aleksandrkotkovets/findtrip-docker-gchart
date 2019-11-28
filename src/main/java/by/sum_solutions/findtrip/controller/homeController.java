@@ -66,8 +66,8 @@ public class homeController {
 
     @PostMapping(path = "/registration")
     public String registrationClient(@Valid @ModelAttribute("user") UserDTO client,
-                                BindingResult result,
-                                Model model) {
+                                     BindingResult result,
+                                     Model model) {
         if (result.hasErrors()) {
             ApiError apiError = new ApiError();
             String message = "";
@@ -79,18 +79,18 @@ public class homeController {
             model.addAttribute("apiError",apiError);
             return "registration";
         }
-            if (userService.getUsersIdByCriteria(client.getEmail(), null, null) != null) {
-                throw new RegistrationParameterIsExistException("User_with_this_email_already_exist", client);
-            }
+        if (userService.getUserByCriteria(client.getEmail(), null, null) != null) {
+            throw new RegistrationParameterIsExistException("User_with_this_email_already_exist", client);
+        }
 
-            if (userService.getUsersIdByCriteria(null, client.getLogin(), null) != null) {
-                throw new RegistrationParameterIsExistException("This_login_is_exist", client);
-            }
+        if (userService.getUserByCriteria(null, client.getLogin(), null) != null) {
+            throw new RegistrationParameterIsExistException("This_login_is_exist", client);
+        }
 
-            if (userService.getUsersIdByCriteria(null, null, client.getPhoneNumber()) != null) {
-                throw new RegistrationParameterIsExistException("This_phone_number_already_exist",client);
-            }
-            userService.save(client, "ROLE_CLIENT");
+        if (userService.getUserByCriteria(null, null, client.getPhoneNumber()) != null) {
+            throw new RegistrationParameterIsExistException("This_phone_number_already_exist",client);
+        }
+        userService.save(client, "ROLE_CLIENT");
 
         return "redirect:/";
     }

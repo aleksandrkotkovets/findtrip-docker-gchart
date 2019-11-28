@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping()
     public String getAllUsersByRole(@RequestParam(value = "role") String role,  Model model) {
-      //  List<UserDTO> users = userService.getUsersByRole(role);
+        //  List<UserDTO> users = userService.getUsersByRole(role);
         List<UserDTO> users = roleService.getUsersByRole(role);
         model.addAttribute("role", role);
         model.addAttribute("users", users.size() == 0 ? null : users);
@@ -52,10 +52,10 @@ public class UserController {
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
     public String getAddOrEditUserView(
-                                       Model model,
-                                       @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
-                                       @PathVariable(value = "id") Optional<Long> id
-                                       ) throws UserNotFoundException {
+            Model model,
+            @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
+            @PathVariable(value = "id") Optional<Long> id
+    ) throws UserNotFoundException {
 
         if (id.isPresent()) {
             UserDTO userDTO = userService.findUserById(id.get());
@@ -91,32 +91,32 @@ public class UserController {
             return "addEditUser";
         }
         if (user.getId() != null) {
-            if (userService.getUsersIdByCriteria(user.getEmail(), null, null) != null
-                    && userService.getUsersIdByCriteria(user.getEmail(), null, null) != user.getId()) {
+            if (userService.getUserByCriteria(user.getEmail(), null, null) != null
+                    && userService.getUserByCriteria(user.getEmail(), null, null) != user.getId()) {
                 throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
             }
 
-            if (userService.getUsersIdByCriteria(null, user.getLogin(), null) != null
-                    && userService.getUsersIdByCriteria(null, user.getLogin(), null) != user.getId()) {
+            if (userService.getUserByCriteria(null, user.getLogin(), null) != null
+                    && userService.getUserByCriteria(null, user.getLogin(), null) != user.getId()) {
                 throw new EditUsersParametersExistException("This_login_is_exist", user);
             }
 
-            if (userService.getUsersIdByCriteria(null, null, user.getPhoneNumber()) != null
-                    && userService.getUsersIdByCriteria(null, null, user.getPhoneNumber()) != user.getId()) {
+            if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null
+                    && userService.getUserByCriteria(null, null, user.getPhoneNumber()) != user.getId()) {
                 throw new EditUsersParametersExistException("This_phone_number_already_exist", user);
             }
             userService.update(user);
         } else {
 
-            if (userService.getUsersIdByCriteria(user.getEmail(), null, null) != null) {
+            if (userService.getUserByCriteria(user.getEmail(), null, null) != null) {
                 throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
             }
 
-            if (userService.getUsersIdByCriteria(null, user.getLogin(), null) != null) {
+            if (userService.getUserByCriteria(null, user.getLogin(), null) != null) {
                 throw new EditUsersParametersExistException("This_login_is_exist", user);
             }
 
-            if (userService.getUsersIdByCriteria(null, null, user.getPhoneNumber()) != null) {
+            if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
                 throw new EditUsersParametersExistException("This_phone_number_already_exist",user);
             }
             userService.save(user, role);

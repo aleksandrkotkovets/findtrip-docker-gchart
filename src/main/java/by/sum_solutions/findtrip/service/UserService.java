@@ -10,7 +10,7 @@ public interface UserService {
 
     UserEntity save(UserDTO userDTO, String role);
 
-    Long getUsersIdByCriteria(String email, String login, String phoneNumber);
+    Long getUserByCriteria(String email, String login, String phoneNumber);
 
     List<UserDTO> getUsersByRole(String role);
 
