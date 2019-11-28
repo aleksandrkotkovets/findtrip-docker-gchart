@@ -1,3 +1,5 @@
+create database findtrip-db;
+use findtrip-db;
 
 create table if not exists airport
 (
