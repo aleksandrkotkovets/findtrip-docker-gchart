@@ -92,32 +92,32 @@ public class UserController {
         }
         if (user.getId() != null) {
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null
-                    && userService.getUserByCriteria(user.getEmail(), null, null).getId() != user.getId()) {
-                throw new EditUsersParametersExistException("User with this email already exist", user);
+                    && userService.getUserByCriteria(user.getEmail(), null, null) != user.getId()) {
+                throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
             }
 
             if (userService.getUserByCriteria(null, user.getLogin(), null) != null
-                    && userService.getUserByCriteria(null, user.getLogin(), null).getId() != user.getId()) {
-                throw new EditUsersParametersExistException("This login is exist", user);
+                    && userService.getUserByCriteria(null, user.getLogin(), null) != user.getId()) {
+                throw new EditUsersParametersExistException("This_login_is_exist", user);
             }
 
             if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null
-                    && userService.getUserByCriteria(null, null, user.getPhoneNumber()).getId() != user.getId()) {
-                throw new EditUsersParametersExistException("This phone number already exist", user);
+                    && userService.getUserByCriteria(null, null, user.getPhoneNumber()) != user.getId()) {
+                throw new EditUsersParametersExistException("This_phone_number_already_exist", user);
             }
             userService.update(user);
         } else {
 
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null) {
-                throw new EditUsersParametersExistException("User with this email already exist", user);
+                throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
             }
 
             if (userService.getUserByCriteria(null, user.getLogin(), null) != null) {
-                throw new EditUsersParametersExistException("This login is exist", user);
+                throw new EditUsersParametersExistException("This_login_is_exist", user);
             }
 
             if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
-                throw new EditUsersParametersExistException("This phone number already exist",user);
+                throw new EditUsersParametersExistException("This_phone_number_already_exist",user);
             }
             userService.save(user, role);
 

@@ -2,10 +2,7 @@ package by.sum_solutions.findtrip.service.impl;
 
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
-import by.sum_solutions.findtrip.repository.RoleRepository;
 import by.sum_solutions.findtrip.repository.UserRepository;
-import by.sum_solutions.findtrip.repository.entity.Role;
-import by.sum_solutions.findtrip.repository.entity.RoleEntity;
 import by.sum_solutions.findtrip.repository.entity.UserEntity;
 import by.sum_solutions.findtrip.service.RoleService;
 import by.sum_solutions.findtrip.service.UserService;
@@ -42,7 +39,7 @@ public class UserServiceImpl implements UserService {
        return userRepository.save(userEntity);
     }
 
-    @Transactional
+   /* @Transactional
     @Override
     public UserEntity getUserByCriteria(String email, String login, String phoneNumber) {
 
@@ -61,6 +58,27 @@ public class UserServiceImpl implements UserService {
         }
 
         return userEntity;
+    }*/
+
+    @Transactional
+    @Override
+    public Long getUserByCriteria(String email, String login, String phoneNumber) {
+
+        Long id = null;
+
+        if (email != null && !email.equals("")) {
+            id = userRepository.getIdExistUserByEmail(email);
+        }
+
+        if (login != null && !login.equals("")) {
+            id = userRepository.getIdExistUserByLogin(login);
+        }
+
+        if (phoneNumber != null && !phoneNumber.equals("")) {
+            id = userRepository.getIdExistUserByPhoneNumber(phoneNumber);
+        }
+
+        return id;
     }
 
     @Transactional
@@ -156,11 +174,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
+    /*@Transactional
     @Override
     public boolean findUserByCriteria(Optional<String> login, Optional<String> password) {
         return false;
-    }
+    }*/
 
     @Transactional
     @Override

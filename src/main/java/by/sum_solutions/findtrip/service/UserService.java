@@ -10,7 +10,7 @@ public interface UserService {
 
     UserEntity save(UserDTO userDTO, String role);
 
-    UserEntity getUserByCriteria(String email, String login, String phoneNumber);
+    Long getUserByCriteria(String email, String login, String phoneNumber);
 
     List<UserDTO> getUsersByRole(String role);
 
@@ -20,7 +20,6 @@ public interface UserService {
 
     void update(UserDTO user);
 
-    boolean findUserByCriteria(Optional<String> login, Optional<String> password);
 
     Optional<UserEntity> findByLogin(String login);
 }
