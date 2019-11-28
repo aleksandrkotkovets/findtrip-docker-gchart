@@ -81,15 +81,15 @@ public class homeController {
             return "registration";
         }
             if (userService.getUserByCriteria(client.getEmail(), null, null) != null) {
-                throw new RegistrationParameterIsExistException("User with this email already exist", client);
+                throw new RegistrationParameterIsExistException("User_with_this_email_already_exist", client);
             }
 
             if (userService.getUserByCriteria(null, client.getLogin(), null) != null) {
-                throw new RegistrationParameterIsExistException("This login is exist", client);
+                throw new RegistrationParameterIsExistException("This_login_is_exist", client);
             }
 
             if (userService.getUserByCriteria(null, null, client.getPhoneNumber()) != null) {
-                throw new RegistrationParameterIsExistException("This phone number already exist",client);
+                throw new RegistrationParameterIsExistException("This_phone_number_already_exist",client);
             }
             userService.save(client, "ROLE_CLIENT");
 
@@ -100,11 +100,6 @@ public class homeController {
     @GetMapping("/403")
     public String error403() {
         return "403";
-    }
-
-    @GetMapping("/international")
-    public String getInternationalPage() {
-        return "international";
     }
 
 }

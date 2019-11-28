@@ -26,13 +26,13 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/api/homeWorker"><i class="fa fa-home"></i>Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="homeWorker"><i class="fa fa-home"></i><span th:text="#{text.home}"></span><span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-              <a class="nav-link" href="#">Company<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="#" th:text="#{text.companies}"><span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item ">
-              <a class="nav-link" href="#">Flights<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="#" th:text="#{text.flights}"><span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <form class="form-inline my-3 my-lg-0">
@@ -41,7 +41,7 @@
                                                   <i class="fas fa-user-edit ml-2"></i></a>
         </form>
     <form th:action="@{/logout}" method="post" class="form-inline my-2 my-lg-0">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log out</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{bt.log-out}"></button>
     </form>
   </div>
 </nav>

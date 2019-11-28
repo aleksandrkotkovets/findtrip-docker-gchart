@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="docsearch:language" content="en">
   <title>Home Client Page</title>
+  <link  rel="stylesheet" type="text/css" th:href="@{/static/css/lang.css}" >
 <div th:replace="clientHeader :: ccss"></div>
 </head>
 
@@ -13,8 +14,13 @@
 <div th:replace="clientHeader :: client-header"/>
 
 <div class="starter-template">
+    <div class="menu-lang-home">
+        <a th:href="@{?lang=en_Us}" class="en-us" ><img th:src="@{/static/images/en.svg}" width="22" height="22" alt="lang_en"></a>
+        <a th:href="@{?lang=fr}" class="fr" ><img th:src="@{/static/images/fr.svg}" width="22" height="22" alt="lang_fr"></a>
+        <a th:href="@{?lang=de}" class="de" ><img th:src="@{/static/images/de.svg}" width="22" height="22" alt="lang_de"></a>
+    </div>
         <h1>Home Client Page (Spring Security protected)</h1>
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h1 th:inline="text" th:text="#{text.hello}"> [[${#httpServletRequest.remoteUser}]]!</h1>
 
     </div>
 

@@ -20,24 +20,24 @@
             <div th:switch="${users}" class="container my-9">
                 <p class="my-9">
                     <a th:href="@{/users/edit(role=${role})}" class="btn btn-primary">
-                        <i class="fas fa-user-plus ml-2"> Add User </i></a>
+                        <i class="fas fa-user-plus ml-2" th:text="#{text.add-user}"></i></a>
                 </p>
 
                 <div class="col-md-4">
-                    <h2 th:case="null">No record found !!</h2>
+                    <h2 th:case="null" th:text="#{text.record.found}"></h2>
                     <div th:case="*">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Login</th>
-                                <th>Password</th>
-                                <th>Email</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Patronymic</th>
-                                <th>Phone number</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
+                                <th th:text="#{text.login}"></th>
+                                <th th:text="#{text.password}"></th>
+                                <th th:text="#{text.email}"></th>
+                                <th th:text="#{text.firstName}"></th>
+                                <th th:text="#{text.lastName}"></th>
+                                <th th:text="#{text.patronymic}"></th>
+                                <th th:text="#{text.phoneNumber}"></th>
+                                <th th:text="#{text.edit}"></th>
+                                <th th:text="#{text.delete}"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -72,13 +72,5 @@
     </div>
 </div>
 
-<script type="text/javascript" th:inline="javascript">
-    /*<![CDATA[*/
-    function getValue() {
-        var select = document.getElementById("select_");
-        var value = select.value;
-    }
-    /*]]>*/
-</script>
 </body>
 </html>

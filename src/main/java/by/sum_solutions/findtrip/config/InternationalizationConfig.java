@@ -38,9 +38,7 @@ public class InternationalizationConfig extends WebMvcConfigurerAdapter  {
         interceptorRegistry.addInterceptor(localeChangeInterceptor());
     }
 
-    /*public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/").addResourceLocations("/static/css/");
-    }*/
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")

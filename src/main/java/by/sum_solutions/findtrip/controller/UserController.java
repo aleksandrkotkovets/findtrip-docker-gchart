@@ -2,6 +2,7 @@ package by.sum_solutions.findtrip.controller;
 
 import by.sum_solutions.findtrip.controller.dto.ApiError;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
+import by.sum_solutions.findtrip.exception.EditUsersParametersExistException;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.service.RoleService;
@@ -92,31 +93,31 @@ public class UserController {
         if (user.getId() != null) {
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null
                     && userService.getUserByCriteria(user.getEmail(), null, null).getId() != user.getId()) {
-                throw new RegistrationParameterIsExistException("User with this email already exist", user);
+                throw new EditUsersParametersExistException("User with this email already exist", user);
             }
 
             if (userService.getUserByCriteria(null, user.getLogin(), null) != null
                     && userService.getUserByCriteria(null, user.getLogin(), null).getId() != user.getId()) {
-                throw new RegistrationParameterIsExistException("This login is exist", user);
+                throw new EditUsersParametersExistException("This login is exist", user);
             }
 
             if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null
                     && userService.getUserByCriteria(null, null, user.getPhoneNumber()).getId() != user.getId()) {
-                throw new RegistrationParameterIsExistException("This phone number already exist", user);
+                throw new EditUsersParametersExistException("This phone number already exist", user);
             }
             userService.update(user);
         } else {
 
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null) {
-                throw new RegistrationParameterIsExistException("User with this email already exist", user);
+                throw new EditUsersParametersExistException("User with this email already exist", user);
             }
 
             if (userService.getUserByCriteria(null, user.getLogin(), null) != null) {
-                throw new RegistrationParameterIsExistException("This login is exist", user);
+                throw new EditUsersParametersExistException("This login is exist", user);
             }
 
             if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
-                throw new RegistrationParameterIsExistException("This phone number already exist",user);
+                throw new EditUsersParametersExistException("This phone number already exist",user);
             }
             userService.save(user, role);
 
@@ -125,25 +126,5 @@ public class UserController {
         return redirect;
     }
 
-   /* @GetMapping(path = "/login")
-    public String showLoginForm(){
-        return "login1";
-    }
-
-    @PostMapping(path = "login")
-    public String login(Model model, Optional<String> login, Optional<String> password){
-        if(login.isPresent() && password.isPresent()){
-            if(userService.findUserByCriteria(login,password)){
-                model.addAttribute("message","success");
-                return "login1";
-            }else{
-                throw new UserNotFoundException("Incorrect login or password!");
-            }
-        }else {
-            throw new RegistrationParameterIsExistException("Incorrect login or password!");
-        }
-      //  return "showUsers";
-    }
-    ///*/
 
 }
