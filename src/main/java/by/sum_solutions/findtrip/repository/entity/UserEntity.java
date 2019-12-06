@@ -13,30 +13,30 @@ import java.util.Set;
 public class UserEntity extends BaseEntity {
 
     @NotNull
-    @Column(name = "login")
+    @Column(name = "login", length = 15)
     private String login;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 40)
     private String email;
 
     @NotNull
-    @Column(name = "password")
+    @Column(name = "password", length = 15)
     private String password;
 
     @NotNull
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 15)
     private String firstName;
 
     @NotNull
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 15)
     private String lastName;
 
     @NotNull
-    @Column(name = "patronymic")
+    @Column(name = "patronymic", length = 15)
     private String patronymic;
 
     @NotNull
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", length = 13)
     private String phoneNumber;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
@@ -51,24 +51,6 @@ public class UserEntity extends BaseEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;
 
-    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Set<TicketEntity> tickets, WalletEntity wallet, RoleEntity roleEntity) {
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.phoneNumber = phoneNumber;
-        this.tickets = tickets;
-        this.wallet = wallet;
-        this.roleEntity = roleEntity;
-    }
-
-    public UserEntity(String login, String email, String password) {
-        this.login = login;
-        this.email = email;
-        this.password = password;
-    }
 
     public UserEntity() {
     }

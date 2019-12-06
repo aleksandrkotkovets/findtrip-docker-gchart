@@ -15,12 +15,12 @@ public class AirportEntity extends BaseEntity {
     private String name;
 
     @NotNull
-    @Column(name = "city")
-    private String city;
+    @Column(name = "code", length = 4)
+    private String code;
 
-    @NotNull
-    @Column(name = "country")
-    private String country;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "city_id")
+    private CityEntity cityEntity;
 
     @OneToMany(mappedBy = "airport_departure", fetch = FetchType.EAGER)
     private List<FlightEntity> flight_departure;
@@ -31,13 +31,6 @@ public class AirportEntity extends BaseEntity {
     public AirportEntity() {
     }
 
-    public AirportEntity(@NotNull String name, @NotNull String city, @NotNull String country, List<FlightEntity> flight_departure, List<FlightEntity> flight_arrival) {
-        this.name = name;
-        this.city = city;
-        this.country = country;
-        this.flight_departure = flight_departure;
-        this.flight_arrival = flight_arrival;
-    }
 
     public String getName() {
         return name;
@@ -47,20 +40,12 @@ public class AirportEntity extends BaseEntity {
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public CityEntity getCityEntity() {
+        return cityEntity;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCityEntity(CityEntity cityEntity) {
+        this.cityEntity = cityEntity;
     }
 
     public List<FlightEntity> getFlight_departure() {
@@ -79,20 +64,5 @@ public class AirportEntity extends BaseEntity {
         this.flight_arrival = flight_arrival;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AirportEntity that = (AirportEntity) o;
-        return name.equals(that.name) &&
-                city.equals(that.city) &&
-                country.equals(that.country) &&
-                flight_departure.equals(that.flight_departure) &&
-                flight_arrival.equals(that.flight_arrival);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, city, country, flight_departure, flight_arrival);
-    }
 }

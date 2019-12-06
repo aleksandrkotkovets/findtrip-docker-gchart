@@ -25,11 +25,6 @@ public class PlainEntity extends BaseEntity{
     public PlainEntity() {
     }
 
-    public PlainEntity(@NotNull String name, Set<FlightEntity> flights, @NotNull CompanyEntity company) {
-        this.name = name;
-        this.flights = flights;
-        this.company = company;
-    }
 
     public String getName() {
         return name;

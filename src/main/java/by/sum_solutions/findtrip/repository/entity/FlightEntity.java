@@ -60,18 +60,6 @@ public class FlightEntity extends BaseEntity {
     public FlightEntity() {
     }
 
-    public FlightEntity(@NotNull Integer freeSeats, @NotNull Integer allSeats, @NotNull Integer price, @NotNull Date departureDate, @NotNull Date arrivalDate, Set<TicketEntity> tickets, @NotNull PlainEntity plain, @NotNull AirportEntity airport_departure, @NotNull AirportEntity airport_arrival) {
-        this.freeSeats = freeSeats;
-        this.allSeats = allSeats;
-        this.price = price;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
-        this.tickets = tickets;
-        this.plain = plain;
-        this.airport_departure = airport_departure;
-        this.airport_arrival = airport_arrival;
-    }
-
     public Integer getFreeSeats() {
         return freeSeats;
     }

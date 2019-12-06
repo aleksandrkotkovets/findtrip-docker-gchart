@@ -53,7 +53,7 @@
                         <div class="form-group col-md-8">
                             <label for="email" class="col-form-label" th:text="#{text.email}"></label>
                             <input type="email" th:value="${user?.email}" th:name="email" class="form-control"
-                                   id="email" th:placeholder="#{text.email}" required minlength="5"/>
+                                   id="email" th:placeholder="#{text.email}" required minlength="5" maxlength="40"/>
                             <span class="form__error" th:text="#{text.error.email}"></span>
                         </div>
 

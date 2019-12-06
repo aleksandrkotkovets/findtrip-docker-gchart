@@ -25,11 +25,6 @@ public class CompanyEntity  extends BaseEntity{
     public CompanyEntity() {
     }
 
-    public CompanyEntity(@NotNull String name, @NotNull Rating rating, Set<PlainEntity> plains) {
-        this.name = name;
-        this.rating = rating;
-        this.plains = plains;
-    }
 
     public String getName() {
         return name;

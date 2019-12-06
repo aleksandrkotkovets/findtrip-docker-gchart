@@ -3,7 +3,6 @@ package by.sum_solutions.findtrip.controller;
 import by.sum_solutions.findtrip.controller.dto.ApiError;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.EditUsersParametersExistException;
-import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
 import by.sum_solutions.findtrip.exception.UserNotFoundException;
 import by.sum_solutions.findtrip.service.RoleService;
 import by.sum_solutions.findtrip.service.UserService;
@@ -38,7 +37,7 @@ public class UserController {
         List<UserDTO> users = roleService.getUsersByRole(role);
         model.addAttribute("role", role);
         model.addAttribute("users", users.size() == 0 ? null : users);
-        return "showUsers";
+        return "user/showUsers";
     }
 
     @GetMapping(path = "/delete")
@@ -64,12 +63,12 @@ public class UserController {
             } else {
                 throw new UserNotFoundException("User with id=" + id + " not found");
             }
-            return "addEditUser";
+            return "user/addEditUser";
         } else {
             UserDTO userDTO = new UserDTO();
             userDTO.setRole(role);
             model.addAttribute("user", userDTO);
-            return "addEditUser";
+            return "user/addEditUser";
         }
     }
 
@@ -88,7 +87,7 @@ public class UserController {
             }
             model.addAttribute("user",user);
             model.addAttribute("apiError",apiError);
-            return "addEditUser";
+            return "user/addEditUser";
         }
         if (user.getId() != null) {
             if (userService.getUserByCriteria(user.getEmail(), null, null) != null
@@ -123,7 +122,7 @@ public class UserController {
 
         }
         String redirect = "redirect:/users?&role="+role;
-        return redirect;
+        return "redirect:/home";
     }
 
 

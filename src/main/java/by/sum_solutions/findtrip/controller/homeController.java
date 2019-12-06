@@ -3,9 +3,11 @@ package by.sum_solutions.findtrip.controller;
 import by.sum_solutions.findtrip.controller.dto.ApiError;
 import by.sum_solutions.findtrip.controller.dto.UserDTO;
 import by.sum_solutions.findtrip.exception.RegistrationParameterIsExistException;
+import by.sum_solutions.findtrip.security.CustomUserDetail;
 import by.sum_solutions.findtrip.service.RoleService;
 import by.sum_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-public class homeController {
+public class HomeController {
 
     @Autowired
     UserService userService;
@@ -26,24 +28,16 @@ public class homeController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping(value = "/homeAdmin")
-    public String getMainAdminView() {
-        return "homeAdmin";
-    }
-
-    @GetMapping(value = "/homeWorker")
-    public String getMainWorkerView() {
-        return "homeWorker";
-    }
-
-    @GetMapping(value = "/homeClient")
-    public String getMainClientView() {
-        return "homeClient";
+    @GetMapping(value = "/home")
+    public String getMainAdminView(Model model,@AuthenticationPrincipal CustomUserDetail currentUser) {
+        Long idUser =  userService.getUserByCriteria(null,currentUser.getUsername(), null);
+        model.addAttribute("id", idUser);
+        return "home/home";
     }
 
     @GetMapping()
     public String getMainPage(){
-        return "findTrip";
+        return "home/home";
     }
 
 

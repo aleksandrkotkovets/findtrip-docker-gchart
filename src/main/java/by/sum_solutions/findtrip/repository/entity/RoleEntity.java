@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "app_role")
 public class RoleEntity extends BaseEntity{
 
-    @Column(name = "role")
+    @Column(name = "role", length = 12)
     String role;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "roleEntity")

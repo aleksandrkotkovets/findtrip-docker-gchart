@@ -33,13 +33,6 @@ public class TicketEntity extends BaseEntity {
     public TicketEntity() {
     }
 
-    public TicketEntity(@NotNull Integer seat, @NotNull Date orderDate, @NotNull UserEntity owner, @NotNull FlightEntity flight) {
-        this.seat = seat;
-        this.orderDate = orderDate;
-        this.owner = owner;
-        this.flight = flight;
-    }
-
     public Integer getSeat() {
         return seat;
     }

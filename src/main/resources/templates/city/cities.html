@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Country|Cities</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+
+<body>
+<!--/*@thymesVar id="cities" type="by.sum_solutions.findtrip.controller.CountryController"*/-->
+<!--/*@thymesVar id="country" type="by.sum_solutions.findtrip.controller.CountryController"*/-->
+
+<div class="container my-md-2">
+    <div class="card">
+        <div class="card-body">
+            <div th:switch="${cities}" class="container my-md-4">
+                <p class="my-9">
+                    <a th:href="@{/cities/edit(country=${country.name})}" class="btn btn-primary">
+                        <i class="fas fa-plus ml-2" th:text="#{text.add-city}"></i></a>
+                </p>
+               <b th:text="#{text.country}+':'"> </b>
+               <span  th:text="${country.name}"></span>
+               <p></p>
+                <div class="col-md-4">
+                    <h2 th:case="null" th:text="#{text.record.found}"></h2>
+                    <div th:case="*">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th th:text="#{text.cities}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="city : ${cities}">
+                                <td th:text="${city.name}"></td>
+                                <td>
+                                    <a th:href="@{ /cities/edit/{id} (id=${city.id}) }"
+                                       class="btn btn-primary">
+                                        <i class="far fa-edit  ml-3 "></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/cities/delete/{id}(id=${city.id}) }"
+                                       class="btn btn-primary" onclick="return confirm('Are you sure?')">
+                                        <span style="color: Tomato;">
+                                            <i class="fas fa-trash-alt ml-2"> </i>
+                                         </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+              <div class="modal-footer">
+               <a th:href="@{/country}"> <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{bt.back}"></button></a>
+              </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -39,26 +39,6 @@ public class UserServiceImpl implements UserService {
        return userRepository.save(userEntity);
     }
 
-   /* @Transactional
-    @Override
-    public UserEntity getUserByCriteria(String email, String login, String phoneNumber) {
-
-        UserEntity userEntity = null;
-
-        if (email != null && !email.equals("")) {
-            userEntity = userRepository.findUserEntityByEmail(email);
-        }
-
-        if (login != null && !login.equals("")) {
-            userEntity = userRepository.findUserEntityByLogin(login);
-        }
-
-        if (phoneNumber != null && !phoneNumber.equals("")) {
-            userEntity = userRepository.findUserEntityByPhoneNumber(phoneNumber);
-        }
-
-        return userEntity;
-    }*/
 
     @Transactional
     @Override
@@ -174,11 +154,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    /*@Transactional
-    @Override
-    public boolean findUserByCriteria(Optional<String> login, Optional<String> password) {
-        return false;
-    }*/
 
     @Transactional
     @Override
