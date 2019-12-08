@@ -1,0 +1,17 @@
+package by.sam_solutions.findtrip.service;
+
+import by.sam_solutions.findtrip.controller.dto.CityDTO;
+
+import java.util.List;
+
+public interface CityService {
+    CityDTO findOne(Long id);
+
+    void delete(Long id);
+
+    Long getCityIdByName(String name);
+
+    void saveOrUpdate(CityDTO cityDTO, String cuntryName);
+
+    List<CityDTO> getCityListByCountry(Long id);
+}

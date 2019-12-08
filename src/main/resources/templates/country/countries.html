@@ -9,14 +9,19 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
    <!-- <script type="text/javascript" th:src="@{/static/script/js.js}" src="../static/script/js.js"
      ></script> /-->
-
     <div th:replace="/home/adminHeader :: acss"></div>
 </head>
 
 <body>
-<div th:replace="/home/adminHeader :: admin-header"></div>
-             <!--/*@thymesVar id="currentPage" type="by.sum_solutions.findtrip.controller.CountryController"*/-->
-             <!--/*@thymesVar id="countries" type="by.sum_solutions.findtrip.controller.CountryController"*/-->
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div th:replace="/home/adminHeader :: admin-header"/>
+</div>
+<div sec:authorize="hasRole('ROLE_WORKER')">
+  <div th:replace="/home/workerHeader :: worker-header"/>
+</div>
+
+             <!--/*@thymesVar id="currentPage" type="by.sam_solutions.findtrip.controller.CountryController"*/-->
+             <!--/*@thymesVar id="countries" type="by.sam_solutions.findtrip.controller.CountryController"*/-->
         <div class="container my-md-2" style="width: 50%">
             <div class="card">
                 <div class="card-block">

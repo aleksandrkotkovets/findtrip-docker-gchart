@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Airports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+
+<body>
+<!--/*@thymesVar id="airports" type="by.sam_solutions.findtrip.controller.AirportController"*/-->
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+  <div th:replace="/home/adminHeader :: admin-header"/>
+</div>
+<div sec:authorize="hasRole('ROLE_WORKER')">
+  <div th:replace="/home/workerHeader :: worker-header"/>
+</div>
+
+<div class="container my-2 col-lg-10" style="width: 50%">
+    <div class="card">
+        <div class="card-body">
+
+            <div th:switch="${airports}" class="container my-9">
+                <p class="my-9">
+                    <a th:href="@{/airports/add}" class="btn btn-primary">
+                        <i class="fas fa-user-plus ml-2" th:text="#{text.add-airport}"></i></a>
+                </p>
+
+                <div class="col-md-4">
+                    <h2 th:case="null" th:text="#{text.record.found}"></h2>
+                    <div th:case="*">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th th:text="#{text.name}"></th>
+                                <th th:text="#{text.code}"></th>
+                                <th th:text="#{text.city}"></th>
+                                <th th:text="#{text.country}"></th>
+                                <th th:text="#{text.edit}"></th>
+                                <th th:text="#{text.delete}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="airport : ${airports}">
+                                <td th:text="${airport.name}"></td>
+                                <td th:text="${airport.code}"></td>
+                                <td th:text="${airport.cityDTO.name}"></td>
+                                <td th:text="${airport.cityDTO.countryDTO.name}"></td>
+                                <td>
+                                    <a th:href="@{ /airports/edit/{id} (id=${airport.id}) }"
+                                       class="btn btn-primary">
+                                        <i class="fas fa-edit ml-2"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/airports/delete/{id} (id=${airport.id})}"
+                                       class="btn btn-primary" onclick="return confirm('Are you sure?')">
+                                        <span style="color: Tomato;">
+                                          <i class="fas fa-trash-alt ml-2"> </i>
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

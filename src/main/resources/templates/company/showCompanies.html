@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Companies</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+
+<body>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div th:replace="/home/adminHeader :: admin-header"/>
+</div>
+<div sec:authorize="hasRole('ROLE_WORKER')">
+  <div th:replace="/home/workerHeader :: worker-header"/>
+</div>
+
+             <!--/*@thymesVar id="currentPage" type="by.sam_solutions.findtrip.controller.CountryController"*/-->
+             <!--/*@thymesVar id="countries" type="by.sam_solutions.findtrip.controller.CountryController"*/-->
+        <div class="container my-md-2" style="width: 50%">
+            <div class="card ">
+                <div class="card-block">
+                    <div th:switch="${companies}" class="container my-md-4">
+
+                     <div sec:authorize="hasRole('ROLE_WORKER')">
+                        <p class="my-9" >
+                            <a th:href="@{companies/edit}" class="btn btn-primary">
+                                <i class="fas fa-plus ml-2" th:text="#{text.add-company}"></i></a>
+                        </p>
+                      </div>
+                        <div class="col-md-12" style="margin-left: 10%">
+                            <h2 th:case="null" th:text="#{text.record.found}"></h2>
+                            <div th:case="*">
+                                <table class="table table-hover" style="margin-left: -10%">
+                                    <thead>
+                                    <tr style="text-align: left">
+                                        <th th:text="#{text.company}" ></th>
+                                        <th th:text="#{text.rating}" ></th>
+                                        <th th:text="#{text.planes}" ></th>
+                                        <th th:text="#{text.edit}" ></th>
+                                        <th th:text="#{text.delete}" sec:authorize="hasRole('ROLE_WORKER')"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="company : ${companies}" >
+                                        <td th:text="${company.name}"></td>
+                                        <td>
+                                            <th:block th:switch="${company.rating.name}">
+                                                    <div th:case="'ONE STAR'">
+                                                         <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                    </div>
+                                                    <div th:case="'TWO STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                                     <div th:case="'THREE STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                                    <div th:case="'FOUR STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                                    <div th:case="'FIVE STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                             </th:block>
+                                         </td>
+                                        <td>
+                                            <a th:href="@{companies/{id}/planes(id = ${company.id}) }"
+                                             class="btn btn-info" th:text="#{text.plains}">
+                                           </a>
+                                         </td>
+
+                                          <td>
+                                            <a th:href="@{companies/edit/{id}(id = ${company.id})  }"
+                                             class="btn btn-primary eBtn">
+                                             <i class="far fa-edit  ml-3 "></i>
+                                           </a>
+                                         </td>
+
+                                        <td sec:authorize="hasRole('ROLE_WORKER')">
+                                            <a th:href="@{ /companies/delete/{id} (id=${company.id}) }"
+                                               class="btn btn-primary" onclick="return confirm('Are you sure?')">
+                                                <span style="color: Tomato;">
+                                                   <i class="fas fa-trash-alt ml-2"> </i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"
+                                    th:each=" i : ${#numbers.sequence(0, companies.totalPages -1)}">
+                                    <a th:href="@{/companies(page=${i})}" th:text="${i}" class="nav-link"
+                                    th:classappend="${currentPage}==${i}?'active':''"></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</body>
+</html>
