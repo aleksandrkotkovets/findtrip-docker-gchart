@@ -54,6 +54,7 @@ public class UserController {
                                        @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
                                        @PathVariable(value = "id") Optional<Long> id) throws UserNotFoundException {
 
+
         if (id.isPresent()) {
             UserDTO userDTO = userService.findUserById(id.get());
             if (userDTO != null) {

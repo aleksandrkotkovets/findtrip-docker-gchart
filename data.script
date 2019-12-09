@@ -1,0 +1,45 @@
+use findtrip-db;
+
+----app_role ----
+INSERT INTO public.app_role (id, role) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO public.app_role (id, role) VALUES (2, 'ROLE_CLIENT');
+INSERT INTO public.app_role (id, role) VALUES (3, 'ROLE_WORKER');
+
+
+----app_ueser----
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (9, 'admin1@s', 'Fsadfsadfsaf', 'Fsadfsadfsaf', 'admin2', 'admin1admin1', 'Gdsfgsdfg', '375(44)2342343', 1, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (11, 'sdfasdf@sdf', 'Fsdfasfda', 'Ffasdfasdf', 'admin3', 'sfasdfasdfsadf', 'Fsadfsadf', '375(33)3234233', 1, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (12, 'client@sdf', 'Clsdf', 'Fsdfsdf', 'client', 'clientclient', 'Dasfsdf', '375(33)3434534', 2, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (14, 'admin@sdf', 'Asfdaf', 'Fsfgsdfg', 'admin', 'adminadmin', 'Gdsfgsdfg', '375(17)3434434', 1, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (13, 'woker@sf', 'Wsdf', 'Wsdfgdf', 'worker', 'workerworker', 'Edfgdfg', '375(44)3453454', 3, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (15, 'admin33@ds', 'Dgdfgdf', 'Gfdgdg', 'client33', 'client33client33', 'Gdfgdfg', '375(44)3423432', 2, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (16, 'sdfsf@sdfsdfsf', 'Gdfgdfgdfg', 'Gdfsdsdfdf', 'clintic', 'clinticclintic', 'Fsdsdfsdf', '375(44)5324233', 2, null);
+INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (17, 'client2@sdfsdf', 'Fsdfsdf', 'Fsdfsdf', 'client2', 'client2client2', 'Gdgdf', '375(44)3453453', 2, null);
+
+
+----country----
+INSERT INTO public.country (id, name) VALUES (6, 'Belarus');
+INSERT INTO public.country (id, name) VALUES (7, 'Russia');
+INSERT INTO public.country (id, name) VALUES (8, 'Ukraine');
+
+----airport----
+INSERT INTO public.airport (id, code, name, city_id) VALUES (15, 'MSQ', 'Minsk National Airport', 10);
+INSERT INTO public.airport (id, code, name, city_id) VALUES (16, 'BSK', 'Brest', 11);
+
+
+---company----
+INSERT INTO public.company (id, name, rating) VALUES (17, 'Belavia', 'THREE_STARS');
+INSERT INTO public.company (id, name, rating) VALUES (18, 'Pobeda', 'ONE_STAR');
+INSERT INTO public.company (id, name, rating) VALUES (19, 'WizzAir', 'FIVE_STARS');
+
+----city----
+INSERT INTO public.city (id, name, country_id) VALUES (11, 'Brest', 6);
+INSERT INTO public.city (id, name, country_id) VALUES (12, 'Gomel', 6);
+INSERT INTO public.city (id, name, country_id) VALUES (13, 'Moscow', 7);
+INSERT INTO public.city (id, name, country_id) VALUES (10, 'Minsk', 6);
+
+---transport---
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (52, 'Boeing 737-300', 17, 'B2975');
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (54, 'CRJ 100', 18, 'W3534');
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (55, 'Embraer 195', 18, 'W3545');
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (51, 'Boeing 738-500', 17, 'B2734');

@@ -32,7 +32,7 @@ spring:
 #Log4j
 logging:
   file:
-    name: C:\Users\alekot\Desktop\kotkovets\findtrip\src\main\resources\logs\dev_app.log
+    name: logs/dev_app.log
   pattern:
     console: "%d %-5level %logger : %msg%n"
     file: "%d %-5level [%thread] %logger : %msg%n"

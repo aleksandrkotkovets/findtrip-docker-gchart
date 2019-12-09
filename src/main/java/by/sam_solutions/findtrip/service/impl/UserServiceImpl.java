@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setPatronymic(userDTO.getPatronymic());
         userEntity.setPhoneNumber(userDTO.getPhoneNumber());
         userEntity.setRoleEntity(roleService.findByRole(role));
-       return userRepository.save(userEntity);
+        return userRepository.save(userEntity);
     }
 
 
@@ -135,21 +135,21 @@ public class UserServiceImpl implements UserService {
             userRepository.save(newUserEntity);
         }else {
             UserEntity editUserEntity = new UserEntity();
-           if( userRepository.findById(newUserEntity.getId()).isPresent()){
-               editUserEntity = userRepository.findById(newUserEntity.getId()).get();
-               editUserEntity.setId(newUserEntity.getId());
-               editUserEntity.setLogin(newUserEntity.getLogin());
-               editUserEntity.setPassword(newUserEntity.getPassword());
-               editUserEntity.setEmail(newUserEntity.getEmail());
-               editUserEntity.setFirstName(newUserEntity.getFirstName());
-               editUserEntity.setLastName(newUserEntity.getFirstName());
-               editUserEntity.setPatronymic(newUserEntity.getPatronymic());
-               editUserEntity.setPhoneNumber(newUserEntity.getPhoneNumber());
-               editUserEntity.setRoleEntity(newUserEntity.getRoleEntity());
-               userRepository.save(editUserEntity);
-           }else {
-               throw new UserNotFoundException("User with id="+newUserEntity.getId()+" not found");
-           }
+            if( userRepository.findById(newUserEntity.getId()).isPresent()){
+                editUserEntity = userRepository.findById(newUserEntity.getId()).get();
+                editUserEntity.setId(newUserEntity.getId());
+                editUserEntity.setLogin(newUserEntity.getLogin());
+                editUserEntity.setPassword(newUserEntity.getPassword());
+                editUserEntity.setEmail(newUserEntity.getEmail());
+                editUserEntity.setFirstName(newUserEntity.getFirstName());
+                editUserEntity.setLastName(newUserEntity.getFirstName());
+                editUserEntity.setPatronymic(newUserEntity.getPatronymic());
+                editUserEntity.setPhoneNumber(newUserEntity.getPhoneNumber());
+                editUserEntity.setRoleEntity(newUserEntity.getRoleEntity());
+                userRepository.save(editUserEntity);
+            }else {
+                throw new UserNotFoundException("User with id="+newUserEntity.getId()+" not found");
+            }
 
         }
     }
