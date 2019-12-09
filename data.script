@@ -1,4 +1,3 @@
-create database findtrip-db;
 use findtrip-db;
 
 ----app_role ----
