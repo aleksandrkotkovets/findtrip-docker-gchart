@@ -3,6 +3,7 @@ package by.sam_solutions.findtrip.controller;
 import by.sam_solutions.findtrip.controller.dto.ApiError;
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.controller.dto.CountryDTO;
+import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
 import by.sam_solutions.findtrip.exception.EditCompanyParameterExistException;
 import by.sam_solutions.findtrip.exception.EditCountryParametersExistException;
 import by.sam_solutions.findtrip.repository.entity.CompanyEntity;
@@ -35,8 +36,8 @@ public class CompanyController {
     public String showPage(Model model,
                            @RequestParam(name = "page", defaultValue = "0") int page) {
 
-        Page<CompanyEntity> countryEntities = companyService.findAll(PageRequest.of(page, 4, Sort.by("name").ascending()));
-        model.addAttribute("companies", countryEntities.getTotalElements() == 0? null : countryEntities  );
+        Page<CompanyEntity> companyEntities = companyService.findAll(PageRequest.of(page, 4, Sort.by("name").ascending()));
+        model.addAttribute("companies", companyEntities.getTotalElements() == 0? null : companyEntities  );
         model.addAttribute("currentPage", page);
         return "company/showCompanies";
     }
@@ -63,7 +64,7 @@ public class CompanyController {
 
     @GetMapping("/delete/{id}")
     public String deleteCountry(@PathVariable(value = "id") Long id){
-        companyService.delete(id);
+        companyService.deleteById(id);
         return "redirect:/companies";
     }
 

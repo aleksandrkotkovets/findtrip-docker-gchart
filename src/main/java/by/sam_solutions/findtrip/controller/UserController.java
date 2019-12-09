@@ -33,7 +33,6 @@ public class UserController {
 
     @GetMapping()
     public String getAllUsersByRole(@RequestParam(value = "role") String role,  Model model) {
-      //  List<UserDTO> users = userService.getUsersByRole(role);
         List<UserDTO> users = roleService.getUsersByRole(role);
         model.addAttribute("role", role);
         model.addAttribute("users", users.size() == 0 ? null : users);
@@ -53,8 +52,7 @@ public class UserController {
     public String getAddOrEditUserView(
                                        Model model,
                                        @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
-                                       @PathVariable(value = "id") Optional<Long> id
-                                       ) throws UserNotFoundException {
+                                       @PathVariable(value = "id") Optional<Long> id) throws UserNotFoundException {
 
         if (id.isPresent()) {
             UserDTO userDTO = userService.findUserById(id.get());
@@ -75,8 +73,7 @@ public class UserController {
     @PostMapping(path = "/edit")
     public String addOrEditUser(@Valid @ModelAttribute("user") UserDTO user,
                                 @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
-                                BindingResult result,
-                                Model model) {
+                                BindingResult result,Model model) {
 
         if (result.hasErrors()) {
             ApiError apiError = new ApiError();

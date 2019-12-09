@@ -1,5 +1,6 @@
 package by.sam_solutions.findtrip.service;
 
+import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
 import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 
 import java.util.List;
@@ -12,20 +13,11 @@ public interface PlaneService {
 
     List<PlaneEntity> getAll();
 
-    List<PlaneEntity> findAllByCompanyId(Long companyId);
-
     PlaneEntity findById();
 
-    PlaneEntity findByName(String name);
-
-    void delete(PlaneEntity plainEntity);
+    PlaneDTO findOne(Long id);
 
     void deleteById(Long id);
 
-    void deleteAllByCompanyId(Long companyId);
-
-    void updateByName(String name,PlaneEntity newPlain);
-
-    void updateById(Long id,PlaneEntity newPlain);
-
+    void saveOrUpdate(PlaneDTO planeDTO, Long companyId, String companyName);
 }

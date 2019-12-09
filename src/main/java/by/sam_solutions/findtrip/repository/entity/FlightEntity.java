@@ -39,7 +39,7 @@ public class FlightEntity extends BaseEntity {
     @Column(name = "arrival_date", columnDefinition = "timestamp")
     private Date arrivalDate;
 
-    @OneToMany(mappedBy = "flight", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "flight")
     private Set<TicketEntity> tickets;
 
     @ManyToOne(optional = false, cascade = ALL , fetch = FetchType.LAZY)

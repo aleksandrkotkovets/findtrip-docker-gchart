@@ -38,7 +38,7 @@
                                   <div class="form-group">
                                    <label for="city" class="col-form-label" th:text="#{text.city}"></label>
                                        <input type="text" th:value="${city?.name}" th:name="name" class="form-control"
-                                       id="name" th:placeholder="#{text.country}" autofocus required
+                                       id="name" th:placeholder="#{text.city}" autofocus required
                                        pattern="([A-Z])([a-zA-Z-\s]{3,39})" maxlength="40"/>
                                        <span class="form__error" th:text="#{text.error.country}"></span>
                                   </div>

@@ -14,13 +14,18 @@ public class PlaneDTO {
     private String name;
 
     @NotNull
+    @Size(min = 3, max = 10)
+    private String sideNumber;
+
+
     private CompanyDTO companyDTO;
 
     public PlaneDTO(){}
 
-    public PlaneDTO(Long id, String name, CompanyDTO companyDTO) {
+    public PlaneDTO(Long id, String name,String sideNumber, CompanyDTO companyDTO) {
         this.id = id;
         this.name = name;
+        this.sideNumber = sideNumber;
         this.companyDTO = companyDTO;
     }
 
@@ -46,5 +51,13 @@ public class PlaneDTO {
 
     public void setCompanyDTO(CompanyDTO companyDTO) {
         this.companyDTO = companyDTO;
+    }
+
+    public String getSideNumber() {
+        return sideNumber;
+    }
+
+    public void setSideNumber(String sideNumber) {
+        this.sideNumber = sideNumber;
     }
 }

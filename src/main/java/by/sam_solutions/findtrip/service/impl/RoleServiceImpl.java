@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -22,14 +23,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> findAllRoles() {
         List<RoleEntity> rolesEntity = roleRepository.findAll();
-        List<RoleDTO> rolesDTO = new ArrayList<>();
-        RoleDTO roleDTO;
-        for(RoleEntity entity : rolesEntity){
-            roleDTO = new RoleDTO();
-            roleDTO.setId(entity.getId());
-            roleDTO.setRole(entity.getRole());
-            rolesDTO.add(roleDTO);
-        }
+        List<RoleDTO> rolesDTO = rolesEntity.stream().map(a -> new RoleDTO(a.getId(), a.getRole())).collect(Collectors.toList());
         return rolesDTO;
     }
 
@@ -54,34 +48,19 @@ public class RoleServiceImpl implements RoleService {
     public List<UserDTO> getUsersByRole(String role) {
        RoleEntity roleEntity = roleRepository.findByRole(role);
        List<UserEntity> users = roleEntity.getUsers();
-       List<UserDTO> userDTOList = new ArrayList<>();
-       final UserDTO[] userDTO = new UserDTO[1];
-       users.stream().forEach(a-> {
-           userDTO[0] = new UserDTO();
-           userDTO[0].setId(a.getId());
-           userDTO[0].setEmail(a.getEmail());
-           userDTO[0].setLogin(a.getLogin());
-           userDTO[0].setPassword(a.getPassword());
-           userDTO[0].setFirstName(a.getFirstName());
-           userDTO[0].setLastName(a.getLastName());
-           userDTO[0].setPatronymic(a.getPatronymic());
-           userDTO[0].setPhoneNumber(a.getPhoneNumber());
-           userDTO[0].setRole(a.getRoleEntity().getRole());
-           userDTOList.add(userDTO[0]);
-       });
-        /*for (UserEntity entity : users) {
-            userDTO = new UserDTO();
-            userDTO.setId(entity.getId());
-            userDTO.setEmail(entity.getEmail());
-            userDTO.setLogin(entity.getLogin());
-            userDTO.setPassword(entity.getPassword());
-            userDTO.setFirstName(entity.getFirstName());
-            userDTO.setLastName(entity.getLastName());
-            userDTO.setPatronymic(entity.getPatronymic());
-            userDTO.setPhoneNumber(entity.getPhoneNumber());
-            userDTO.setRole(entity.getRoleEntity().getRole());
-            userDTOList.add(userDTO);
-        }*/
+       List<UserDTO> userDTOList = users.stream()
+               .map(a-> new UserDTO(
+                       a.getId(),
+                       a.getLogin(),
+                       a.getPassword(),
+                       a.getEmail(),
+                       a.getFirstName(),
+                       a.getLastName(),
+                       a.getPatronymic(),
+                       a.getPhoneNumber(),
+                       a.getRoleEntity().getRole()
+               ))
+               .collect(Collectors.toList());
 
        return userDTOList;
     }

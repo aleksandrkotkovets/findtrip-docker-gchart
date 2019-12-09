@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity {
     private String patronymic;
 
     @NotNull
-    @Column(name = "phone_number", length = 13)
+    @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)

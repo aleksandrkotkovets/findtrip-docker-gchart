@@ -65,11 +65,7 @@ public class AirportController {
 
     @GetMapping("/add")
     public String getAddAirportView(Model model){
-      /*  String nameAirport="";
-        String codeAirport="";*/
         List<CountryDTO> countryDTOS = countryService.findAll();
-   /*     model.addAttribute("name", nameAirport);
-        model.addAttribute("code", codeAirport);*/
         model.addAttribute("countries", countryDTOS);
         model.addAttribute("cities", new ArrayList<CityDTO>());
         return "airport/addAirport";

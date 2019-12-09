@@ -14,16 +14,28 @@ public class PlaneEntity extends BaseEntity{
     @Column(name = "name", length = 30)
     private String name;
 
-    @OneToMany(mappedBy = "plane", fetch = FetchType.LAZY)
+    @NotNull
+    @Column(name = "side_number", length = 10)
+    private String sideNumber;
+
+
+    @OneToMany(mappedBy = "plane")
     private Set<FlightEntity> flights;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     @JoinColumn(name = "company_id")
     @NotNull
     private CompanyEntity company;
 
     public PlaneEntity() {
     }
+
+    public PlaneEntity(String name, String sideNumber, CompanyEntity companyEntity) {
+        this.name = name;
+        this.sideNumber = sideNumber;
+        this.company = companyEntity;
+    }
+
 
 
     public String getName() {
@@ -51,4 +63,11 @@ public class PlaneEntity extends BaseEntity{
     }
 
 
+    public String getSideNumber() {
+        return sideNumber;
+    }
+
+    public void setSideNumber(String sideNumber) {
+        this.sideNumber = sideNumber;
+    }
 }

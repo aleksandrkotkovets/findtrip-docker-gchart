@@ -19,7 +19,7 @@ public class CompanyEntity  extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Rating rating;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    @OneToMany( mappedBy = "company")
     private Set<PlaneEntity> planes;
 
     public CompanyEntity() {

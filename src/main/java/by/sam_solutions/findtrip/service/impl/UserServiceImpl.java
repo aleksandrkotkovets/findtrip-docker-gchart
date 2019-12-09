@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -64,23 +65,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public List<UserDTO> getUsersByRole(String  role) {
-        List<UserDTO> userDTOList = new ArrayList<>();
-        UserDTO userDTO;
-        List<UserEntity> userEntityList = userRepository.findAllByRoleEntity_Role(role);
 
-        for (UserEntity entity : userEntityList) {
-            userDTO = new UserDTO();
-            userDTO.setId(entity.getId());
-            userDTO.setEmail(entity.getEmail());
-            userDTO.setLogin(entity.getLogin());
-            userDTO.setPassword(entity.getPassword());
-            userDTO.setFirstName(entity.getFirstName());
-            userDTO.setLastName(entity.getLastName());
-            userDTO.setPatronymic(entity.getPatronymic());
-            userDTO.setPhoneNumber(entity.getPhoneNumber());
-            userDTO.setRole(entity.getRoleEntity().getRole());
-            userDTOList.add(userDTO);
-        }
+        List<UserEntity> userEntityList = userRepository.findAllByRoleEntity_Role(role);
+        List<UserDTO> userDTOList = userEntityList.stream()
+                .map(a-> new UserDTO(
+                        a.getId(),
+                        a.getLogin(),
+                        a.getPassword(),
+                        a.getEmail(),
+                        a.getFirstName(),
+                        a.getLastName(),
+                        a.getPatronymic(),
+                        a.getPhoneNumber(),
+                        a.getRoleEntity().getRole()
+                ))
+                .collect(Collectors.toList());
+
         return userDTOList;
 
     }

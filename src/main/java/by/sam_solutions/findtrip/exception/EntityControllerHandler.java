@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.exception;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
+import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.repository.CityRepository;
 import by.sam_solutions.findtrip.repository.CountryRepository;
 import by.sam_solutions.findtrip.repository.entity.Rating;
@@ -10,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,6 +22,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @ControllerAdvice
 public class EntityControllerHandler {
@@ -114,4 +123,25 @@ public class EntityControllerHandler {
 
         return modelAndView;
     }
+
+    // Plane Edit parameter
+    @ExceptionHandler(EditPlaneParametersExistException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public void handleEditPlaneParameterIsExist(EditPlaneParametersExistException ex, HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
+        String error = ex.getMessage();
+
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("plane/exist");
+        modelAndView.addObject("plane", ex.planeDTO);
+        modelAndView.addObject("companyName", ex.companyName);
+        modelAndView.addObject("companyId", ex.companyId);
+        modelAndView.addObject("apiError",apiError);
+
+        httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/companies/"+ex.companyId+"/planes");
+
+    }
+
+
+
 }

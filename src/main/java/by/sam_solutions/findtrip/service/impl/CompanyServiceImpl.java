@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.service.impl;
 
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
+import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
 import by.sam_solutions.findtrip.repository.CompanyRepository;
@@ -13,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,36 +34,10 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll(pageable);
     }
 
-    @Override
-    public CompanyEntity add(CompanyEntity company) {
-        CompanyEntity savedCompany = companyRepository.save(company);
-
-        return savedCompany;
-    }
 
     @Override
     public void deleteById(Long id) {
         companyRepository.deleteById(id);
-    }
-
-    @Override
-    public void delete(Long id) {
-        companyRepository.deleteById(id);
-    }
-
-    @Override
-    public CompanyEntity getByName(String name) {
-        return companyRepository.findByName(name);
-    }
-
-    @Override
-    public CompanyEntity update(CompanyEntity company) {
-        return companyRepository.saveAndFlush(company);
-    }
-
-    @Override
-    public List<CompanyEntity> getAll() {
-        return companyRepository.findAll();
     }
 
     @Transactional
@@ -77,9 +54,12 @@ public class CompanyServiceImpl implements CompanyService {
                     .get()
                         .getPlanes()
                     .stream()
-                        .map(p->new PlaneDTO(p.getId(),p.getName(),
+                        .map(p->new PlaneDTO(p.getId(),p.getName(),p.getSideNumber(),
                                 new CompanyDTO(p.getCompany().getId(), p.getCompany().getName(), p.getCompany().getRating())))
                     .collect(Collectors.toList());
+
+            planeDTOList.sort(Comparator.comparing(o -> o.getName()));
+            companyDTO.setPlaneDTOList(planeDTOList);
             return companyDTO;
         }
         return null;
@@ -114,5 +94,19 @@ public class CompanyServiceImpl implements CompanyService {
             throw new UserNotFoundException("Company with id="+companyDTO.getId()+" not found");
         }
     }
+
+    @Override
+    public CompanyDTO findCompanyByName(String company) {
+        CompanyEntity companyEntity = companyRepository.findByName(company);
+        CompanyDTO companyDTO = new CompanyDTO();
+        if(companyEntity!=null){
+            companyDTO.setId(companyEntity.getId());
+            companyDTO.setName(companyEntity.getName());
+        }else {
+            throw new EntityNotFoundException("Company with name="+company+" not found!");
+        }
+        return companyDTO;
+    }
+
 
 }

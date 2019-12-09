@@ -11,6 +11,12 @@ public abstract class BaseEntity {
     @Column(name = "id")
     private Long id;
 
+    public BaseEntity(Long id) {
+    }
+
+    public BaseEntity() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -19,8 +25,7 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
-    public BaseEntity() {
-    }
+
 
     @Override
     public String toString() {

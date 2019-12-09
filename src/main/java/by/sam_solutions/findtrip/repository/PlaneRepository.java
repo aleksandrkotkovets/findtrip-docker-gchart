@@ -2,6 +2,7 @@ package by.sam_solutions.findtrip.repository;
 
 import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 import java.util.Set;
@@ -20,5 +21,7 @@ public interface PlaneRepository extends JpaRepository<PlaneEntity, Long> {
 
     void deleteById(Long id);
 
+    @Query(value = "select t.id  from transport t where t.side_number=?1", nativeQuery = true)
+    Long findIdBySideNumber(String sideNumber);
 
 }
