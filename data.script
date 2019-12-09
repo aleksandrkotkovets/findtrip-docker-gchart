@@ -1,104 +1,13 @@
 create database findtrip-db;
 use findtrip-db;
 
-create table if not exists airport
-(
-	id bigint not null
-		constraint airport_pkey
-			primary key,
-	city varchar(255) not null,
-	country varchar(255) not null,
-	name varchar(255) not null
-)
-;
-
-create table if not exists app_role
-(
-	id bigint not null
-		constraint app_role_pkey
-			primary key,
-	role varchar(255)
-)
-;
-
+----app_role ----
 INSERT INTO public.app_role (id, role) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO public.app_role (id, role) VALUES (2, 'ROLE_CLIENT');
 INSERT INTO public.app_role (id, role) VALUES (3, 'ROLE_WORKER');
 
-create table if not exists company
-(
-	id bigint not null
-		constraint company_pkey
-			primary key,
-	name varchar(255) not null,
-	rating varchar(255) not null
-)
-;
 
-create table if not exists transport
-(
-	id bigint not null
-		constraint transport_pkey
-			primary key,
-	name varchar(255) not null,
-	company_id bigint not null
-		constraint fk2gggq9es5hg8dw3mo8n8uhqcj
-			references company
-)
-;
-
-create table if not exists flight
-(
-	id bigint not null
-		constraint flight_pkey
-			primary key,
-	all_seats integer not null,
-	arrival_date timestamp not null,
-	departure_date timestamp not null,
-	free_seats integer not null,
-	price integer not null,
-	airport_arrival_id bigint not null
-		constraint fkd3fqo2trwxe0ncbpbft8k3nic
-			references airport,
-	airport_departure_id bigint not null
-		constraint fkl6gbor3on968mydp63h8c3h2
-			references airport,
-	plain_id bigint not null
-		constraint fkjgu2jtlq2ne0yhucyowq46hpf
-			references transport
-)
-;
-
-create table if not exists wallet
-(
-	id bigint not null
-		constraint wallet_pkey
-			primary key,
-	sum bigint not null
-)
-;
-
-create table if not exists app_user
-(
-	id bigint not null
-		constraint app_user_pkey
-			primary key,
-	email varchar(255),
-	first_name varchar(255) not null,
-	last_name varchar(255) not null,
-	login varchar(255) not null,
-	password varchar(255) not null,
-	patronymic varchar(255) not null,
-	phone_number varchar(255) not null,
-	role_id bigint not null
-		constraint fkn1w45cvkd2bdpvu78k056mckg
-			references app_role,
-	wallet_id bigint
-		constraint fkkd7wjyvdw46qjkf4e4wwxlf21
-			references wallet
-)
-;
-
+----app_ueser----
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (9, 'admin1@s', 'Fsadfsadfsaf', 'Fsadfsadfsaf', 'admin2', 'admin1admin1', 'Gdsfgsdfg', '375(44)2342343', 1, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (11, 'sdfasdf@sdf', 'Fsdfasfda', 'Ffasdfasdf', 'admin3', 'sfasdfasdfsadf', 'Fsadfsadf', '375(33)3234233', 1, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (12, 'client@sdf', 'Clsdf', 'Fsdfsdf', 'client', 'clientclient', 'Dasfsdf', '375(33)3434534', 2, null);
@@ -108,19 +17,30 @@ INSERT INTO public.app_user (id, email, first_name, last_name, login, password, 
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (16, 'sdfsf@sdfsdfsf', 'Gdfgdfgdfg', 'Gdfsdsdfdf', 'clintic', 'clinticclintic', 'Fsdsdfsdf', '375(44)5324233', 2, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (17, 'client2@sdfsdf', 'Fsdfsdf', 'Fsdfsdf', 'client2', 'client2client2', 'Gdgdf', '375(44)3453453', 2, null);
 
-create table if not exists ticket
-(
-	id bigint not null
-		constraint ticket_pkey
-			primary key,
-	order_date timestamp not null,
-	seat integer not null,
-	flight_id bigint not null
-		constraint fkfju27cbcbl1w16qeora1r636q
-			references flight,
-	user_id bigint not null
-		constraint fkemcfkpg53qt9pdg5y6rtq35wf
-			references app_user
-)
-;
 
+----country----
+INSERT INTO public.country (id, name) VALUES (6, 'Belarus');
+INSERT INTO public.country (id, name) VALUES (7, 'Russia');
+INSERT INTO public.country (id, name) VALUES (8, 'Ukraine');
+
+----airport----
+INSERT INTO public.airport (id, code, name, city_id) VALUES (15, 'MSQ', 'Minsk National Airport', 10);
+INSERT INTO public.airport (id, code, name, city_id) VALUES (16, 'BSK', 'Brest', 11);
+
+
+---company----
+INSERT INTO public.company (id, name, rating) VALUES (17, 'Belavia', 'THREE_STARS');
+INSERT INTO public.company (id, name, rating) VALUES (18, 'Pobeda', 'ONE_STAR');
+INSERT INTO public.company (id, name, rating) VALUES (19, 'WizzAir', 'FIVE_STARS');
+
+----city----
+INSERT INTO public.city (id, name, country_id) VALUES (11, 'Brest', 6);
+INSERT INTO public.city (id, name, country_id) VALUES (12, 'Gomel', 6);
+INSERT INTO public.city (id, name, country_id) VALUES (13, 'Moscow', 7);
+INSERT INTO public.city (id, name, country_id) VALUES (10, 'Minsk', 6);
+
+---transport---
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (52, 'Boeing 737-300', 17, 'B2975');
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (54, 'CRJ 100', 18, 'W3534');
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (55, 'Embraer 195', 18, 'W3545');
+INSERT INTO public.transport (id, name, company_id, side_number) VALUES (51, 'Boeing 738-500', 17, 'B2734');
