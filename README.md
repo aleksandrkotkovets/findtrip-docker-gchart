@@ -21,25 +21,4 @@ Client:
    login: client
    password: clientclient
    
-4.Program Guide
-Main page
-![Main page](https://github.com/aleksandrkotkovets/image/blob/master/1.png)
 
-Login
-![Login](https://github.com/aleksandrkotkovets/image/blob/master/login.png)
-
-Registration
-![Registration](https://github.com/aleksandrkotkovets/image/blob/master/sign-up.png)
-
-Home admin, worker, client 
-![Home](https://github.com/aleksandrkotkovets/image/blob/master/home-admin.png)
-
-
-homeAdmin-> Users
-![Users](https://github.com/aleksandrkotkovets/image/blob/master/users.png)
-
-Users
-![Show](https://github.com/aleksandrkotkovets/image/blob/master/show-users.png)
-
-All buttons work except
-![Doesn't work](https://github.com/aleksandrkotkovets/image/blob/master/12.png)
