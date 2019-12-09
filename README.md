@@ -12,15 +12,21 @@ In INTELLIJE IDEA File->Setting in File Encoding change the encoding to UTF-8;
   
 3. Sign in
 Admin:
+
    login: admin
+   
    password: adminadmin
    
 Worker:
+
    login: worker
+   
    password: workerworker
    
 Client:
+
    login: client
+   
    password: clientclient
    
 
