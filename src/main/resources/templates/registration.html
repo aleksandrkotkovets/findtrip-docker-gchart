@@ -14,8 +14,8 @@
 </head>
 
 <body>
-<!--/*@thymesVar id="user" type="by.sum_solutions.findtrip.controller.dto.UserDTO"*/-->
-<!--/*@thymesVar id="apiError" type="by.sum_solutions.findtrip.exception.UserControllerHandler"*/-->
+<!--/*@thymesVar id="user" type="by.sam_solutions.findtrip.controller.dto.UserDTO"*/-->
+<!--/*@thymesVar id="apiError" type="by.sam_solutions.findtrip.exception.UserControllerHandler"*/-->
 <div th:replace="header :: header"/>
 <div class="container my-5">
     <h3 th:text="#{text.registration}"></h3>
@@ -53,7 +53,7 @@
                         <div class="form-group col-md-8">
                             <label for="email" class="col-form-label" th:text="#{text.email}"></label>
                             <input type="email" th:value="${user?.email}" th:name="email" class="form-control"
-                                   id="email" th:placeholder="#{text.email}" required minlength="5"/>
+                                   id="email" th:placeholder="#{text.email}" required minlength="5" maxlength="40"/>
                             <span class="form__error" th:text="#{text.error.email}"></span>
                         </div>
 
