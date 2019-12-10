@@ -53,8 +53,7 @@ public class CountryController {
             }
             return "country/editCountry";
         } else {
-            CountryDTO countryDTO = new CountryDTO();
-            model.addAttribute("country", countryDTO);
+            model.addAttribute("country", new CountryDTO());
             return "country/editCountry";
         }
     }

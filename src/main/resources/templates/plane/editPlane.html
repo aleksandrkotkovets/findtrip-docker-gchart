@@ -21,7 +21,7 @@
                             <div class="modal-content">
                               <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel" th:text="#{text.update-create}"></h5>
-                                <span  data-th-text="#{text.company}+': '+${company.name}" data-th-name="companyName"></span>
+                                <span  data-th-text="#{text.company}+': '+${companyName}" data-th-name="companyName"></span>
                               </div>
 
 
@@ -34,9 +34,9 @@
 
                                  <div class="modal-body">
 
-                         <input type="hidden" data-th-value="${company?.name}" data-th-name="companyName">
+                         <input type="hidden" data-th-value="${companyName}" data-th-name="companyName">
                          <input type="hidden" id="id" data-th-value="${plane?.id}" data-th-name="id">
-                         <input type="hidden" th:value="${company?.id}" th:name="companyId">
+                         <input type="hidden" th:value="${companyId}" th:name="companyId">
 
                                   <div class="form-group">
                                    <label for="name" class="col-form-label" th:text="#{text.name}"></label>
@@ -58,7 +58,7 @@
 
                               </div>
                               <div class="modal-footer">
-                               <a th:href="@{/companies/{id}/planes(id=${company.id})}"> <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{bt.back}"></button></a>
+                               <a th:href="@{/companies}"> <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{bt.back}"></button></a>
                                 <input type="submit" class="btn btn-primary" id="save" th:value="#{bt.save}"/>
                               </div>
                             </div>

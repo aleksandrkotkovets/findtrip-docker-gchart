@@ -127,18 +127,19 @@ public class EntityControllerHandler {
     // Plane Edit parameter
     @ExceptionHandler(EditPlaneParametersExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public void handleEditPlaneParameterIsExist(EditPlaneParametersExistException ex, HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
+    public ModelAndView handleEditPlaneParameterIsExist(EditPlaneParametersExistException ex, HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
         String error = ex.getMessage();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("plane/exist");
+        modelAndView.setViewName("plane/editPlane");
         modelAndView.addObject("plane", ex.planeDTO);
         modelAndView.addObject("companyName", ex.companyName);
         modelAndView.addObject("companyId", ex.companyId);
         modelAndView.addObject("apiError",apiError);
 
-        httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/companies/"+ex.companyId+"/planes");
+//        httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/companies/"+ex.companyId+"/planes");
+        return modelAndView;
 
     }
 

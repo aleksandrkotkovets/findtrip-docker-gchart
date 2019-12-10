@@ -1,15 +1,11 @@
 package by.sam_solutions.findtrip.service.impl;
 
 
-import by.sam_solutions.findtrip.controller.dto.CityDTO;
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
-import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
-import by.sam_solutions.findtrip.exception.EditCityParametersExistException;
 import by.sam_solutions.findtrip.exception.EditPlaneParametersExistException;
 import by.sam_solutions.findtrip.repository.CompanyRepository;
 import by.sam_solutions.findtrip.repository.PlaneRepository;
-import by.sam_solutions.findtrip.repository.entity.CityEntity;
 import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import by.sam_solutions.findtrip.service.PlaneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +81,14 @@ public class PlaneServiceImpl  implements PlaneService {
     public void saveOrUpdate(PlaneDTO planeDTO, Long companyId, String  companyName) {
 
         Long idExistPlane = this.getPlaneIdBySideNumber(planeDTO.getSideNumber());
+        String firstLetterСompName = companyName.substring(0,1);
+        String firstLetterSideNumber = planeDTO.getSideNumber().substring(0,1);
+
+        if(!firstLetterСompName.equals(firstLetterSideNumber)) {
+            throw new EditPlaneParametersExistException(
+                    "The_first_letter_of_the_tail_number_must_match_the_name_of_the_company",
+                    planeDTO, companyName, companyId);
+        }
 
         if (planeDTO.getId() != null) {
 
@@ -107,12 +111,18 @@ public class PlaneServiceImpl  implements PlaneService {
                         "Plane_with_this_side_number_already_exist",planeDTO,companyName,companyId );
             }
             PlaneEntity planeEntity = new PlaneEntity(
-                    planeDTO.getName(),planeDTO.getSideNumber(), companyRepository.findById(companyId).get());
+                    planeDTO.getName(),planeDTO.getSideNumber(), companyRepository.findByName(companyName));
             planeRepository.save(planeEntity);
         }
     }
 
-    private Long getPlaneIdBySideNumber(String sideNumber) {
+    @Override
+    public Long getCompanyIdByPlaneId(Long id) {
+       return planeRepository.getCompanyIdByPlaneId(id);
+    }
+
+    @Override
+    public Long getPlaneIdBySideNumber(String sideNumber) {
        return planeRepository.findIdBySideNumber(sideNumber);
     }
 }

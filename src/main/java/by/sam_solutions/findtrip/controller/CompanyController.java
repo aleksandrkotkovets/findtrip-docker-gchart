@@ -55,8 +55,7 @@ public class CompanyController {
             }
             return "company/editCompany";
         } else {
-            CompanyDTO company = new CompanyDTO();
-            model.addAttribute("company", company);
+            model.addAttribute("company", new CompanyDTO());
             model.addAttribute("ratingTypes", Rating.values());
             return "company/editCompany";
         }

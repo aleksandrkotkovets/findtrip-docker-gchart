@@ -36,8 +36,11 @@
                             <div th:case="*">
                                 <table class="table table-hover">
                                     <thead>
-                                    <tr style="text-align: center">
+                                    <tr style="text-align: left">
                                         <th th:text="#{text.country}" ></th>
+                                        <th th:text="#{text.cities}" ></th>
+                                        <th th:text="#{text.edit}" ></th>
+                                        <th th:text="#{text.delete}" ></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -46,7 +49,7 @@
 
                                         <td>
                                             <a th:href="@{country/{id}/cities(id = ${country.id}) }"
-                                             class="btn btn-info">Show cities
+                                             class="btn btn-info" th:text="#{text.cities}">
                                            </a>
                                          </td>
 

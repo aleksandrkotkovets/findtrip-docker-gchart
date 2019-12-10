@@ -43,17 +43,17 @@ public class CityController {
 
             return "city/editCity";
         } else {
-            CityDTO cityDTO = new CityDTO();
             model.addAttribute("countryName", country);
-            model.addAttribute("city", cityDTO);
+            model.addAttribute("city", new CityDTO());
             return "city/editCity";
         }
     }
 
     @GetMapping("/delete/{id}")
     public String deleteCountry(@PathVariable(value = "id") Long id){
+        Long idCountry = cityService.getCountryIdByCityId(id);
         cityService.delete(id);
-        return "redirect:/country";
+        return "redirect:/country/"+idCountry+"/cities";
     }
 
 
@@ -89,7 +89,8 @@ public class CityController {
             }
             cityService.saveOrUpdate(cityDTO, countryName);
         }
-        return "redirect:/country";
+        Long idCountry = countryService.getCountryIdByName(countryName);
+        return "redirect:/country/"+idCountry+"/cities";
     }
 
 

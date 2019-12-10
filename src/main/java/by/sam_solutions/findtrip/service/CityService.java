@@ -14,4 +14,6 @@ public interface CityService {
     void saveOrUpdate(CityDTO cityDTO, String cuntryName);
 
     List<CityDTO> getCityListByCountry(Long id);
+
+    Long getCountryIdByCityId(Long id);
 }

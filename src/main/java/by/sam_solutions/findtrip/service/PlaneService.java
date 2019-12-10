@@ -20,4 +20,8 @@ public interface PlaneService {
     void deleteById(Long id);
 
     void saveOrUpdate(PlaneDTO planeDTO, Long companyId, String companyName);
+
+    Long getCompanyIdByPlaneId(Long id);
+
+    Long getPlaneIdBySideNumber(String sideNumber);
 }

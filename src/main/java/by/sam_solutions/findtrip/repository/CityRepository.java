@@ -16,4 +16,7 @@ public interface CityRepository extends JpaRepository<CityEntity, Long > {
     Long getIdExistCityByName(String name);
 
     List<CityEntity> findAllByCountryEntity_Id(Long id);
+
+    @Query(value = "select ct.country_id from city ct where ct.id=?1", nativeQuery = true)
+    Long getIdCountryByCityId(Long id);
 }

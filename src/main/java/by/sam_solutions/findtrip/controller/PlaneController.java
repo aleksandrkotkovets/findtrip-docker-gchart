@@ -1,10 +1,7 @@
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
-import by.sam_solutions.findtrip.controller.dto.CityDTO;
-import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
-import by.sam_solutions.findtrip.exception.EditCityParametersExistException;
 import by.sam_solutions.findtrip.service.CompanyService;
 import by.sam_solutions.findtrip.service.PlaneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +35,8 @@ public class PlaneController {
         if (id.isPresent()) {
             PlaneDTO planeDTO = planeService.findOne(id.get());
             if (planeDTO != null) {
-                model.addAttribute("company", planeDTO.getCompanyDTO());
+                model.addAttribute("companyName", planeDTO.getCompanyDTO().getName());
+                model.addAttribute("companyId", planeDTO.getCompanyDTO().getId());
                 model.addAttribute("plane", planeDTO);
             } else {
                 throw new EntityNotFoundException("Plane with id=" + id + " not found");
@@ -46,27 +44,25 @@ public class PlaneController {
 
             return "plane/editPlane";
         } else {
-            PlaneDTO planeDTO = new PlaneDTO();
-            CompanyDTO companyDTO = companyService.findCompanyByName(company);
-            model.addAttribute("company", companyDTO);
-            model.addAttribute("plane", planeDTO);
+            model.addAttribute("companyName", company);
+            model.addAttribute("plane", new PlaneDTO());
             return "plane/editPlane";
         }
     }
 
     @GetMapping("/delete/{id}")
     public String deleteCountry(@PathVariable(value = "id") Long id) {
+        Long idCompany = planeService.getCompanyIdByPlaneId(id);
         planeService.deleteById(id);
-        return "redirect:/companies";
+        return idCompany==null ? "redirect:/companies" : "redirect:/companies/"+idCompany+"/planes";
     }
 
 
     @PostMapping(path = "/edit")
     public String addOrEditCountry(@Valid @ModelAttribute("plane") PlaneDTO planeDTO,
                                    @RequestParam("companyName") String companyName,
-                                   @RequestParam("companyId") Long companyId,
                                    BindingResult result, Model model) {
-
+        Long companyId = companyService.getCompanyIdByName(companyName);
         if (result.hasErrors()) {
             ApiError apiError = new ApiError();
             String message = "";
@@ -83,8 +79,8 @@ public class PlaneController {
 
         planeService.saveOrUpdate(planeDTO, companyId, companyName);
 
-        String redirect = "redirect:/companies/" + companyId + "/planes";
-        return redirect;
+
+        return "redirect:/companies/"+companyId+"/planes";
     }
 
 

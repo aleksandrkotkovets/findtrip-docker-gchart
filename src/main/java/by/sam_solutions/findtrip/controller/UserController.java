@@ -119,7 +119,7 @@ public class UserController {
             userService.save(user, role);
 
         }
-        String redirect = "redirect:/users?&role="+role;
+//        String redirect = "redirect:/users?&role="+role;
         return "redirect:/home";
     }
 

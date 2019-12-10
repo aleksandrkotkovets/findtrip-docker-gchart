@@ -92,4 +92,9 @@ public class CityServiceImpl implements CityService {
         return cityDTOs;
     }
 
+    @Override
+    public Long getCountryIdByCityId(Long id) {
+     return    cityRepository.getIdCountryByCityId(id);
+    }
+
 }
