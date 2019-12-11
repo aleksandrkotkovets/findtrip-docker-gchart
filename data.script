@@ -12,7 +12,6 @@ INSERT INTO public.app_user (id, email, first_name, last_name, login, password, 
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (12, 'client@sdf', 'Clsdf', 'Fsdfsdf', 'client', 'clientclient', 'Dasfsdf', '375(33)3434534', 2, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (14, 'admin@sdf', 'Asfdaf', 'Fsfgsdfg', 'admin', 'adminadmin', 'Gdsfgsdfg', '375(17)3434434', 1, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (13, 'woker@sf', 'Wsdf', 'Wsdfgdf', 'worker', 'workerworker', 'Edfgdfg', '375(44)3453454', 3, null);
-INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (15, 'admin33@ds', 'Dgdfgdf', 'Gfdgdg', 'client33', 'client33client33', 'Gdfgdfg', '375(44)3423432', 2, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (16, 'sdfsf@sdfsdfsf', 'Gdfgdfgdfg', 'Gdfsdsdfdf', 'clintic', 'clinticclintic', 'Fsdsdfsdf', '375(44)5324233', 2, null);
 INSERT INTO public.app_user (id, email, first_name, last_name, login, password, patronymic, phone_number, role_id, wallet_id) VALUES (17, 'client2@sdfsdf', 'Fsdfsdf', 'Fsdfsdf', 'client2', 'client2client2', 'Gdgdf', '375(44)3453453', 2, null);
 
