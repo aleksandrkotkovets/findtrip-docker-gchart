@@ -17,14 +17,14 @@ public class AirportEntity extends BaseEntity {
     @Column(name = "code", length = 5)
     private String code;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "city_id")
     private CityEntity cityEntity;
 
-    @OneToMany(mappedBy = "airport_departure", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "airportDeparture", fetch = FetchType.EAGER)
     private List<FlightEntity> flight_departure;
 
-    @OneToMany(mappedBy = "airport_arrival", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "airportArrival", fetch = FetchType.EAGER)
     private List<FlightEntity> flight_arrival;
 
     public AirportEntity() {

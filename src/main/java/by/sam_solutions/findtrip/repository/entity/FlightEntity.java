@@ -5,6 +5,8 @@ package by.sam_solutions.findtrip.repository.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 
@@ -30,14 +32,12 @@ public class FlightEntity extends BaseEntity {
     private Integer price;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "departure_date", columnDefinition = "timestamp")
-    private Date departureDate;
+    private Timestamp departureDate;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "arrival_date", columnDefinition = "timestamp")
-    private Date arrivalDate;
+    private Timestamp arrivalDate;
 
     @OneToMany(mappedBy = "flight")
     private Set<TicketEntity> tickets;
@@ -50,12 +50,12 @@ public class FlightEntity extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = ALL)
     @JoinColumn(name = "airport_departure_id")
     @NotNull
-    private AirportEntity airport_departure;
+    private AirportEntity airportDeparture;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = ALL)
     @JoinColumn(name = "airport_arrival_id")
     @NotNull
-    private AirportEntity airport_arrival;
+    private AirportEntity airportArrival;
 
     public FlightEntity() {
     }
@@ -88,7 +88,7 @@ public class FlightEntity extends BaseEntity {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(Timestamp departureDate) {
         this.departureDate = departureDate;
     }
 
@@ -96,7 +96,7 @@ public class FlightEntity extends BaseEntity {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(Timestamp arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -116,20 +116,20 @@ public class FlightEntity extends BaseEntity {
         this.plane = plane;
     }
 
-    public AirportEntity getAirport_departure() {
-        return airport_departure;
+    public AirportEntity getAirportDeparture() {
+        return airportDeparture;
     }
 
-    public void setAirport_departure(AirportEntity airport_departure) {
-        this.airport_departure = airport_departure;
+    public void setAirportDeparture(AirportEntity airportDeparture) {
+        this.airportDeparture = airportDeparture;
     }
 
-    public AirportEntity getAirport_arrival() {
-        return airport_arrival;
+    public AirportEntity getAirportArrival() {
+        return airportArrival;
     }
 
-    public void setAirport_arrival(AirportEntity airport_arrival) {
-        this.airport_arrival = airport_arrival;
+    public void setAirportArrival(AirportEntity airportArrival) {
+        this.airportArrival = airportArrival;
     }
 
 
