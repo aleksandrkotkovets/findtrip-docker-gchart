@@ -21,6 +21,12 @@ INSERT INTO public.country (id, name) VALUES (6, 'Belarus');
 INSERT INTO public.country (id, name) VALUES (7, 'Russia');
 INSERT INTO public.country (id, name) VALUES (8, 'Ukraine');
 
+----city----
+INSERT INTO public.city (id, name, country_id) VALUES (11, 'Brest', 6);
+INSERT INTO public.city (id, name, country_id) VALUES (12, 'Gomel', 6);
+INSERT INTO public.city (id, name, country_id) VALUES (13, 'Moscow', 7);
+INSERT INTO public.city (id, name, country_id) VALUES (10, 'Minsk', 6);
+
 ----airport----
 INSERT INTO public.airport (id, code, name, city_id) VALUES (15, 'MSQ', 'Minsk National Airport', 10);
 INSERT INTO public.airport (id, code, name, city_id) VALUES (16, 'BSK', 'Brest', 11);
@@ -31,11 +37,7 @@ INSERT INTO public.company (id, name, rating) VALUES (17, 'Belavia', 'THREE_STAR
 INSERT INTO public.company (id, name, rating) VALUES (18, 'Pobeda', 'ONE_STAR');
 INSERT INTO public.company (id, name, rating) VALUES (19, 'WizzAir', 'FIVE_STARS');
 
-----city----
-INSERT INTO public.city (id, name, country_id) VALUES (11, 'Brest', 6);
-INSERT INTO public.city (id, name, country_id) VALUES (12, 'Gomel', 6);
-INSERT INTO public.city (id, name, country_id) VALUES (13, 'Moscow', 7);
-INSERT INTO public.city (id, name, country_id) VALUES (10, 'Minsk', 6);
+
 
 ---transport---
 INSERT INTO public.transport (id, name, company_id, side_number) VALUES (52, 'Boeing 737-300', 17, 'B2975');
