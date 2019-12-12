@@ -1,7 +1,7 @@
 #Configuration
 server:
   servlet:
-    context-path: /api
+    context-path: /findtrip
 ---
 #JPA PROPERTIES
 spring:
@@ -32,7 +32,7 @@ spring:
 #Log4j
 logging:
   file:
-    name: logs/dev_app.log
+    name: src/main/resources/logs/dev_app.log
   pattern:
     console: "%d %-5level %logger : %msg%n"
     file: "%d %-5level [%thread] %logger : %msg%n"

@@ -10,31 +10,31 @@ public class UserDTO {
     private Long id;
 
     @NotNull
-    @Size(min = 3,max = 14, message = "Login must have between {min} and {max} characters.")
+    @Size(min = 3,max = 14)
     private String login;
 
     @NotNull
-    @Size(min = 8,max = 14, message = "Password must have between {min} and {max} characters.")
+    @Size(min = 8,max = 14)
     private String password;
 
     @NotNull
-    @Email(message = "This field must contain an E-Mail in the format example@site.com")
+    @Email()
     private String email;
 
     @NotNull
-    @Size(min = 3,max = 14, message = "First name must have between {min} and {max} characters.")
+    @Size(min = 3,max = 14)
     private String firstName;
 
     @NotNull
-    @Size(min = 3,max = 14, message = "Last name must have between {min} and {max} characters.")
+    @Size(min = 3,max = 14)
     private String lastName;
 
     @NotNull
-    @Size(min = 3,max = 14, message = "Patronymic must have between {min} and {max} characters.")
+    @Size(min = 3,max = 14)
     private String patronymic;
 
     @NotNull
-    @Pattern(regexp = "^375[(](17|25|29|33|44)[)]([0-9]{7})$", message = "The phone number should be similar to example 375(17|25|29|33|44)3885668")
+    @Pattern(regexp = "^375[(](17|25|29|33|44)[)]([0-9]{7})$")
     private String phoneNumber;
 
     private String role;

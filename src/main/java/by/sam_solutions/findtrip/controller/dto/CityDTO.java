@@ -9,7 +9,7 @@ public class CityDTO {
     private  Long id;
 
     @NotNull
-    @Size(min = 3,max = 20, message = "The name of the city must have between {min} and {max} characters.")
+    @Size(min = 3,max = 20)
     private  String name;
 
     private  List<AirportDTO> airportDTOList;

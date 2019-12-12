@@ -9,7 +9,7 @@ public class CountryDTO {
     private  Long id;
 
     @NotNull
-    @Size(min = 3,max = 40, message = "The name of the country must have between {min} and {max} characters.")
+    @Size(min = 3,max = 40)
     private  String name;
 
     private  List<CityDTO> cityDTOList;

@@ -1,6 +1,4 @@
-#
+
 *.iml
 .idea/*
-logs/*
 src/main/resources/logs
-#*.log

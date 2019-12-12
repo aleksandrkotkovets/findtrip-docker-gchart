@@ -11,6 +11,7 @@ E:\findtrip\src\main\java\by\sam_solutions\findtrip\repository\entity\CountryEnt
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\exception\AirportAddParameterExistException.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\exception\EditCompanyParameterExistException.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\security\CustomUserDetail.java
+E:\findtrip\src\main\java\by\sam_solutions\findtrip\controller\FlightController.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\repository\UserRepository.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\controller\dto\CityDTO.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\exception\EditAirportParametersExistException.java
@@ -49,6 +50,7 @@ E:\findtrip\src\main\java\by\sam_solutions\findtrip\repository\TicketRepository.
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\repository\entity\RoleEntity.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\service\CompanyService.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\service\impl\AirportServiceImpl.java
+E:\findtrip\src\main\java\by\sam_solutions\findtrip\controller\dto\FlightDTO.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\repository\CompanyRepository.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\service\impl\CountryServiceImpl.java
 E:\findtrip\src\main\java\by\sam_solutions\findtrip\repository\entity\CityEntity.java

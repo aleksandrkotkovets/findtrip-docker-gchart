@@ -8,7 +8,7 @@ public class AirportDTO {
     private Long id;
 
     @NotNull
-    @Size(min = 2,max = 4, message = "The name of the airport must have between {min} and {max} characters.")
+    @Size(min = 2,max = 4)
     private  String name;
 
     @NotNull

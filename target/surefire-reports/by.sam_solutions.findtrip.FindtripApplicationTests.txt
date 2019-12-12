@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: by.sam_solutions.findtrip.FindtripApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.655 s - in by.sam_solutions.findtrip.FindtripApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.848 s - in by.sam_solutions.findtrip.FindtripApplicationTests

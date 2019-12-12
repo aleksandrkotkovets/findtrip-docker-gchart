@@ -13,6 +13,7 @@ by\sam_solutions\findtrip\service\PlaneService.class
 by\sam_solutions\findtrip\repository\WalletRepository.class
 by\sam_solutions\findtrip\controller\dto\CountryDTO.class
 by\sam_solutions\findtrip\controller\dto\CityDTO.class
+by\sam_solutions\findtrip\controller\dto\FlightDTO.class
 by\sam_solutions\findtrip\service\AirportService.class
 by\sam_solutions\findtrip\exception\EditCompanyParameterExistException.class
 by\sam_solutions\findtrip\controller\dto\PlaneDTO.class
@@ -58,6 +59,7 @@ by\sam_solutions\findtrip\service\UserService.class
 by\sam_solutions\findtrip\FindtripApplication.class
 by\sam_solutions\findtrip\repository\CountryRepository.class
 by\sam_solutions\findtrip\repository\UserRepository.class
+by\sam_solutions\findtrip\controller\FlightController.class
 by\sam_solutions\findtrip\exception\EditPlaneParametersExistException.class
 by\sam_solutions\findtrip\exception\MyAccessDeniedHandler.class
 by\sam_solutions\findtrip\repository\entity\WalletEntity.class
