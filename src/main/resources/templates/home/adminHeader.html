@@ -52,11 +52,11 @@
 
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="users?&role=ROLE_ADMIN" th:text="#{text.admins}"></a>
+          <a class="dropdown-item" th:href="@{/users?&role=ROLE_ADMIN}" th:text="#{text.admins}"></a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="users?&role=ROLE_CLIENT" th:text="#{text.clients}"></a>
+          <a class="dropdown-item" th:href="@{/users?&role=ROLE_CLIENT}" th:text="#{text.clients}"></a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="users?&role=ROLE_WORKER" th:text="#{text.workers}"></a>
+          <a class="dropdown-item" th:href="@{/users?&role=ROLE_WORKER}" th:text="#{text.workers}"></a>
         </div>
       </li>
     </ul>
