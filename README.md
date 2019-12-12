@@ -3,6 +3,8 @@
 
 The application is called "FindTrip" and is an analog of aviasales, but with simpler functionality.
 branch master.
+
+
 1. 
 In the application.yml file:
       change #JPA PROPERTIES from "ddl-auto: none" to "ddl-auto: create-drop";
