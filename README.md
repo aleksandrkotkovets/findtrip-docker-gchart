@@ -1,10 +1,13 @@
 # findtrip
 
-Приложение называется "FindTrip" и представляет собой аналог aviasales, только с более простым функционалом. 
+
+The application is called "FindTrip" and is an analog of aviasales, but with simpler functionality.
 branch master.
+
 
 1. 
 In the application.yml file:
+
       change #JPA PROPERTIES from "ddl-auto: none" to "ddl-auto: create-drop";
       cnange #DATABASE parameters;
 In INTELLIJE IDEA File->Setting in File Encoding change the encoding to UTF-8;
