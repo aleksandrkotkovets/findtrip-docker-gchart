@@ -49,7 +49,7 @@ public class CityController {
         }
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/api/country/{id}")
     public String deleteCountry(@PathVariable(value = "id") Long id){
         Long idCountry = cityService.getCountryIdByCityId(id);
         cityService.delete(id);

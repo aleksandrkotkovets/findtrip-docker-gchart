@@ -1,0 +1,56 @@
+#Configuration
+server:
+  servlet:
+    context-path: /api
+---
+#JPA PROPERTIES
+spring:
+  jpa:
+      database: POSTGRESQL
+      show-sql: true
+      hibernate:
+        ddl-auto: none
+        #create-drop
+---
+#DATABASE
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/findtrip-db
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+
+---
+#Thymeleaf
+spring:
+  thymeleaf:
+    mode: HTML
+    cache: false
+
+---
+#Log4j
+logging:
+  file:
+    name: logs/dev_app.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    org.springframework.web: ERROR
+    com.howtodoinjava: DEBUG
+    org.hibernate: ERROR
+
+---
+# Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly.
+spring:
+    http:
+        encoding:
+            charset: UTF-8
+# Enable http encoding support.
+            enabled: true
+# Force the encoding to the configured charset on HTTP requests and responses.
+            force: true
+
+
+

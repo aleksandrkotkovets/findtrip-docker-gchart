@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Transactional
+
     @Override
     public Long getUserByCriteria(String email, String login, String phoneNumber) {
 
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         return id;
     }
 
-    @Transactional
+
     @Override
     public List<UserDTO> getUsersByRole(String  role) {
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Transactional
+
     @Override
     public void deleteUserById(Long id) throws UserNotFoundException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
+
     @Override
     public UserDTO findUserById(Long id) {
         UserDTO userDTO = null;
@@ -155,7 +155,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Transactional
     @Override
     public Optional<UserEntity> findByLogin(String login) {
         return Optional.ofNullable(userRepository.findByLogin(login));

@@ -39,7 +39,7 @@ public class CountryServiceImpl implements CountryService {
         countryRepository.deleteById(id);
     }
 
-    @Transactional
+
     @Override
     public CountryDTO findOne(Long id) {
         Optional<CountryEntity> countryEntity = countryRepository.findById(id);
@@ -62,7 +62,7 @@ public class CountryServiceImpl implements CountryService {
         }
     }
 
-    @Transactional
+
     @Override
     public Long getCountryIdByName(String name) {
         return countryRepository.getIdExistCountryByName(name);
@@ -90,7 +90,7 @@ public class CountryServiceImpl implements CountryService {
         }
     }
 
-    @Transactional
+
     @Override
     public CountryDTO findCountryByName(String name) {
         Optional<CountryEntity> countryEntity = countryRepository.findByName(name);

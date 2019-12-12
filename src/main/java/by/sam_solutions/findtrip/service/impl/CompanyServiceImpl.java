@@ -28,7 +28,6 @@ public class CompanyServiceImpl implements CompanyService {
     CompanyRepository companyRepository;
 
 
-    @Transactional
     @Override
     public Page<CompanyEntity> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
@@ -40,7 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.deleteById(id);
     }
 
-    @Transactional
+
     @Override
     public CompanyDTO findOne(Long id) {
         Optional<CompanyEntity> companyEntity = companyRepository.findById(id);

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Countries</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+   <!-- <script type="text/javascript" th:src="@{/static/script/js.js}" src="../static/script/js.js"
+     ></script> /-->
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+
+<body>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div th:replace="/home/adminHeader :: admin-header"/>
+</div>
+<div sec:authorize="hasRole('ROLE_WORKER')">
+  <div th:replace="/home/workerHeader :: worker-header"/>
+</div>
+
+             <!--/*@thymesVar id="currentPage" type="by.sam_solutions.findtrip.controller.CountryController"*/-->
+             <!--/*@thymesVar id="countries" type="by.sam_solutions.findtrip.controller.CountryController"*/-->
+        <div class="container my-md-2" style="width: 50%">
+            <div class="card">
+                <div class="card-block">
+                    <div th:switch="${countries}" class="container my-md-4">
+                        <p class="my-9">
+                            <a th:href="@{country/edit}" class="btn btn-primary">
+                                <i class="fas fa-plus ml-2" th:text="#{text.add-country}"></i></a>
+                        </p>
+
+                        <div class="col-md-8" style="margin-left: 10%">
+                            <h2 th:case="null" th:text="#{text.record.found}"></h2>
+                            <div th:case="*">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr style="text-align: left">
+                                        <th th:text="#{text.country}" ></th>
+                                        <th th:text="#{text.cities}" ></th>
+                                        <th th:text="#{text.edit}" ></th>
+                                        <th th:text="#{text.delete}" ></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="country : ${countries}">
+                                        <td th:text="${country.name}"></td>
+
+                                        <td>
+                                            <a th:href="@{country/{id}/cities(id = ${country.id}) }"
+                                             class="btn btn-info" th:text="#{text.cities}">
+                                           </a>
+                                         </td>
+
+                                          <td>
+                                            <a th:href="@{country/edit/{id}(id = ${country.id})  }"
+                                             class="btn btn-primary eBtn">
+                                             <i class="far fa-edit  ml-3 "></i>
+                                           </a>
+                                         </td>
+
+                                        <td>
+                                            <a th:href="@{ /country/delete/{id} (id=${country.id}) }"
+                                               class="btn btn-primary" onclick="return confirm('Are you sure?')">
+                                                <span style="color: Tomato;">
+                                                   <i class="fas fa-trash-alt ml-2"> </i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"
+                                    th:each=" i : ${#numbers.sequence(0, countries.totalPages -1)}">
+                                    <a th:href="@{/country(page=${i})}" th:text="${i}" class="nav-link"
+                                    th:classappend="${currentPage}==${i}?'active':''"></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</body>
+</html>
