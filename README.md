@@ -7,6 +7,7 @@ branch master.
 
 1. 
 In the application.yml file:
+
       change #JPA PROPERTIES from "ddl-auto: none" to "ddl-auto: create-drop";
       cnange #DATABASE parameters;
 In INTELLIJE IDEA File->Setting in File Encoding change the encoding to UTF-8;
