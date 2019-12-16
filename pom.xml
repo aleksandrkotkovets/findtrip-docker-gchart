@@ -115,6 +115,13 @@
             <version>3.0.4.RELEASE</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.webjars/Eonasdan-bootstrap-datetimepicker -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>Eonasdan-bootstrap-datetimepicker</artifactId>
+            <version>4.17.43</version>
+        </dependency>
+
 
 
 

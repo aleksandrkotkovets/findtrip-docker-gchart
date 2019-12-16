@@ -30,4 +30,6 @@ public interface CompanyService {
     void update(CompanyDTO companyDTO);
 
     CompanyDTO findCompanyByName(String company);
+
+    List<CompanyDTO> findAll();
 }

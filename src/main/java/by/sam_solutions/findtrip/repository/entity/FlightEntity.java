@@ -29,7 +29,7 @@ public class FlightEntity extends BaseEntity {
 
     @NotNull
     @Column(name = "price")
-    private Integer price;
+    private Double price;
 
     @NotNull
     @Column(name = "departure_date", columnDefinition = "timestamp")
@@ -76,15 +76,15 @@ public class FlightEntity extends BaseEntity {
         this.allSeats = allSeats;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public @NotNull Date getDepartureDate() {
+    public Timestamp getDepartureDate() {
         return departureDate;
     }
 
@@ -92,7 +92,7 @@ public class FlightEntity extends BaseEntity {
         this.departureDate = departureDate;
     }
 
-    public @NotNull Date getArrivalDate() {
+    public Timestamp getArrivalDate() {
         return arrivalDate;
     }
 
@@ -112,7 +112,7 @@ public class FlightEntity extends BaseEntity {
         return plane;
     }
 
-    public void setPlane(PlaneEntity plain) {
+    public void setPlane(PlaneEntity plane) {
         this.plane = plane;
     }
 
@@ -131,6 +131,4 @@ public class FlightEntity extends BaseEntity {
     public void setAirportArrival(AirportEntity airportArrival) {
         this.airportArrival = airportArrival;
     }
-
-
 }

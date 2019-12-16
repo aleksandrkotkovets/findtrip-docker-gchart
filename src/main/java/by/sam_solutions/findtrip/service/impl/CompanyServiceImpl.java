@@ -107,5 +107,12 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDTO;
     }
 
+    @Override
+    public List<CompanyDTO> findAll() {
+      List<CompanyEntity> companyEntities =  companyRepository.findAllAndOrderByName();
+      List<CompanyDTO> companyDTOList = companyEntities.stream().map(a-> new CompanyDTO(a.getId(), a.getName())).collect(Collectors.toList());
+      return companyDTOList;
+    }
+
 
 }

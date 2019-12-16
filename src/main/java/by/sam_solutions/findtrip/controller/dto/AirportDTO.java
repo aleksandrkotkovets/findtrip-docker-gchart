@@ -27,6 +27,12 @@ public class AirportDTO {
         this.cityDTO = new CityDTO(idCity);
     }
 
+    public AirportDTO(Long id, String name, String code) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+    }
+
 /*    private List<FlightEntity> flight_departure;
 
     private List<FlightEntity> flight_arrival;*/

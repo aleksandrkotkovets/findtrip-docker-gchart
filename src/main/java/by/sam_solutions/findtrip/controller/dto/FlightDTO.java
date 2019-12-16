@@ -16,7 +16,7 @@ public class FlightDTO {
     private Integer allSeats;
 
     @NotNull
-    private Integer price;
+    private Double price;
 
     @NotNull
     private Timestamp departureDate;
@@ -31,4 +31,6 @@ public class FlightDTO {
     private AirportDTO airportDeparture;
 
     private AirportDTO airportArrival;
+
+
 }

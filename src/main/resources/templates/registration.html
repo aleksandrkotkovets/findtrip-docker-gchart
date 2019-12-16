@@ -44,7 +44,7 @@
 
                         <div class="form-group col-md-8">
                             <label for="password" class="col-form-label" th:text="#{text.password}"></label>
-                            <input type="text" th:value="${user?.password}" th:name="password" class="form-control"
+                            <input type="password" th:value="${user?.password}" th:name="password" class="form-control"
                                    id="password" th:placeholder="#{text.password}" autofocus required minlength="8"
                                    maxlength="14"/>
                             <span class="form__error" th:text="#{text.error.password}"></span>

@@ -11,10 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/airports")
@@ -30,14 +28,14 @@ public class AirportController {
     CityService cityService;
 
     @GetMapping
-    public String getShowAirportsView(Model model){
-        List<AirportDTO> airportDTOs  = airportService.findAll();
-        model.addAttribute("airports", airportDTOs.size() == 0 ? null: airportDTOs);
+    public String getShowAirportsView(Model model) {
+        List<AirportDTO> airportDTOs = airportService.findAll();
+        model.addAttribute("airports", airportDTOs.size() == 0 ? null : airportDTOs);
         return "airport/showAirports";
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditAirportView(@PathVariable Long id, Model model){
+    public String getEditAirportView(@PathVariable Long id, Model model) {
         AirportDTO airportDTO = airportService.findById(id);
         model.addAttribute("airport", airportDTO);
         return "airport/editAirport";
@@ -46,7 +44,7 @@ public class AirportController {
     @PostMapping("/edit")
     public String editAirport(@RequestParam Long id,
                               @RequestParam String name,
-                              @RequestParam String code){
+                              @RequestParam String code) {
 
         AirportDTO airportDTO = new AirportDTO();
         airportDTO.setId(id);
@@ -58,30 +56,32 @@ public class AirportController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteAirport(@PathVariable Long id){
+    public String deleteAirport(@PathVariable Long id) {
         airportService.delete(id);
         return "redirect:/airports";
     }
 
     @GetMapping("/add")
-    public String getAddAirportView(Model model){
+    public String getAddAirportView(Model model) {
         List<CountryDTO> countryDTOS = countryService.findAll();
         model.addAttribute("countries", countryDTOS);
         model.addAttribute("cities", new ArrayList<CityDTO>());
+
         return "airport/addAirport";
     }
 
-    @PostMapping(value = "/add/getCities")
+
+    @GetMapping(value = "/countries/{id}")
     @ResponseBody
-    public List<CityDTO> getCities(@RequestBody CountryDTO obj, Model model) {
-        List<CityDTO> list = cityService.getCityListByCountry(obj.getId());
+    public List<CityDTO> getCities(@PathVariable Long id) {
+        List<CityDTO> list = cityService.getCityListByCountry(id);
         return list;
     }
 
     @PostMapping("/add")
     public String addAirport(@RequestParam String name,
                              @RequestParam String code,
-                             @RequestParam Long idCity){
+                             @RequestParam Long idCity) {
         AirportDTO airportDTO = new AirportDTO(name, code, idCity);
         airportService.save(airportDTO);
         return "redirect:/airports";

@@ -28,4 +28,7 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     @Query(value = "SELECT comp.id FROM company comp WHERE comp.name = ?1",nativeQuery = true)
     Long getCompanyIdByName(String name);
+
+    @Query(value = "select * from company comp order by comp.name asc", nativeQuery = true)
+    List<CompanyEntity> findAllAndOrderByName();
 }

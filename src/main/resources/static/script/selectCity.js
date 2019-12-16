@@ -1,18 +1,19 @@
 $(document).ready(function() {
 
     const selectCity = document.getElementById('selectCity');
-    console.log(selectCity.target);
     const selectButton = document.getElementById('select_');
     selectButton.addEventListener("change", function () {
         const select = document.getElementById("select_");
-        const obj = { "id": select.value}
-        fetch( "http://localhost:8080/api/airports/add/getCities",{
-            method: 'POST',
+        let id = select.value;
+        const obj = {"id" :select.value};
+        console.log(JSON.stringify(obj));
+        fetch( "http://localhost:8080/findtrip/airports/countries/"+id,{
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(obj)
         })
+
             .then(resp => resp.json()
                 .then(json => {
                     console.log(json);
@@ -27,6 +28,7 @@ $(document).ready(function() {
                         selectCity.appendChild(option);
                     });
                 }));
+
     });
 
 

@@ -1,5 +1,6 @@
 package by.sam_solutions.findtrip.service.impl;
 
+import by.sam_solutions.findtrip.controller.dto.AirportDTO;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.controller.dto.CityDTO;
 import by.sam_solutions.findtrip.controller.dto.CountryDTO;
@@ -39,6 +40,13 @@ public class CityServiceImpl implements CityService {
             countryDTO.setName(cityEntity.get().getCountryEntity().getName());
             countryDTO.setId(cityEntity.get().getCountryEntity().getId());
             cityDTO.setCountryDTO(countryDTO);
+
+            List<AirportDTO> airportDTOList = cityEntity
+                    .get().getAirports().stream()
+                            .map(a->new AirportDTO(a.getId(),a.getName(),a.getCode()))
+                            .collect(Collectors.toList());
+
+            cityDTO.setAirportDTOList(airportDTOList);
             return cityDTO;
         }else {
             return null;
