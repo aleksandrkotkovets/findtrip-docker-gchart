@@ -2,8 +2,9 @@ package by.sam_solutions.findtrip.exception;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
-import by.sam_solutions.findtrip.repository.CityRepository;
-import by.sam_solutions.findtrip.repository.CountryRepository;
+import by.sam_solutions.findtrip.repository.*;
+import by.sam_solutions.findtrip.repository.entity.AirportEntity;
+import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +27,26 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 @ControllerAdvice
 public class EntityControllerHandler {
 
     @Autowired
     CountryRepository countryRepository;
+
+    @Autowired
+    PlaneRepository planeRepository;
+
+    @Autowired
+    CityRepository cityRepository;
+
+    @Autowired
+    AirportRepository airportRepository;
+
+    @Autowired
+    CompanyRepository companyRepository;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityControllerHandler.class);
 
@@ -138,9 +153,48 @@ public class EntityControllerHandler {
         modelAndView.addObject("companyId", ex.companyId);
         modelAndView.addObject("apiError",apiError);
 
-//        httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/companies/"+ex.companyId+"/planes");
         return modelAndView;
 
+    }
+
+   /* // Company edit parameter
+    @ExceptionHandler(FlightDateIncorrectException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handleDateParameter(FlightDateIncorrectException ex) {
+        String error = ex.getMessage();
+
+     *//*   ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        ModelAndView modelAndView = new ModelAndView();
+        AirportEntity airportEntityDep = airportRepository.findById(ex.flightDTO.getAirportFromId()).get();
+        AirportEntity airportEntityArr = airportRepository.findById(ex.flightDTO.getAirportToId()).get();
+        modelAndView.setViewName("flight/addFlight");
+        modelAndView.addObject("idCountry_fr",airportEntityDep.getCityEntity().getCountryEntity());
+        modelAndView.addObject("idCountry_to",airportEntityArr.getCityEntity().getCountryEntity());
+        modelAndView.addObject("idCity_fr",airportEntityDep.getCityEntity());
+        modelAndView.addObject("idCity_to",airportEntityArr.getCityEntity());
+        modelAndView.addObject("idAirport_fr",airportEntityDep);
+        modelAndView.addObject("idAirport_to",airportEntityArr);
+        modelAndView.addObject("picker1",new Date(ex.flightDTO.getDateDeparture()));
+        modelAndView.addObject("picker2",new Date(ex.flightDTO.getDateArrival()));
+        modelAndView.addObject("idCompany", companyRepository.findById(ex.flightDTO.getCompanyId()));
+        modelAndView.addObject("idPlane", planeRepository.findById(ex.flightDTO.getPlaneId()));
+        modelAndView.addObject("allSeats", ex.flightDTO.getAllSeats());
+        modelAndView.addObject("freeSeats", ex.flightDTO.getFreeSeats());
+        modelAndView.addObject("freeSeats", ex.flightDTO.getFreeSeats());
+        modelAndView.addObject("price", ex.flightDTO.getTicketPrice());
+        modelAndView.addObject("apiError",apiError);*//*
+
+        return modelAndView;
+    }
+*/
+
+
+    @ExceptionHandler({FlightDateIncorrectException.class})
+    public ResponseEntity<Object> handleEmailExist(FlightDateIncorrectException ex, WebRequest request) {
+        String error = ex.getMessage();
+        ApiError apiError =
+                new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
 

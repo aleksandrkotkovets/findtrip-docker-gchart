@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Flight | Add</title>
+    <title>Flight | Edit</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -22,9 +22,9 @@
             <div class="modal-dialog " role="document">
                 <div class="modal-content" style="width: 280%;">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel" th:text="#{text.create}"></h5>
+                        <h5 class="modal-title" id="exampleModalLabel" th:text="#{text.edit}"></h5>
                     </div>
-
+                    <input type="hidden" id="id" th:value="${id}" th:name="id">
                 <div class="modal-body">
 
 
@@ -33,21 +33,20 @@
                        <div class="row vdivide">
                             <div class="col-sm-4 text-center">
                                 <h5 class="card-title" th:text="#{text.country}+':'"></h5>
-
                                 <div class="control-group">
                                       <div style="display: flex; flex-direction: row;">
                                         <div>
-                                         <label for="country_fr" class="col-form-label" th:text="From"></label>
+                                         <a class="btn btn-outline-info btn-sm " id="edt_country_fr" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                         <a for="country_fr" id="h_country_fr" class="col-form-label" ><b th:text="#{text.from}"></b></a>
                                          <select class="form-control col-lg-auto" name="idCountry_fr"  id="select_country_fr" required >
-                                             <option value="" selected>&#45;&#45;&#45;&#45;</option>
-                                             <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"  ></option>
+                                             <option th:each="country : ${countries_fr}" th:value="${country.id}" th:text="${country.name}"  ></option>
                                          </select>
                                         </div>
                                         <div style="padding-left: 10px">
-                                        <label for="country_to" class="col-form-label" th:text="To"></label>
+                                        <a class="btn btn-outline-info btn-sm " id="edt_country_to" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                        <a for="country_to" class="col-form-label" ><b th:text="#{text.to}"></b></a>
                                         <select class="form-control col-lg-auto " name="idCountry_to" id="select_country_to"  required>
-                                            <option value="">&#45;&#45;&#45;&#45;</option>
-                                            <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"  ></option>
+                                            <option th:each="country : ${countries_to}" th:value="${country.id}" th:text="${country.name}"  ></option>
                                         </select>
                                          </div>
                                       </div>
@@ -61,17 +60,17 @@
                                 <div class="control-group ">
                                       <div style="display: flex; flex-direction: row;">
                                         <div>
-                                         <label for="city_fr" class="col-form-label" th:text="From"></label>
+                                         <a class="btn btn-outline-info btn-sm " id="edt_city_fr" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                         <a for="city_fr" class="col-form-label" ><b th:text="#{text.from}"></b></a>
                                         <select class="form-control col-lg-auto" name="idCity_fr" id="select_city_fr"  required>
-                                            <option value="">&#45;&#45;&#45;&#45;</option>
-                                            <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+                                            <option th:each="city : ${cities_fr}" th:value="${city.id}" th:text="${city.name}"></option>
                                         </select>
                                         </div>
                                         <div style="padding-left: 10px">
-                                        <label for="country_to" class="col-form-label" th:text="To"></label>
+                                         <a class="btn btn-outline-info btn-sm " id="edt_city_to" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                        <a for="country_to" class="col-form-label" ><b th:text="#{text.to}"></b></a>
                                         <select class="form-control col-sm-auto" name="idCity_to" id="select_city_to"  required>
-                                             <option value="">&#45;&#45;&#45;&#45;</option>
-                                             <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+                                             <option th:each="city : ${cities_to}" th:value="${city.id}" th:text="${city.name}"></option>
                                          </select>
                                          </div>
                                       </div>
@@ -85,17 +84,17 @@
                                 <div class="control-group">
                                       <div style="display: flex; flex-direction: row;">
                                         <div>
-                                         <label for="airport_fr" class="col-form-label" th:text="From"></label>
-                                        <select class="form-control col-lg-auto" name="idAirport_fr" id="select_airport_fr"  required>
-                                            <option value="">&#45;&#45;&#45;&#45;</option>
-                                            <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.name}+'('+${airport.code}+')"></option>
+                                         <a class="btn btn-outline-info btn-sm " id="edt_airport_from" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                         <a for="airport_fr" class="col-form-label" ><b th:text="#{text.from}"></b></a>
+                                        <select class="form-control col-lg-auto"  name="idAirport_fr" id="select_airport_fr"  required>
+                                            <option th:each="airport : ${airports_fr}"   th:value="${airport.id}" th:text="${airport.name}+'('+${airport.code}+')'"></option>
                                         </select>
                                         </div>
                                         <div style="padding-left: 10px">
-                                        <label for="airport_to" class="col-form-label" th:text="To"></label>
+                                        <a class="btn btn-outline-info btn-sm " id="edt_airport_to" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                        <a for="airport_to" class="col-form-label" ><b th:text="#{text.to}"></b></a>
                                         <select class="form-control col-sm-auto" name="idAirport_to" id="select_airport_to"  required>
-                                             <option value="">&#45;&#45;&#45;&#45;</option>
-                                             <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.name}"></option>
+                                             <option th:each="airport : ${airports_to}"  th:value="${airport.id}" th:text="${airport.name}+'('+${airport.code}+')'"></option>
                                          </select>
                                          </div>
                                       </div>
@@ -115,11 +114,11 @@
                                       <div style="display: flex; flex-direction: row;">
                                         <div class="container " style="width: 400px">
                                         <h3 for="airport_fr" class="col-form-label" th:text="#{text.time-departure}"></h3>
-                                        <input type="text" name="picker1" id="picker1" class="form-control far">
+                                        <input type="text" th:name="picker1" th:value="${picker1}" id="picker1" class="form-control far">
                                         </div>
                                         <div class="container " style="width: 400px; padding-left: 10px">
                                         <h3 for="airport_fr" class="col-form-label" th:text="#{text.time-arrival}"></h3>
-                                        <input type="text" name="picker2" id="picker2" class="form-control far">
+                                        <input type="text" th:name="picker2" th:value="${picker2}" id="picker2" class="form-control far">
                                         </div>
                                       </div>
 
@@ -131,9 +130,9 @@
                                  <div class="control-group">
                                        <div style="display: flex; flex-direction: row;">
                                          <div>
-                                          <label for="company" class="col-form-label" th:text="#{text.select-company}"></label>
+                                         <a class="btn btn-outline-info btn-sm " id="edt_company" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                          <a for="company" class="col-form-label" ><b th:text="#{text.select-company}"></b></a>
                                           <select class="form-control col-lg-auto" name="idCompany"  id="select_company" required >
-                                              <option value="" selected>&#45;&#45;&#45;&#45;</option>
                                               <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.name}"  ></option>
                                           </select>
                                          </div>
@@ -148,9 +147,9 @@
                                  <div class="control-group ">
                                        <div style="display: flex; flex-direction: row;">
                                          <div>
-                                          <label for="plane" class="col-form-label" th:text="#{text.select-plane}"></label>
+                                          <a class="btn btn-outline-info btn-sm " id="edt_plane" style="margin-bottom: 5px"><i class="far fa-edit fa-sm"></i></a>
+                                          <a for="plane" class="col-form-label" ><b th:text="#{text.select-plane}"></b></a>
                                          <select class="form-control col-lg-auto" name="idPlane" id="select_plane"  required>
-                                             <option value="">&#45;&#45;&#45;&#45;</option>
                                              <option th:each="plane : ${planes}" th:value="${plane.id}" th:text="${plane.sideNumber}"></option>
                                          </select>
                                          </div>
@@ -173,15 +172,15 @@
                                       <div style="display: flex; flex-direction: row;" class="text-center">
                                         <div class="container " style="width: 400px">
                                         <h3 for="allSeats" class="col-form-label" th:text="#{text.all-seats}"></h3>
-                                         <input placeholder="Enter a number" name="allSeats" id="allSeats" required type="number"  min="0" max="300" step="1"/>
+                                         <input placeholder="Enter a number" name="allSeats" th:value="${allSeats}" id="allSeats" required type="number"  min="0" max="300" step="1"/>
                                         </div>
                                         <div class="container " style="width: 400px; padding-left: 10px">
                                         <h3 for="freeSeats" class="col-form-label" th:text="#{text.free-seats}"></h3>
-                                         <input placeholder="Enter a number" name="freeSeats" id="freeSeats" required type="number"  min="0" step="1"/>
+                                         <input placeholder="Enter a number" th:value="${freeSeats}" id="freeSeats" required type="number"  min="0" step="1"/>
                                         </div>
                                         <div class="container " style="width: 400px; padding-left: 10px">
                                         <h3 for="price" class="col-form-label" th:text="#{text.seat-price}"></h3>
-                                         <input data-prefix="$"  data-decimals="2" name="price" id="price" min="0" max="1000" step="0.1" type="number" placeholder="Enter ticket price" required/>
+                                         <input data-prefix="$"  data-decimals="2" name="price" th:value="${price}" id="price" min="0" max="1000" step="0.1" type="number" placeholder="Enter ticket price" required/>
                                         </div>
                                       </div>
 
@@ -202,14 +201,13 @@
                  </div>
                     <div class="modal-footer">
                         <a th:href="@{/airports}"> <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{bt.back}"></button></a>
-                        <button type="button" class="btn btn-primary" id="save" th:text="#{bt.save}"/></div>
+                        <button type="button" class="btn btn-primary" id="edit" th:text="#{bt.save}"/></div>
                     </div>
                 </div>
             </div>
         </div>
 
 </div>
-
 
 
 
