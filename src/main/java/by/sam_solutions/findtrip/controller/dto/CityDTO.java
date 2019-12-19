@@ -35,6 +35,12 @@ public class CityDTO {
         this.name = name;
     }
 
+    public CityDTO(Long id, String name, CountryDTO countryDTO) {
+        this.id = id;
+        this.name = name;
+        this.countryDTO = countryDTO;
+    }
+
     public Long getId() {
         return id;
     }

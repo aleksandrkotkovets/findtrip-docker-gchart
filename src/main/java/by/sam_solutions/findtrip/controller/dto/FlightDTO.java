@@ -32,6 +32,23 @@ public class FlightDTO {
 
     private AirportDTO airportArrival;
 
+    public FlightDTO(Long id, Integer freeSeats, Integer allSeats, Double price, Timestamp departureDate, Timestamp arrivalDate, PlaneDTO planeDTO, AirportDTO airportDeparture, AirportDTO airportArrival) {
+            this.id = id;
+            this.freeSeats  = freeSeats;
+            this.allSeats = allSeats;
+            this.price = price;
+            this.departureDate = departureDate;
+            this.arrivalDate = arrivalDate;
+            this.plane = planeDTO;
+            this.airportDeparture = airportDeparture;
+            this.airportArrival = airportArrival;
+
+    }
+
+    public FlightDTO() {
+
+    }
+
     public Long getId() {
         return id;
     }

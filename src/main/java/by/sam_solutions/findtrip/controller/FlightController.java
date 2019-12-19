@@ -6,6 +6,7 @@ import by.sam_solutions.findtrip.service.CompanyService;
 import by.sam_solutions.findtrip.service.CountryService;
 import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +33,18 @@ public class FlightController {
 
     List<CountryDTO> countryDTOList;
     List<CompanyDTO> companyDTOList;
+    List<FlightDTO> flightDTOList;
 
     @ModelAttribute("countries")
     public List<CountryDTO> getCountries() {
         countryDTOList = countryService.findAll();
         return  countryDTOList;
+    }
+
+    @ModelAttribute("flights")
+    public List<FlightDTO> getFlights() {
+        flightDTOList = flightService.findAll();
+        return  flightDTOList;
     }
 
     @GetMapping("/countries")
@@ -55,12 +63,6 @@ public class FlightController {
     @ResponseBody
     public List<CompanyDTO> getCompaniesJson(){
         return companyDTOList;
-    }
-
-
-    @GetMapping("{id}")
-    public String getEditFlightView(@PathVariable(value = "id") Long id) {
-        return "flight/addFlight";
     }
 
     @GetMapping("/create")
@@ -117,15 +119,32 @@ public class FlightController {
     @PostMapping()
     public String addFlight(@RequestBody FlightCreateUpdateDTO flightDTO) {
         flightService.addFlight(flightDTO);
-        return "flight/addFlight"; // edit on show flights
+        return "flight/showFlights"; // edit on show flights
     }
 
     @PostMapping("/{id}")
     public String addFlight(@PathVariable Long id,
                             @RequestBody FlightCreateUpdateDTO flightDTO) {
         flightService.edit(flightDTO);
-        return "flight/editFlight";
+        return "flight/showFlights";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/admin")
+    public String getShowFlightViewByAdmin(Model model) {
+        return "withrole/admin/showFlights";
+    }
+
+    @PreAuthorize("hasAnyRole('WORKER')")
+    @GetMapping("/worker")
+    public String getShowFlightViewByWorker(Model model) {
+        return "withrole/worker/showFlights";
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT')")
+    @GetMapping()
+    public String getShowFlightViewByClient(Model model) {
+        return "withrole/client/showFlights";
+    }
 
 }

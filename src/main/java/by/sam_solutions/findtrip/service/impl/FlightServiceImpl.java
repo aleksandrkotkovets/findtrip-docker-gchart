@@ -9,11 +9,14 @@ import by.sam_solutions.findtrip.repository.entity.FlightEntity;
 import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -152,6 +155,30 @@ public class FlightServiceImpl implements FlightService {
 
         flightRepository.save(editEntity);
 
+    }
+
+    @Override
+    public List<FlightDTO> findAll() {
+        List<FlightEntity> flightEntityList = flightRepository.findAll(Sort.by("departureDate").ascending());
+        List<FlightDTO> flightDTOList = flightEntityList.stream()
+                .map(a->new FlightDTO(
+                        a.getId(),
+                        a.getFreeSeats(),
+                        a.getAllSeats(),
+                        a.getPrice(),
+                        a.getDepartureDate(),
+                        a.getArrivalDate(),
+                          new PlaneDTO(a.getPlane().getId(),a.getPlane().getName(),a.getPlane().getSideNumber(),
+                                  new CompanyDTO(a.getPlane().getCompany().getId(),a.getPlane().getCompany().getName(), a.getPlane().getCompany().getRating())),
+                          new AirportDTO(a.getAirportDeparture().getId(),a.getAirportDeparture().getName(),a.getAirportDeparture().getCode(),
+                                  new CityDTO(a.getAirportDeparture().getCityEntity().getId(),a.getAirportDeparture().getCityEntity().getName(),
+                                          new CountryDTO(a.getAirportDeparture().getCityEntity().getCountryEntity().getId(),a.getAirportDeparture().getCityEntity().getCountryEntity().getName()))), /*airportDeparture*/
+                        new AirportDTO(a.getAirportArrival().getId(),a.getAirportArrival().getName(),a.getAirportArrival().getCode(),
+                                new CityDTO(a.getAirportArrival().getCityEntity().getId(),a.getAirportArrival().getCityEntity().getName(),
+                                        new CountryDTO(a.getAirportArrival().getCityEntity().getCountryEntity().getId(),a.getAirportArrival().getCityEntity().getCountryEntity().getName()))) /*airportArrival*/
+                ))
+                .collect(Collectors.toList());
+        return flightDTOList;
     }
 
     private FlightDTO mapFlightDTO(FlightEntity flightEntity) {
