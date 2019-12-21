@@ -9,6 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="jquery.datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="tail.select-bootstrap4.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/static/select/bootstrap4/tail.select-default.min.css}" />
     <link  rel="stylesheet" type="text/css" th:href="@{/static/css/error.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/c/main.css}" >
@@ -16,24 +18,64 @@
     <link  rel="stylesheet" type="text/css" th:href="@{/static/datetimepicker/jquery.datetimepicker.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/datetimepicker/jquery.datetimepicker.min.css}" >
     <div th:replace="/home/adminHeader :: acss"></div>
+    <div th:replace="header :: header-css"/>
 </head>
 <body>
+  <div th:replace="header :: header"/>
+<div id="container-1" >
 
-<!--<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <div th:replace="/home/adminHeader :: admin-header"/>
+    <div class="d-flex ">
+
+
+         <div class="control-group">
+             <form th:action="@{/findFlights}" method="post">
+              <div style="display: flex; flex-direction: row; padding-left: 300px;" >
+
+                 <div  >
+                   <h1 for="city_from" class="col-form-label text-center" style="color: blue"  th:text="#{text.from}"></h1>
+                   <select class="form-control col-lg-auto " name="city_from"  id="select1"  required  >
+                     <optgroup th:each="country : ${countries}"  th:label="${country.name}">
+                       <option th:each="city : ${country.cityDTOList}" th:name="c" th:value="${city.id}"  th:text="${city.name}"> </option>
+                     </optgroup>
+                   </select>
+
+                </div>
+
+                <div style="padding-left: 10px; " >
+                   <h1 for="city_to" class="col-form-label text-center" style="color: blue"  th:text="#{text.to}"></h1>
+                    <select class="form-control col-lg-auto " name="city_to"  id="select2"  required  >
+                        <optgroup th:each="country : ${countries}"  th:label="${country.name}">
+                          <option th:each="city : ${country.cityDTOList}" th:value="${city.id}"  th:text="${city.name}"> </option>
+                        </optgroup>
+                    </select>
+
+                 </div>
+
+
+                <div class="container text-center " style="padding-left: 10px;width: 200px;">
+                    <h1 for="picker1" class="col-form-label" th:text="#{text.time-departure}"></h1>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                          <button type="button" id="toggle" class="input-group-text"><i class="fa fa-calendar-alt" ></i></button>
+                        </div>
+                          <input type="text" name="picker1" id="picker1" class="form-control far">
+                    </div>
+                </div>
+
+                 <div style="padding-top: 37px">
+                       <input type="submit" class="btn btn-success" th:value="#{text.show}">
+                 </div>
+
+               </div>
+            </form>
+         </div>
+
+    </div>
 </div>
-<div sec:authorize="hasRole('ROLE_WORKER')">
-  <div th:replace="/home/workerHeader :: worker-header"/>
-</div>
--->
-<div th:replace="/home/adminHeader :: admin-header"/>
-<div id="container-1">
-
-</div>
 
 
 
-<div id="container-2">
+<div id="container-2" >
 
     <div class="menu col-md-3" style="padding: 0px 0px" >
         <div class="fancy-hover" id="home">
@@ -52,29 +94,54 @@
 
     <div class="content col-md-8" style="padding-left: 0px" >
     <div class="container " style="width: 800px; margin-top: -20px;">
+    <h2 th:text="${city_from.name}+'-'+${city_to.name}+'   '+${picker1}" style="color: #540070"></h2>
         <div class="card">
             <div class="card-body">
                <div th:switch="${flights}" class="container my-md-12">
-                    <p class="my-9">
-                        <a th:href="@{/flights/create}" class="btn btn-primary">
-                            <i class="fas fa-plus ml-2" th:text="#{text.flights}"></i></a>
-                    </p>
-                   <p></p>
+
                     <div class="col-md-12">
                          <h2 th:case="null" th:text="#{text.record.found}"></h2>
                         <div th:case="*">
 
                           <div class="card border-success" style="margin-bottom: 15px" th:each="flight : ${flights}">
                               <!-- Шапка (bg-primary - цвет фона, text-white - цвет текста) -->
-                              <div class="card-header bg-success text-white"
-                                    th:text="${flight.plane.companyDTO.name}">
-
+                              <div class="card-header bg-success text-white">
+                                    <span class="text-left" th:text="${flight.plane.companyDTO.name}"></span>
                               </div>
                               <!-- Текстовый контент -->
                               <div class="card-body">
-                                  <h4 class="card-title">Заголовок</h4>
-                                  <p class="card-text">...</p>
-                                  <a href="#" class="btn btn-primary">Ссылка</a>
+                              <div class="d-flex justify-content-between">
+                                   <div class="d-flex justify-content-start">
+                                     <div class="d-flex align-items-start flex-column">
+                                        <h1 th:text="${flight.timeDeparture}"></h1>
+                                        <span th:text="${flight.dateDeparture}"></span>
+                                        <span th:text="${flight.airportDeparture.cityDTO.name}" ></span>
+                                     </div>
+                                     <div class="d-flex align-items-start flex-column">
+                                        <img th:src="@{/static/images/pl_up.png}" style="width: 70px;height: 70px; " alt="pl_ap">
+                                        <h6 style="color: #4a2bff" th:text="${flight.airportDeparture.code}"></h6>
+                                     </div>
+                                   </div>
+                                   <div class="d-flex align-items-center flex-column ">
+                                         <h6 th:text="#{text.on-way}"></h6>
+                                         <h6 th:text="${flight.travelTime}"></h6>
+                                         <h6 th:text="#{text.without-stop}"></h6>
+                                   </div>
+                                   <div class="d-flex justify-content-start ">
+                                        <div class="d-flex align-items-end flex-column">
+                                          <img th:src="@{/static/images/pl_down.png}" style="width: 70px;height: 70px; " alt="pl_ap">
+                                          <h6 style="color: #4a2bff" th:text="${flight.airportArrival.code}"></h6>
+                                       </div>
+                                      <div class="d-flex align-items-end flex-column">
+                                         <h1 th:text="${flight.timeArrival}"></h1>
+                                         <span th:text="${flight.dateArrival}"></span>
+                                         <span th:text="${flight.airportArrival.cityDTO.name}"></span>
+                                      </div>
+
+                                    </div>
+                              </div>
+                                  <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
+                                  <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
                               </div>
                           </div>
 
@@ -87,7 +154,7 @@
     </div>
     </div>
 
-
+</div>
 <div id="container-3">
 
     <div class="footer">
@@ -96,7 +163,14 @@
 </div>
 <a href="#" class="scrollup">Наверх</a>
 
-<script type="text/javascript" th:src="@{/static/j/main.js}" src="../static/j/main.js"></script>
-<script type="text/javascript" th:src="@{/static/j/jquery-3.2.1.min.js}" src="../static/j/jquery-3.2.1.min.js" ></script>
+ <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+ <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+ <script  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script type="text/javascript" th:src="@{/static/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
+ <script type="text/javascript" th:src="@{/static/script/bootstrap-input-spinner.js}"></script>
+ <script type="text/javascript" th:src="@{/static/script/index.js}" src="../static/script/index.js"></script>
+ <script th:src="@{/static/select/tail.select-full.min.js}"></script>
 </body>
 </html>

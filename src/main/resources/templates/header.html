@@ -29,6 +29,11 @@
             <a th:href="@{?lang=ru}" class="de" ><img th:src="@{/static/images/ru.svg}" width="22" height="22" alt="lang_ru"></a><p></p>
         </div>
         <p></p>
+        <div>
+            <form class="form-inline my-2 my-lg-0" th:action="@{/login}" method="get">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{bt.sign-in}"></button>
+            </form>
+        </div>
     </nav>
 </div>
 </body>

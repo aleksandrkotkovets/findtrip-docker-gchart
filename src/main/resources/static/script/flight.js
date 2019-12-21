@@ -2,6 +2,7 @@ $(document).ready(function () {
     protocol = $(location).attr('protocol') + '//';
     hostUrl = $(location).attr('host');
 
+
     //City from
     const selectCity_fr = document.getElementById('select_city_fr');
     const selectButton_fr = document.getElementById('select_country_fr');
@@ -175,7 +176,7 @@ $(document).ready(function () {
                 maxDateTime: $('#picker2').val() ? $('#picker2').val() : false
             })
         }
-    })
+    });
 
     $('#picker2').datetimepicker({
         timepicker: true,
@@ -189,7 +190,7 @@ $(document).ready(function () {
                 minDateTime: $('#picker1').val() ? $('#picker1').val() : false
             })
         }
-    })
+    });
 
 
     // input-spinner
@@ -283,6 +284,11 @@ $(document).ready(function () {
             contentType: "application/json",
             method: "POST",
             data: JSON.stringify(flightDTO),
+            success: function(flight){
+                alert("Flight was created successfully")
+                url = protocol + hostUrl + "/findtrip/flights/worker";
+                window.location.replace(url) ;
+            },
             error: function (error) {
                 if (error.status == 409) {
                     var error_msg = error.responseJSON.message;
@@ -292,6 +298,7 @@ $(document).ready(function () {
             },
             dataType: "json"
         });
+
     });
 
     //click edit country_from button
@@ -639,6 +646,11 @@ $(document).ready(function () {
             contentType: "application/json",
             method: "POST",
             data: JSON.stringify(flightDTO),
+            success:function(flight){
+                alert("Flight was edited successfully")
+                url = protocol + hostUrl + "/findtrip/flights/worker";
+                window.location.replace(url) ;
+            },
             error: function (error) {
                 if (error.status == 409) {
                     var error_msg = error.responseJSON.message;

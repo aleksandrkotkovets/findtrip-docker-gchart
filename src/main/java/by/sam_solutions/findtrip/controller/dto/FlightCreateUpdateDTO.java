@@ -110,4 +110,22 @@ public class FlightCreateUpdateDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "FlightCreateUpdateDTO{" +
+                "cityFromId=" + cityFromId +
+                ", cityToId=" + cityToId +
+                ", airportFromId=" + airportFromId +
+                ", airportToId=" + airportToId +
+                ", dateDeparture=" + dateDeparture +
+                ", dateArrival=" + dateArrival +
+                ", planeId=" + planeId +
+                ", companyId=" + companyId +
+                ", allSeats=" + allSeats +
+                ", freeSeats=" + freeSeats +
+                ", ticketPrice=" + ticketPrice +
+                ", id=" + id +
+                '}';
+    }
 }

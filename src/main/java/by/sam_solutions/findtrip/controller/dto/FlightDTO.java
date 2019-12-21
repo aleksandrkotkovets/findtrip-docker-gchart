@@ -21,8 +21,18 @@ public class FlightDTO {
     @NotNull
     private Timestamp departureDate;
 
+    private String timeDeparture;
+
+    private String dateDeparture;
+
+    private String timeArrival;
+
+    private String dateArrival;
+
     @NotNull
     private Timestamp arrivalDate;
+
+    private String travelTime;
 
 //    private Set<TicketDTO> tickets;
 
@@ -119,5 +129,45 @@ public class FlightDTO {
 
     public void setAirportArrival(AirportDTO airportArrival) {
         this.airportArrival = airportArrival;
+    }
+
+    public String getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(String travelTime) {
+        this.travelTime = travelTime;
+    }
+
+    public String getTimeDeparture() {
+        return timeDeparture;
+    }
+
+    public void setTimeDeparture(String timeDeparture) {
+        this.timeDeparture = timeDeparture;
+    }
+
+    public String getDateDeparture() {
+        return dateDeparture;
+    }
+
+    public void setDateDeparture(String dateDeparture) {
+        this.dateDeparture = dateDeparture;
+    }
+
+    public String getTimeArrival() {
+        return timeArrival;
+    }
+
+    public void setTimeArrival(String timeArrival) {
+        this.timeArrival = timeArrival;
+    }
+
+    public String getDateArrival() {
+        return dateArrival;
+    }
+
+    public void setDateArrival(String dateArrival) {
+        this.dateArrival = dateArrival;
     }
 }

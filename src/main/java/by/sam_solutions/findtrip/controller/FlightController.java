@@ -6,6 +6,8 @@ import by.sam_solutions.findtrip.service.CompanyService;
 import by.sam_solutions.findtrip.service.CountryService;
 import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,16 +119,20 @@ public class FlightController {
     }
 
     @PostMapping()
-    public String addFlight(@RequestBody FlightCreateUpdateDTO flightDTO) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public FlightCreateUpdateDTO addFlight(@RequestBody FlightCreateUpdateDTO flightDTO) {
         flightService.addFlight(flightDTO);
-        return "flight/showFlights"; // edit on show flights
+        return flightDTO;
     }
 
     @PostMapping("/{id}")
-    public String addFlight(@PathVariable Long id,
-                            @RequestBody FlightCreateUpdateDTO flightDTO) {
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public FlightCreateUpdateDTO editFlight(@PathVariable Long id,
+                                    @RequestBody FlightCreateUpdateDTO flightDTO) {
         flightService.edit(flightDTO);
-        return "flight/showFlights";
+        return flightDTO;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -135,7 +141,7 @@ public class FlightController {
         return "withrole/admin/showFlights";
     }
 
-    @PreAuthorize("hasAnyRole('WORKER')")
+//    @PreAuthorize("hasAnyRole('WORKER')")
     @GetMapping("/worker")
     public String getShowFlightViewByWorker(Model model) {
         return "withrole/worker/showFlights";
@@ -146,5 +152,11 @@ public class FlightController {
     public String getShowFlightViewByClient(Model model) {
         return "withrole/client/showFlights";
     }
+
+   /* @GetMapping()
+    public String getFlightsByCriteria(Model model){
+
+        return null;
+    }*/
 
 }

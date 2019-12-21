@@ -4,6 +4,7 @@ import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.repository.entity.CountryEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface CountryService {
     CountryDTO findCountryByName(String name);
 
     List<CountryDTO> findAll();
+
+    List<CountryDTO> findAll(Sort name);
 }

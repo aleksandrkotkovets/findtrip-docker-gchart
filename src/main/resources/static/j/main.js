@@ -22,20 +22,6 @@ $(document).ready(function(){
         return false;
     });
 
-    $("#search").click(function () {
-        window.open("../html/search.html", "_self");
-    });
 
-    $("#home").click(function () {
-        window.open('../html/main.html', '_self');
-    });
-
-    $("#top").click(function () {
-        window.open('../html/topFilms.html', '_self');
-    });
-
-    $("#wait").click(function () {
-        window.open('../html/waitFilms.html', '_self');
-    });
 
 });

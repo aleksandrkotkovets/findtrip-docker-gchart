@@ -1,19 +1,25 @@
 package by.sam_solutions.findtrip.service.impl;
 
+import by.sam_solutions.findtrip.controller.dto.AirportDTO;
 import by.sam_solutions.findtrip.controller.dto.CityDTO;
+import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
 import by.sam_solutions.findtrip.repository.CountryRepository;
+import by.sam_solutions.findtrip.repository.entity.AirportEntity;
 import by.sam_solutions.findtrip.repository.entity.CityEntity;
+import by.sam_solutions.findtrip.repository.entity.CompanyEntity;
 import by.sam_solutions.findtrip.repository.entity.CountryEntity;
 import by.sam_solutions.findtrip.service.CountryService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.invoke.CallSite;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -103,6 +109,35 @@ public class CountryServiceImpl implements CountryService {
         countryEntities.sort(Comparator.comparing(o -> o.getName()));
         List<CountryDTO> countryDTOList = countryEntities.stream().map(a->new CountryDTO(a.getId(),a.getName())).collect(Collectors.toList());
 
+        return countryDTOList;
+    }
+
+    @Override
+    public List<CountryDTO> findAll(Sort name) {
+        List<CountryEntity> countryEntityList = countryRepository.findAll(name);
+
+        List<CountryDTO> countryDTOList = new ArrayList<>();
+        CountryDTO countryDTO;
+        CityDTO cityDTO;
+        for (CountryEntity countryEntity: countryEntityList){
+            countryDTO = new CountryDTO(countryEntity.getId(), countryEntity.getName());
+
+            List<CityDTO> cityDTOList= new ArrayList<>();
+            for(CityEntity cityEntity: countryEntity.getCities()){
+                cityDTO = new CityDTO(cityEntity.getId(),cityEntity.getName());
+
+                List<AirportDTO> airportDTOList = new ArrayList<>();
+                for(AirportEntity airportEntity: cityEntity.getAirports()){
+                    AirportDTO airportDTO = new AirportDTO(airportEntity.getId(), airportEntity.getName(), airportEntity.getCode());
+                    airportDTOList.add(airportDTO);
+                }
+
+                cityDTO.setAirportDTOList(airportDTOList);
+                cityDTOList.add(cityDTO);
+            }
+            countryDTO.setCityDTOList(cityDTOList);
+            countryDTOList.add(countryDTO);
+        }
         return countryDTOList;
     }
 
