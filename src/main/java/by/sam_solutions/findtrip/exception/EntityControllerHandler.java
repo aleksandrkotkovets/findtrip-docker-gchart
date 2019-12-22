@@ -2,13 +2,16 @@ package by.sam_solutions.findtrip.exception;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
+import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.repository.*;
 import by.sam_solutions.findtrip.repository.entity.AirportEntity;
 import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import by.sam_solutions.findtrip.repository.entity.Rating;
+import by.sam_solutions.findtrip.service.CountryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 @ControllerAdvice
@@ -34,6 +38,9 @@ public class EntityControllerHandler {
 
     @Autowired
     CountryRepository countryRepository;
+
+    @Autowired
+    CountryService countryService;
 
     @Autowired
     PlaneRepository planeRepository;
@@ -166,20 +173,23 @@ public class EntityControllerHandler {
     }
 
 
+    // Country Edit parameter
     @ExceptionHandler(CityIncorrectException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ModelAndView handleCitiesIncorrect(CityIncorrectException ex) {
+    public ModelAndView handleIncorrectCities(CityIncorrectException ex) {
         String error = ex.getMessage();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("flight/showFlights");
-        modelAndView.addObject("countries", countryRepository.findAll());
+        modelAndView.addObject("picker1",ex.date);
+        modelAndView.addObject("city_from",ex.cityDepart);
+        modelAndView.addObject("city_to",ex.cityArr);
+        modelAndView.addObject("countries", countryService.findAll(Sort.by("name")));
+        modelAndView.addObject("flights",null);
         modelAndView.addObject("apiError",apiError);
-
         return modelAndView;
     }
-
 
 
 }

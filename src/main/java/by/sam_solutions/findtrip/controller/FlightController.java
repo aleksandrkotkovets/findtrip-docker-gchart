@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.*;
+import by.sam_solutions.findtrip.security.CustomUserDetail;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.CompanyService;
 import by.sam_solutions.findtrip.service.CountryService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -148,15 +150,13 @@ public class FlightController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT')")
-    @GetMapping()
-    public String getShowFlightViewByClient(Model model) {
-        return "withrole/client/showFlights";
+    @GetMapping("/show/{id}")
+    public String getShowFlightViewByClient(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetail currentUser, Model model ) {
+        System.out.println(currentUser.getId());
+        model.addAttribute("flight",flightService.getById(id));
+        return "flight/buyTicket";
     }
 
-   /* @GetMapping()
-    public String getFlightsByCriteria(Model model){
 
-        return null;
-    }*/
 
 }

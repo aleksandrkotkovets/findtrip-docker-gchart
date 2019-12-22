@@ -95,9 +95,10 @@
     <div class="content col-md-8" style="padding-left: 0px" >
     <div class="container " style="width: 800px; margin-top: -20px;">
 
-    <h2  th:if="${apiError == null}" th:value="${city_from?.name}+'-'+${city_to?.name}+'   '+${picker1}" style="color: #540070"></h2>
-    <h2 class="error" th:unless="${apiError == null}" th:text="#{${'text.error.' + apiError?.getMessage()}}"
-    ></h2>
+    <h2  th:if="${apiError == null}"
+         th:text="${city_from?.name}+'-'+${city_to?.name}+'   '+${picker1}" style="color: #540070"></h2>
+     <div class="alert alert-warning" role="alert"  th:unless="${apiError == null}" th:text="#{${'text.error.' + apiError?.getMessage()}}"></div>
+
         <div class="card">
             <div class="card-body">
                <div th:switch="${flights}" class="container my-md-12">
@@ -119,6 +120,7 @@
                                         <h1 th:text="${flight.timeDeparture}"></h1>
                                         <span th:text="${flight.dateDeparture}"></span>
                                         <span th:text="${flight.airportDeparture.cityDTO.name}" ></span>
+                                        <span th:text="${flight.airportDeparture.name}" ></span>
                                      </div>
                                      <div class="d-flex align-items-start flex-column">
                                         <img th:src="@{/static/images/pl_up.png}" style="width: 70px;height: 70px; " alt="pl_ap">
@@ -139,12 +141,17 @@
                                          <h1 th:text="${flight.timeArrival}"></h1>
                                          <span th:text="${flight.dateArrival}"></span>
                                          <span th:text="${flight.airportArrival.cityDTO.name}"></span>
+                                         <span th:text="${flight.airportArrival.name}"></span>
                                       </div>
 
                                     </div>
                               </div>
                                   <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
+                                  <input type="hidden" id="flight_id" th:value="${flight?.id}">
+                                    <form th:action="@{/flights/show/{id}(id=${flight.id})}" method="get">
+                                      <button type="submit" class="btn badge-warning"  id="buy" th:text="#{text.buy}+' $'+${flight.price}"></button>
+                                    </form>
                               </div>
                           </div>
 
@@ -175,5 +182,7 @@
  <script type="text/javascript" th:src="@{/static/script/bootstrap-input-spinner.js}"></script>
  <script type="text/javascript" th:src="@{/static/script/index.js}" src="../static/script/index.js"></script>
  <script th:src="@{/static/select/tail.select-full.min.js}"></script>
+ <script type="text/javascript" th:src="@{/static/j/main.js}" src="../static/j/main.js"></script>
+
 </body>
 </html>

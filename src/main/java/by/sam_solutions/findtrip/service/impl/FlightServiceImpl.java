@@ -19,6 +19,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +42,9 @@ public class FlightServiceImpl implements FlightService {
     @Autowired
     CityService cityService;
 
-    private final int GET_HOURS_FROM_MILLISECONDS = 3600000;
+    private final int GET_HOURS_FROM_MILLISECONDS = 3_600_000;
     private final int THREE_DAYS = 72;
-    private final long DAY_IN_MILLISECONDS= 86340000;
+    private final int DAY_IN_MILLISECONDS = 86_399_000;
 
     @Override
 
@@ -176,22 +178,36 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<FlightDTO> findFlightsByCriteria(Long idCityDeparture, Long idCityArrival, String dateDeparture)  {
+    public List<FlightDTO> findFlightsByCriteria(Long idCityDeparture, Long idCityArrival, String dateDeparture) {
 
-        if(idCityDeparture == idCityArrival){
-            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(idCityDeparture),cityService.findOne(idCityArrival),dateDeparture);
+        if (idCityDeparture == idCityArrival) {
+            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(idCityDeparture), cityService.findOne(idCityArrival), dateDeparture);
         }
 
-        Timestamp dateD = null;
-        Timestamp finishD = null;
+        List<FlightEntity> flightEntities = new ArrayList<>();
         try {
-            dateD = parseDate(dateDeparture);
-            finishD = new Timestamp(dateD.getTime()+DAY_IN_MILLISECONDS);
+
+
+            Timestamp dateD = parseDate(dateDeparture);
+            Timestamp currD = parseDate(parseDate(new Timestamp(new Date().getTime())));
+            Timestamp finishD = new Timestamp(dateD.getTime() + DAY_IN_MILLISECONDS);
+
+
+            if (dateD.before(currD)) {
+                throw new CityIncorrectException("Incorrect_dates", cityService.findOne(idCityDeparture), cityService.findOne(idCityArrival), dateDeparture);
+            }
+
+            if (dateD.equals(currD)) {
+                dateD = new Timestamp(new Date().getTime());
+            }
+
+            flightEntities = flightRepository.findAllByAirportDeparture_CityEntityIdAndAirportArrival_CityEntityIdAndDepartureDateBetween(idCityDeparture, idCityArrival, dateD, finishD, Sort.by("departureDate"));
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        List<FlightEntity> flightEntities = flightRepository.findAllByAirportDeparture_CityEntityIdAndAirportArrival_CityEntityIdAndDepartureDateBetween(idCityDeparture,idCityArrival,dateD,finishD,Sort.by("departureDate"));
 
         return mapListFlightDTO(flightEntities);
     }
@@ -215,8 +231,8 @@ public class FlightServiceImpl implements FlightService {
         return parseTime;
     }
 
-    private String parseDate(Timestamp timestamp){
-        return  new SimpleDateFormat("yyyy-MM-dd ").format(timestamp.getTime());
+    private String parseDate(Timestamp timestamp) {
+        return new SimpleDateFormat("yyyy-MM-dd ").format(timestamp.getTime());
 
     }
 
@@ -293,10 +309,24 @@ public class FlightServiceImpl implements FlightService {
         planeDTO.setCompanyDTO(companyDTO);
 
         flightDTO.setPlane(planeDTO);
+
+
+        String travelTime = calcTravelTime(flightDTO.getDepartureDate(), flightDTO.getArrivalDate());
+        flightDTO.setTravelTime(travelTime);
+
+        String timeD = parseTime(flightDTO.getDepartureDate());
+        flightDTO.setTimeDeparture(timeD);
+
+        String timeA = parseTime(flightDTO.getArrivalDate());
+        flightDTO.setTimeArrival(timeA);
+
+        flightDTO.setDateDeparture(parseDate(flightDTO.getDepartureDate()));
+        flightDTO.setDateArrival(parseDate(flightDTO.getArrivalDate()));
+
         return flightDTO;
     }
 
-    private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList){
+    private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
         List<FlightDTO> flightDTOList = flightEntityList.stream()
                 .map(a -> new FlightDTO(
                         a.getId(),

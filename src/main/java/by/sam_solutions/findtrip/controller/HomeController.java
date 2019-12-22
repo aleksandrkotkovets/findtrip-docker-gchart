@@ -44,9 +44,8 @@ public class HomeController {
     }
 
     @GetMapping(value = "/home")
-    public String getMainAdminView(Model model, @AuthenticationPrincipal CustomUserDetail currentUser) {
-        Long idUser = userService.getUserByCriteria(null, currentUser.getUsername(), null);
-        model.addAttribute("id", idUser);
+    public String getHomeView(Model model, @AuthenticationPrincipal CustomUserDetail currentUser) {
+        model.addAttribute("id", currentUser.getId());
         return "home/home";
     }
 
@@ -65,20 +64,25 @@ public class HomeController {
         modelAndView.addObject("city_from",cityService.findOne(idCityDeparture));
         modelAndView.addObject("city_to",cityService.findOne(idCityArrival));
         modelAndView.setViewName("flight/showFlights");
+
         List<FlightDTO> flightDTOList = null;
-        try {
+        /** Расскоментировать*/
+       /* try {
             flightDTOList = flightService.findFlightsByCriteria(idCityDeparture, idCityArrival, dateDeparture);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
+        flightDTOList = flightService.findAll();
         modelAndView.addObject("flights", flightDTOList.size()==0? null: flightDTOList);
         return modelAndView;
     }
 
     @GetMapping("/findFlights")
-    public String getFlightByCriteria(Model model) {
-        model.addAttribute("flights",  null);
-        return "flight/showFlights";
+    public ModelAndView getFlightByCriteria() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("flight/showFlights");
+        modelAndView.addObject("flights",  null);
+        return modelAndView;
     }
 
     @GetMapping("/login")

@@ -3,6 +3,7 @@ package by.sam_solutions.findtrip.repository.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,10 +16,11 @@ public class TicketEntity extends BaseEntity {
     private Integer seat;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "order_date",columnDefinition = "timestamp")
-    private Date orderDate;
+    private Double finalCost;
 
+    @NotNull
+    @Column(name = "order_date",columnDefinition = "timestamp")
+    private Timestamp orderDate;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,9 +32,6 @@ public class TicketEntity extends BaseEntity {
     @NotNull
     private FlightEntity flight;
 
-    public TicketEntity() {
-    }
-
     public Integer getSeat() {
         return seat;
     }
@@ -41,11 +40,11 @@ public class TicketEntity extends BaseEntity {
         this.seat = seat;
     }
 
-    public Date getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -65,30 +64,11 @@ public class TicketEntity extends BaseEntity {
         this.flight = flight;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TicketEntity that = (TicketEntity) o;
-        return Objects.equals(seat, that.seat) &&
-                Objects.equals(orderDate, that.orderDate) &&
-                Objects.equals(owner, that.owner) &&
-                Objects.equals(flight, that.flight);
+    public Double getFinalCost() {
+        return finalCost;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(seat, orderDate, owner, flight);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("TicketEntity{");
-        sb.append("seat=").append(seat);
-        sb.append(", orderDate=").append(orderDate);
-        sb.append(", owner=").append(owner);
-        sb.append(", flight=").append(flight);
-        sb.append('}');
-        return sb.toString();
+    public void setFinalCost(Double finalCost) {
+        this.finalCost = finalCost;
     }
 }
