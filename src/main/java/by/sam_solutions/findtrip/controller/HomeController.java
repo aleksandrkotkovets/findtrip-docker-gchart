@@ -75,6 +75,12 @@ public class HomeController {
         return modelAndView;
     }
 
+    @GetMapping("/findFlights")
+    public String getFlightByCriteria(Model model) {
+        model.addAttribute("flights",  null);
+        return "flight/showFlights";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";

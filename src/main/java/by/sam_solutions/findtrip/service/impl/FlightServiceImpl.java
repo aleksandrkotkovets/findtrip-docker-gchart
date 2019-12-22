@@ -1,12 +1,14 @@
 package by.sam_solutions.findtrip.service.impl;
 
 import by.sam_solutions.findtrip.controller.dto.*;
+import by.sam_solutions.findtrip.exception.CityIncorrectException;
 import by.sam_solutions.findtrip.exception.FlightDateIncorrectException;
 import by.sam_solutions.findtrip.repository.AirportRepository;
 import by.sam_solutions.findtrip.repository.FlightRepository;
 import by.sam_solutions.findtrip.repository.PlaneRepository;
 import by.sam_solutions.findtrip.repository.entity.FlightEntity;
 import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
+import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -34,6 +36,9 @@ public class FlightServiceImpl implements FlightService {
 
     @Autowired
     AirportRepository airportRepository;
+
+    @Autowired
+    CityService cityService;
 
     private final int GET_HOURS_FROM_MILLISECONDS = 3600000;
     private final int THREE_DAYS = 72;
@@ -172,6 +177,10 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<FlightDTO> findFlightsByCriteria(Long idCityDeparture, Long idCityArrival, String dateDeparture)  {
+
+        if(idCityDeparture == idCityArrival){
+            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(idCityDeparture),cityService.findOne(idCityArrival),dateDeparture);
+        }
 
         Timestamp dateD = null;
         Timestamp finishD = null;

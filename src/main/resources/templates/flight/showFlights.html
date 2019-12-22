@@ -63,7 +63,7 @@
                 </div>
 
                  <div style="padding-top: 37px">
-                       <input type="submit" class="btn btn-success" th:value="#{text.show}">
+                       <input type="submit" class="btn btn-success" id="show" th:value="#{text.show}">
                  </div>
 
                </div>
@@ -94,7 +94,10 @@
 
     <div class="content col-md-8" style="padding-left: 0px" >
     <div class="container " style="width: 800px; margin-top: -20px;">
-    <h2 th:text="${city_from.name}+'-'+${city_to.name}+'   '+${picker1}" style="color: #540070"></h2>
+
+    <h2  th:if="${apiError == null}" th:value="${city_from?.name}+'-'+${city_to?.name}+'   '+${picker1}" style="color: #540070"></h2>
+    <h2 class="error" th:unless="${apiError == null}" th:text="#{${'text.error.' + apiError?.getMessage()}}"
+    ></h2>
         <div class="card">
             <div class="card-body">
                <div th:switch="${flights}" class="container my-md-12">

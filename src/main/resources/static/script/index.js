@@ -20,4 +20,21 @@ $(document).ready(function () {
         deselect: true
     });
 
+    $('#show').click(function () {
+        // $('#error-dates').text("");
+        var cityFromId = $('#select1').val();
+        var cityToId = $("#select2").val();
+        var dateDeparture = $("#picker1").val() + "";
+
+        var dateD = Date.parse(dateDeparture) + "";
+
+        var currentDate = new Date();
+        var currD = Date.parse(currentDate);
+
+        if (dateD < currD) {
+            // $('#error-dates').text("Incorrect dates");
+            return;
+        }
+
+    });
 });
