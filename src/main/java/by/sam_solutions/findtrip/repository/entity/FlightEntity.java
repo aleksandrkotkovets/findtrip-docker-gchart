@@ -40,7 +40,7 @@ public class FlightEntity extends BaseEntity {
     private Timestamp arrivalDate;
 
     @OneToMany(mappedBy = "flight")
-    private Set<TicketEntity> tickets;
+    private Set<OrderEntity> orders;
 
     @ManyToOne(optional = false, cascade = ALL , fetch = FetchType.LAZY)
     @JoinColumn(name = "plane_id")
@@ -100,12 +100,12 @@ public class FlightEntity extends BaseEntity {
         this.arrivalDate = arrivalDate;
     }
 
-    public Set<TicketEntity> getTickets() {
-        return tickets;
+    public Set<OrderEntity> getOrders() {
+        return orders;
     }
 
-    public void setTickets(Set<TicketEntity> tickets) {
-        this.tickets = tickets;
+    public void setTickets(Set<OrderEntity> orders) {
+        this.orders = orders;
     }
 
     public PlaneEntity getPlane() {

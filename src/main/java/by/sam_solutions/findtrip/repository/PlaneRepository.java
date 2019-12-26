@@ -23,9 +23,9 @@ public interface PlaneRepository extends JpaRepository<PlaneEntity, Long> {
 
 
 
-    @Query(value = "select t.id  from transport t where t.side_number=?1", nativeQuery = true)
+    @Query(value = "select p.id  from plane p where p.side_number=?1", nativeQuery = true)
     Long findIdBySideNumber(String sideNumber);
 
-    @Query(value = "select t.company_id from transport t where t.id=?1",nativeQuery = true)
+    @Query(value = "select p.company_id from plane p where p.id=?1",nativeQuery = true)
     Long getCompanyIdByPlaneId(Long id);
 }

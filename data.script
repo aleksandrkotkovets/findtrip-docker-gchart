@@ -39,7 +39,7 @@ INSERT INTO public.company (id, name, rating) VALUES (19, 'WizzAir', 'FIVE_STARS
 
 
 ---transport---
-INSERT INTO public.transport (id, name, company_id, side_number) VALUES (52, 'Boeing 737-300', 17, 'B2975');
-INSERT INTO public.transport (id, name, company_id, side_number) VALUES (54, 'CRJ 100', 18, 'W3534');
-INSERT INTO public.transport (id, name, company_id, side_number) VALUES (55, 'Embraer 195', 18, 'W3545');
-INSERT INTO public.transport (id, name, company_id, side_number) VALUES (51, 'Boeing 738-500', 17, 'B2734');
+INSERT INTO public.plane (id, name, company_id, side_number) VALUES (52, 'Boeing 737-300', 17, 'B2975');
+INSERT INTO public.plane (id, name, company_id, side_number) VALUES (54, 'CRJ 100', 18, 'W3534');
+INSERT INTO public.plane (id, name, company_id, side_number) VALUES (55, 'Embraer 195', 18, 'W3545');
+INSERT INTO public.plane (id, name, company_id, side_number) VALUES (51, 'Boeing 738-500', 17, 'B2734');

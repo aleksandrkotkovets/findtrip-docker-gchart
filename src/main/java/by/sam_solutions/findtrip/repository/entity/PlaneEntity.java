@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "transport")
+@Table(name = "plane")
 public class PlaneEntity extends BaseEntity{
 
     @NotNull

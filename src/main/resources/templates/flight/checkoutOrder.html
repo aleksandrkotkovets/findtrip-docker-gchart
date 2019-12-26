@@ -87,7 +87,6 @@
                        <input type="hidden" id="allseats" th:value="${flight?.id}">
                        <h6 class="card-text" th:text="#{text.seat-price}+'($): '+${flight.price}"></h6>
                         <input type="hidden" id="price" th:value="${flight?.price}">
-
                    </div>
               </div>
 
@@ -108,6 +107,9 @@
                   <input type="text" class="form-control" id="finalCost" data-decimals="2" readonly>
                 </div>
                 </div>
+                </div>
+                <div>
+                    <p type="text" class="error" id="error-dates"></p>
                 </div>
               </div>
 

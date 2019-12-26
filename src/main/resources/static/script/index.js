@@ -36,7 +36,6 @@ $(document).ready(function () {
     });
 
 
-
 });
 
 
@@ -45,10 +44,26 @@ $('#buy').click(function () {
     var idFlight = $('#idFlight').val();
     var finalCost = $('#finalCost').val();
     var countSeats = $('#countSeats').val();
+    var priceOneSeat = $('#price').val();
+    var freeSeats = $('#freeSeats').val();
 
+    if (countSeats > freeSeats ) {
+        var error_msg = "Please, enter correct count of seats number.";
+       console.log(countSeats);
+       console.log(freeSeats);
+        $('#error-dates').text(error_msg);
+        return;
+    }
+
+    if ( freeSeats==0 ) {
+        var error_msg = "No free seats on the flight"
+        $('#error-dates').text(error_msg);
+        return;
+    }
     console.log(
         "idFlight = " + idFlight + '\n' +
         "finalCost = " + finalCost + '\n' +
+        "priceOneSeat = " + priceOneSeat + '\n' +
         "countSeats = " + countSeats + '\n'
     );
 
@@ -58,20 +73,21 @@ $('#buy').click(function () {
         "idFlight": idFlight,
         "finalCost": finalCost,
         "countSeats": countSeats,
+        "priceOneSeat": priceOneSeat,
         "idClient": null,
         "id": null
 
     };
     console.log(JSON.stringify(ticketDTO));
     $.ajax({
-        url: localServerUrl + "findtrip/tickets/buy",
+        url: localServerUrl + "findtrip/orders/checkout",
         contentType: "application/json",
         method: "POST",
         data: JSON.stringify(ticketDTO),
-        success: function(ticket){
-            alert("Ticket was both successfully")
-            /*url = protocol + hostUrl + "/findtrip/home";
-            window.location.replace(url) ;*/
+        success: function (ticket) {
+            alert("Ticket was both successfully");
+            url = localServerUrl + "findtrip/home";
+            window.location.replace(url);
         },
         error: function (error) {
             if (error.status == 409) {
@@ -84,7 +100,6 @@ $('#buy').click(function () {
     });
 
 });
-
 
 
 function onAjaxSuccess(data, status) {

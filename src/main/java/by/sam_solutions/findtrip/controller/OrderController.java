@@ -1,8 +1,9 @@
 package by.sam_solutions.findtrip.controller;
 
+import by.sam_solutions.findtrip.controller.dto.OrderCreateUpdateDTO;
 import by.sam_solutions.findtrip.controller.dto.TicketCreateUpdateDTO;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
-import by.sam_solutions.findtrip.service.TicketService;
+import by.sam_solutions.findtrip.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/tickets")
-public class TicketController {
+@RequestMapping("/orders")
+public class OrderController {
 
     @Autowired
-    TicketService ticketService;
+    OrderService orderService;
 
     @PreAuthorize("hasAnyRole('CLIENT')")
-    @PostMapping("/buy")
+    @PostMapping("/checkout")
     @ResponseBody
-    public TicketCreateUpdateDTO addTicket(@RequestBody TicketCreateUpdateDTO ticketDTO, @AuthenticationPrincipal CustomUserDetail currentUser){
-        ticketDTO.setIdClient(currentUser.getId());
-        ticketService.add(ticketDTO);
-        return ticketDTO;
+    public OrderCreateUpdateDTO addTicket(@RequestBody OrderCreateUpdateDTO orderDTO, @AuthenticationPrincipal CustomUserDetail currentUser){
+        orderDTO.setIdClient(currentUser.getId());
+        orderService.add(orderDTO);
+        return orderDTO;
     }
 }

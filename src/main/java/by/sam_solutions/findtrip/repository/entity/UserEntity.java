@@ -37,8 +37,8 @@ public class UserEntity extends BaseEntity {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private Set<TicketEntity> tickets;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<OrderEntity> orders;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_id")
@@ -121,14 +121,6 @@ public class UserEntity extends BaseEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<TicketEntity> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(Set<TicketEntity> tickets) {
-        this.tickets = tickets;
-    }
-
     public WalletEntity getWallet() {
         return wallet;
     }
@@ -145,5 +137,11 @@ public class UserEntity extends BaseEntity {
         this.roleEntity = role;
     }
 
+    public Set<OrderEntity> getOrders() {
+        return orders;
+    }
 
+    public void setOrders(Set<OrderEntity> orders) {
+        this.orders = orders;
+    }
 }

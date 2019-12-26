@@ -32,7 +32,7 @@
                                    <label for="name" class="col-form-label" th:text="#{text.name}"></label>
                                        <input type="text" th:value="${name}" th:name="name" class="form-control"
                                        id="airport" th:placeholder="#{text.name}" autofocus required
-                                       pattern="([A-Z])([a-zA-Z-\s?']{3,29})" maxlength="30"/>
+                                       pattern="([A-Z])([a-zA-Z1-9-\s?']{3,29})" maxlength="30"/>
                                        <span class="form__error" th:text="#{text.error.airport}"></span>
                                   </div>
 

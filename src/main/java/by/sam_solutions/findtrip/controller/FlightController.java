@@ -8,7 +8,6 @@ import by.sam_solutions.findtrip.service.CountryService;
 import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -152,9 +151,8 @@ public class FlightController {
     @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/show/{id}")
     public String getShowFlightViewByClient(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetail currentUser, Model model ) {
-        System.out.println(currentUser.getId());
         model.addAttribute("flight",flightService.getById(id));
-        return "flight/buyTicket";
+        return "flight/checkoutOrder";
     }
 
 
