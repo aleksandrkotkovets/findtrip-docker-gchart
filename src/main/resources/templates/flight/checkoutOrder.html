@@ -115,11 +115,7 @@
 
               <div class="modal-footer">
 
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{bt.back}"></button>
-                <!--<form th:action="@{/flights/buy/{id}(id=${flight.id})}" method="post">
-                  <button type="submit" class="btn btn-success" id="buy" th:text="#{text.buy}"></button>
-                </form> -->
-
+                <a  th:href="@{/}" class="btn btn-secondary" data-dismiss="modal" th:text="#{bt.back}"></a>
                 <button class="btn btn-success" id="buy" th:text="#{text.buy}"></button>
               </div>
 

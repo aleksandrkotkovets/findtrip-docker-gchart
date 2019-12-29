@@ -21,58 +21,7 @@
     <div th:replace="header :: header-css"/>
 </head>
 <body>
-  <div th:replace="header :: header"/>
-
-<div id="container-1" >
-
-    <div class="d-flex ">
-
-
-         <div class="control-group">
-             <form th:action="@{/findFlights}" method="post">
-              <div style="display: flex; flex-direction: row; padding-left: 300px;" >
-
-                 <div  >
-                   <h1 for="city_from" class="col-form-label text-center" style="color: blue"  th:text="#{text.from}"></h1>
-                   <select class="form-control col-lg-auto " name="city_from"  id="select1"  required  >
-                     <optgroup th:each="country : ${countries}"  th:label="${country.name}">
-                       <option th:each="city : ${country.cityDTOList}" th:name="c" th:value="${city.id}"  th:text="${city.name}"> </option>
-                     </optgroup>
-                   </select>
-
-                </div>
-
-                <div style="padding-left: 10px; " >
-                   <h1 for="city_to" class="col-form-label text-center" style="color: blue"  th:text="#{text.to}"></h1>
-                    <select class="form-control col-lg-auto " name="city_to"  id="select2"  required  >
-                        <optgroup th:each="country : ${countries}"  th:label="${country.name}">
-                          <option th:each="city : ${country.cityDTOList}" th:value="${city.id}"  th:text="${city.name}"> </option>
-                        </optgroup>
-                    </select>
-
-                 </div>
-
-
-                <div class="container text-center " style="padding-left: 10px;width: 200px;">
-                    <h1 for="picker1" class="col-form-label" th:text="#{text.time-departure}"></h1>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <button type="button" id="toggle" class="input-group-text"><i class="fa fa-calendar-alt" ></i></button>
-                        </div>
-                          <input type="text" name="picker1" id="picker1" class="form-control far">
-                    </div>
-                </div>
-
-                 <div style="padding-top: 37px">
-                       <input type="submit" class="btn btn-success" id="show" th:value="#{text.show}">
-                 </div>
-
-               </div>
-            </form>
-         </div>
-
-    </div>
-</div>
+  <div th:replace="/home/clientHeader :: client-header"/>
 
 
 
@@ -96,64 +45,75 @@
     <div class="content col-md-8" style="padding-left: 0px" >
     <div class="container " style="width: 800px; margin-top: -20px;">
 
-    <h2  th:if="${apiError == null}"
-         th:text="${city_from?.name}+'-'+${city_to?.name}+'   '+${picker1}" style="color: #540070"></h2>
+
      <div class="alert alert-warning" role="alert"  th:unless="${apiError == null}" th:text="#{${'text.error.' + apiError?.getMessage()}}"></div>
 
         <div class="card">
             <div class="card-body">
-               <div th:switch="${flights}" class="container my-md-12">
+               <div th:switch="${orders}" class="container my-md-12">
 
                     <div class="col-md-12">
                          <h2 th:case="null" th:text="#{text.record.found}"></h2>
                         <div th:case="*">
 
-                          <div class="card border-success" style="margin-bottom: 15px" th:each="flight : ${flights}">
+                          <div class="card border-success " style="margin-bottom: 15px" th:each="order : ${orders}">
+                            <div class="MyOrder">
                               <!-- Шапка (bg-primary - цвет фона, text-white - цвет текста) -->
                               <div class="card-header bg-success text-white">
-                                    <span class="text-left" th:text="${flight.plane.companyDTO.name}"></span>
+                               <div class="d-flex justify-content-between">
+                               <h6 class="" th:text="#{text.company}+': '+${order.flightDTO.plane.companyDTO.name}"></h6>
+                               <h6 class="" th:text="#{text.plane}+': '+${order.flightDTO.plane.name}"></h6>
+                               <h6 class="" th:text="#{text.side-number}+': '+${order.flightDTO.plane.sideNumber}"></h6>
+                               </div>
                               </div>
                               <!-- Текстовый контент -->
-                              <div class="card-body">
-                              <div class="d-flex justify-content-between">
+                             <div class="card-body" >
+                             <div class="d-flex justify-content-between">
                                    <div class="d-flex justify-content-start">
                                      <div class="d-flex align-items-start flex-column">
-                                        <h1 th:text="${flight.timeDeparture}"></h1>
-                                        <span th:text="${flight.dateDeparture}"></span>
-                                        <span th:text="${flight.airportDeparture.cityDTO.name}" ></span>
-                                        <span th:text="${flight.airportDeparture.name}" ></span>
+                                        <h1 th:text="${order.flightDTO.timeDeparture}"></h1>
+                                        <span th:text="${order.flightDTO.dateDeparture}"></span>
+                                        <span th:text="${order.flightDTO.airportDeparture.cityDTO.name}" ></span>
+                                        <span th:text="${order.flightDTO.airportDeparture.name}" ></span>
                                      </div>
                                      <div class="d-flex align-items-start flex-column">
                                         <img th:src="@{/static/images/pl_up.png}" style="width: 70px;height: 70px; " alt="pl_ap">
-                                        <h6 style="color: #4a2bff" th:text="${flight.airportDeparture.code}"></h6>
+                                        <h6 style="color: #4a2bff" th:text="${order.flightDTO.airportDeparture.code}"></h6>
                                      </div>
                                    </div>
                                    <div class="d-flex align-items-center flex-column ">
                                          <h6 th:text="#{text.on-way}"></h6>
-                                         <h6 th:text="${flight.travelTime}"></h6>
+                                         <h6 th:text="${order.flightDTO.travelTime}"></h6>
                                          <h6 th:text="#{text.without-stop}"></h6>
                                    </div>
                                    <div class="d-flex justify-content-start ">
                                         <div class="d-flex align-items-end flex-column">
                                           <img th:src="@{/static/images/pl_down.png}" style="width: 70px;height: 70px; " alt="pl_ap">
-                                          <h6 style="color: #4a2bff" th:text="${flight.airportArrival.code}"></h6>
+                                          <h6 style="color: #4a2bff" th:text="${order.flightDTO.airportArrival.code}"></h6>
                                        </div>
                                       <div class="d-flex align-items-end flex-column">
-                                         <h1 th:text="${flight.timeArrival}"></h1>
-                                         <span th:text="${flight.dateArrival}"></span>
-                                         <span th:text="${flight.airportArrival.cityDTO.name}"></span>
-                                         <span th:text="${flight.airportArrival.name}"></span>
+                                         <h1 th:text="${order.flightDTO.timeArrival}"></h1>
+                                         <span th:text="${order.flightDTO.dateArrival}"></span>
+                                         <span th:text="${order.flightDTO.airportArrival.cityDTO.name}"></span>
+                                         <span th:text="${order.flightDTO.airportArrival.name}"></span>
                                       </div>
 
                                     </div>
                               </div>
-                                  <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
-                                  <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
-                                  <input type="hidden" id="flight_id" th:value="${flight?.id}">
-                                    <form th:action="@{/flights/show/{id}(id=${flight.id})}" method="get">
-                                      <button type="submit" class="btn badge-warning"  id="buy" th:text="#{text.buy}+' $'+${flight.price}"></button>
-                                    </form>
+                                    <h6 class="card-text" th:text="#{text.count-tickets}+': '+${order.ticketDTOList.size()}"></h6>
+                                    <h6 class="card-text" th:text="#{text.seat-price}+'($): '+${order.ticketDTOList.get(0).price}"></h6>
+                                    <h6 class="card-text" th:text="#{text.final-cost}+'($): '+${order.finalCost}"></h6>
+                                    <h6 class="card-text" th:text="#{text.order-date}+': '+${order.orderDate}"></h6>
+                                    <input type="hidden" id="order_id" th:value="${order?.id}">
+                                    <input type="hidden" id="ser" th:value="${order?.finalCost}">
                               </div>
+                              <div class="card-footer d-flex justify-content-between">
+                                <h4 th:text="'№ '+${order.id}" ></h4>
+                                <!-- Button trigger modal -->
+                                <a   class="btn btn-primary"  th:href="@{/orders/return/{id}(id=${order.id})}" th:text="#{text.return-tickets}"></a>
+                               </div>
+                               </div>
+
                           </div>
 
                         </div>
@@ -166,12 +126,15 @@
     </div>
 
 </div>
+
 <div id="container-3">
-
     <div class="footer">
-
     </div>
 </div>
+
+
+
+
 <a href="#" class="scrollup">Наверх</a>
 
  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -181,7 +144,6 @@
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  <script type="text/javascript" th:src="@{/static/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
  <script type="text/javascript" th:src="@{/static/script/bootstrap-input-spinner.js}"></script>
- <script type="text/javascript" th:src="@{/static/script/index.js}" src="../static/script/index.js"></script>
  <script th:src="@{/static/select/tail.select-full.min.js}"></script>
  <script type="text/javascript" th:src="@{/static/j/main.js}" src="../static/j/main.js"></script>
 

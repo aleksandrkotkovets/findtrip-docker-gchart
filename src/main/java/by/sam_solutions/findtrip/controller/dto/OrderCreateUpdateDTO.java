@@ -8,6 +8,8 @@ public class OrderCreateUpdateDTO {
     private Long idClient;
     private Double priceOneSeat;
     private Double finalCost;
+    private Double returnMoney;
+    private Integer returnTickets;
 
     public Long getId() {
         return id;
@@ -57,6 +59,22 @@ public class OrderCreateUpdateDTO {
         this.finalCost = finalCost;
     }
 
+    public Double getReturnMoney() {
+        return returnMoney;
+    }
+
+    public void setReturnMoney(Double returnMoney) {
+        this.returnMoney = returnMoney;
+    }
+
+    public Integer getReturnTickets() {
+        return returnTickets;
+    }
+
+    public void setReturnTickets(Integer returnTickets) {
+        this.returnTickets = returnTickets;
+    }
+
     @Override
     public String toString() {
         return "OrderCreateUpdateDTO{" +
@@ -66,6 +84,8 @@ public class OrderCreateUpdateDTO {
                 ", idClient=" + idClient +
                 ", priceOneSeat=" + priceOneSeat +
                 ", finalCost=" + finalCost +
+                ", returnMoney=" + returnMoney +
+                ", returnTickets=" + returnTickets +
                 '}';
     }
 }

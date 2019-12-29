@@ -43,14 +43,13 @@ $('#buy').click(function () {
     // $('#error-dates').text("");
     var idFlight = $('#idFlight').val();
     var finalCost = $('#finalCost').val();
-    var countSeats = $('#countSeats').val();
+    var countSeats =parseInt($('#countSeats').val(), 10);
     var priceOneSeat = $('#price').val();
-    var freeSeats = $('#freeSeats').val();
+    var freeSeats = parseInt($('#freeSeats').val(),10);
 
     if (countSeats > freeSeats ) {
         var error_msg = "Please, enter correct count of seats number.";
-       console.log(countSeats);
-       console.log(freeSeats);
+
         $('#error-dates').text(error_msg);
         return;
     }

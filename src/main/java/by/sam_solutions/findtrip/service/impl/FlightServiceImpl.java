@@ -253,7 +253,7 @@ public class FlightServiceImpl implements FlightService {
         return travelTime;
     }
 
-    private FlightDTO mapFlightDTO(FlightEntity flightEntity) {
+    public FlightDTO mapFlightDTO(FlightEntity flightEntity) {
         FlightDTO flightDTO = new FlightDTO();
 
         flightDTO.setId(flightEntity.getId());

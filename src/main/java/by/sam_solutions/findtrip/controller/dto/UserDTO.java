@@ -10,11 +10,11 @@ public class UserDTO {
     private Long id;
 
     @NotNull
-    @Size(min = 3,max = 14)
+    @Size(min = 3, max = 14)
     private String login;
 
     @NotNull
-    @Size(min = 8,max = 14)
+    @Size(min = 8, max = 14)
     private String password;
 
     @NotNull
@@ -22,15 +22,15 @@ public class UserDTO {
     private String email;
 
     @NotNull
-    @Size(min = 3,max = 14)
+    @Size(min = 3, max = 14)
     private String firstName;
 
     @NotNull
-    @Size(min = 3,max = 14)
+    @Size(min = 3, max = 14)
     private String lastName;
 
     @NotNull
-    @Size(min = 3,max = 14)
+    @Size(min = 3, max = 14)
     private String patronymic;
 
     @NotNull
@@ -63,6 +63,16 @@ public class UserDTO {
         this.patronymic = patronymic;
         this.phoneNumber = phoneNumber;
         this.role = role;
+    }
+
+    public UserDTO(String login, String password, String email, String firstName, String lastName, String patronymic, String phoneNumber) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
