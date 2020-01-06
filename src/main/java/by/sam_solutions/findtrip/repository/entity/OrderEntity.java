@@ -21,17 +21,17 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "order_date",columnDefinition = "timestamp")
     private Timestamp orderDate;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
     private UserEntity user;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id")
     @NotNull
     private FlightEntity flight;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<TicketEntity> tickets;
 
     public OrderEntity() {
@@ -42,7 +42,6 @@ public class OrderEntity extends BaseEntity {
         this.orderDate = orderDate;
         this.user = user;
         this.flight = flight;
-        this.tickets = tickets;
     }
 
     public Timestamp getOrderDate() {
@@ -84,4 +83,5 @@ public class OrderEntity extends BaseEntity {
     public void setFinalCost(Double finalCost) {
         this.finalCost = finalCost;
     }
+
 }

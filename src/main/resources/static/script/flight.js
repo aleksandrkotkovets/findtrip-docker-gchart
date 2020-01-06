@@ -285,7 +285,7 @@ $(document).ready(function () {
             method: "POST",
             data: JSON.stringify(flightDTO),
             success: function(flight){
-                alert("Flight was created successfully")
+                alert("Flight was created successfully");
                 url = protocol + hostUrl + "/findtrip/flights/worker";
                 window.location.replace(url) ;
             },

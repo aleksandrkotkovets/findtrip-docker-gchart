@@ -84,7 +84,7 @@ $('#buy').click(function () {
         method: "POST",
         data: JSON.stringify(ticketDTO),
         success: function (ticket) {
-            alert("Ticket was both successfully");
+            alert("Ticket(s) was both successfully");
             url = localServerUrl + "findtrip/home";
             window.location.replace(url);
         },
@@ -101,11 +101,65 @@ $('#buy').click(function () {
 });
 
 
-function onAjaxSuccess(data, status) {
-    alert(data);
-    alert(status);
-}
 
-function onAjaxError(error) {
-    alert(error)
-}
+$('#takeMoreTicketsBtn').click(function () {
+    // $('#error-dates').text("");
+    var idOrder = $('#idOrder').val();
+    var idFlight = $('#idFlight').val();
+    var finalCost = $('#finalCost').val();
+    var countSeats =parseInt($('#countSeats').val(), 10);
+    var priceOneSeat = $('#price').val();
+    var freeSeats = parseInt($('#freeSeats').val(),10);
+
+    if (countSeats > freeSeats ) {
+        var error_msg = "Please, enter correct count of seats number.";
+
+        $('#error-dates').text(error_msg);
+        return;
+    }
+
+    if ( freeSeats==0 ) {
+        var error_msg = "No free seats on the flight"
+        $('#error-dates').text(error_msg);
+        return;
+    }
+    console.log(
+        "idFlight = " + idFlight + '\n' +
+        "idOrder = " + idOrder + '\n' +
+        "finalCost = " + finalCost + '\n' +
+        "priceOneSeat = " + priceOneSeat + '\n' +
+        "countSeats = " + countSeats + '\n'
+    );
+
+    var localServerUrl = "http://localhost:8080/";
+
+    var order = {
+        "id": idOrder,
+        "idFlight": idFlight,
+        "finalCost": finalCost,
+        "countSeats": countSeats,
+        "priceOneSeat": priceOneSeat,
+        "idClient": null
+    };
+    console.log(JSON.stringify(order));
+    $.ajax({
+        url: localServerUrl + "findtrip/orders/"+idOrder+"/moreTickets",
+        contentType: "application/json",
+        method: "POST",
+        data: JSON.stringify(order),
+        success: function (order) {
+            alert("More ticket(s) was(were) both successfully");
+            url = localServerUrl + "findtrip/home";
+            window.location.replace(url);
+        },
+        error: function (error) {
+            if (error.status == 409) {
+                var error_msg = error.responseJSON.message;
+                $('#error-dates').text(error_msg);
+            }
+
+        },
+        dataType: "json"
+    });
+
+});

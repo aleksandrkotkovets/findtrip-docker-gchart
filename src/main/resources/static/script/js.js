@@ -55,8 +55,8 @@ $(document).ready(function () {
             contentType: "application/json",
             method: "POST",
             data: JSON.stringify(orderDTO),
-            success: function () {
-                alert("You have successfully abandoned places. The money was returned.\n The money was returned.");
+            success: function (order) {
+                alert("You have successfully abandoned places. The money was returned.");
                 url = localUrl + "/orders/client";
                 window.location.replace(url);
             },

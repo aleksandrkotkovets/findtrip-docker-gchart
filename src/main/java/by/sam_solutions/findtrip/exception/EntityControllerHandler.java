@@ -188,7 +188,6 @@ public class EntityControllerHandler {
 
     //Order on this flight exist
     // Some code
-
     @ExceptionHandler(OrderSeatsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ResponseEntity<Object> handleIncorrectCities(OrderSeatsException ex) {

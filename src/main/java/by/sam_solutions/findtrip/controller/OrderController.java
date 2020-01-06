@@ -1,15 +1,17 @@
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.OrderCreateUpdateDTO;
+import by.sam_solutions.findtrip.controller.dto.OrderDTO;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
 import by.sam_solutions.findtrip.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/orders")
@@ -30,7 +32,8 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/client")
     public String getOrdersByUser(Model model, @AuthenticationPrincipal CustomUserDetail currUser) {
-        model.addAttribute("orders", orderService.getOrdersByUserId(currUser.getId()));
+        List<OrderDTO> orderDTOList = orderService.getOrdersByUserId(currUser.getId());
+        model.addAttribute("orders", orderDTOList.size() != 0 ? orderDTOList : null);
         return "withrole/client/myFlights";
     }
 
@@ -42,9 +45,22 @@ public class OrderController {
 
     @PostMapping("/return")
     @ResponseBody
-    public OrderCreateUpdateDTO deleteTicketsOnFlightByUser(@RequestBody OrderCreateUpdateDTO order, @AuthenticationPrincipal CustomUserDetail currUser) {
-        order.setIdClient(currUser.getId());
-        return orderService.deleteTicketsOnFlightByUSer(order);
+    public OrderCreateUpdateDTO deleteTicketsOnFlightByUser(@RequestBody OrderCreateUpdateDTO order) {
+        orderService.deleteTicketsOnFlightByUSer(order);
+        return order;
+    }
+
+    @GetMapping("/{id}/moreTickets")
+    public String getTakeMoreTicketsView(@PathVariable Long id,Model model){
+        model.addAttribute("order", orderService.findById(id));
+        return "order/takeMoreTickets";
+    }
+
+    @PostMapping("/{id}/moreTickets")
+    @ResponseBody
+    public OrderCreateUpdateDTO editCountTickets(@RequestBody OrderCreateUpdateDTO order){
+        orderService.editCountTickets(order);
+        return order;
     }
 
 }

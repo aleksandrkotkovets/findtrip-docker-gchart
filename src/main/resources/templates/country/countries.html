@@ -55,14 +55,13 @@
 
                                           <td>
                                             <a th:href="@{country/edit/{id}(id = ${country.id})  }"
-                                             class="btn btn-primary eBtn">
                                              <i class="far fa-edit  ml-3 "></i>
                                            </a>
                                          </td>
 
                                         <td>
                                             <a th:href="@{ /country/delete/{id} (id=${country.id}) }"
-                                               class="btn btn-primary" onclick="return confirm('Are you sure?')">
+                                               onclick="return confirm('Are you sure?')">
                                                 <span style="color: Tomato;">
                                                    <i class="fas fa-trash-alt ml-2"> </i>
                                                 </span>

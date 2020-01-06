@@ -84,14 +84,13 @@
 
                                           <td>
                                             <a th:href="@{companies/edit/{id}(id = ${company.id})  }"
-                                             class="btn btn-primary eBtn">
                                              <i class="far fa-edit  ml-3 "></i>
                                            </a>
                                          </td>
 
                                         <td sec:authorize="hasRole('ROLE_WORKER')">
                                             <a th:href="@{ /companies/delete/{id} (id=${company.id}) }"
-                                               class="btn btn-primary" onclick="return confirm('Are you sure?')">
+                                                onclick="return confirm('Are you sure?')">
                                                 <span style="color: Tomato;">
                                                    <i class="fas fa-trash-alt ml-2"> </i>
                                                 </span>

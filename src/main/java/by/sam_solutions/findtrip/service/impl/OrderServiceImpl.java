@@ -18,8 +18,10 @@ import by.sam_solutions.findtrip.service.OrderService;
 import by.sam_solutions.findtrip.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,24 +57,23 @@ public class OrderServiceImpl implements OrderService {
         FlightEntity flightEntity = flightRepository.findById(orderDTO.getIdFlight()).get();
 
         if (orderDTO.getCountSeats() > flightEntity.getFreeSeats()) {
-            throw new OrderSeatsException("The number of free seats per flight is less than what you chose", orderDTO);
+            throw new OrderSeatsException("The number of free seats per flight is less than what you chose");
         }
 
         if (flightEntity.getFreeSeats() == 0) {
-            throw new OrderSeatsException("No empty seats", orderDTO);
+            throw new OrderSeatsException("No empty seats");
         }
 
         UserEntity userEntity = userRepository.findById(orderDTO.getIdClient()).get();
-        Integer currFreeSeats = flightEntity.getFreeSeats();
+
 
         OrderEntity orderEntity = orderRepository.save(new OrderEntity(orderDTO.getFinalCost(), new Timestamp(new Date().getTime()), userEntity, flightEntity));
-
         for (int i = 0; i < orderDTO.getCountSeats(); i++) {
             ticketRepository.save(new TicketEntity(orderDTO.getPriceOneSeat(), orderEntity));
-            currFreeSeats--;
+
         }
 
-        flightEntity.setFreeSeats(currFreeSeats);
+        flightEntity.setFreeSeats(flightEntity.getFreeSeats() - orderDTO.getCountSeats());
         flightRepository.save(flightEntity);
     }
 
@@ -86,14 +87,57 @@ public class OrderServiceImpl implements OrderService {
         return mapOrderDTO(orderRepository.findById(id).get());
     }
 
+
     @Override
-    public OrderCreateUpdateDTO deleteTicketsOnFlightByUSer(OrderCreateUpdateDTO order) {
-        return null;
+    @Transactional
+    public void deleteTicketsOnFlightByUSer(OrderCreateUpdateDTO order) {
+        OrderEntity orderEntity = orderRepository.findById(order.getId()).get();
+        FlightEntity flightEntity = orderEntity.getFlight();
+        Integer currFreeSeats = flightEntity.getFreeSeats();
+
+        if (order.getReturnTickets() > orderEntity.getTickets().size() || order.getReturnTickets() == 0) {
+            throw new OrderSeatsException("Incorrect seats number.\nYou want return:" + order.getReturnTickets() + "\nMax return only:" + orderEntity.getTickets().size());
+        } else if (order.getReturnTickets() == orderEntity.getTickets().size()) {
+            orderRepository.deleteById(order.getId());
+        } else {
+            List<TicketEntity> ticketEntityList = ticketRepository.findAllByOrderId(order.getId());
+            for (int i = 0; i < order.getReturnTickets(); i++) {
+                ticketRepository.deleteById(ticketEntityList.get(i).getId());
+            }
+        }
+
+        flightEntity.setFreeSeats(currFreeSeats + order.getReturnTickets());
+        flightRepository.save(flightEntity);
+
+    }
+
+    @Override
+    public void editCountTickets(OrderCreateUpdateDTO order) {
+        OrderEntity orderEntity = orderRepository.findById(order.getId()).get();
+
+        if (orderEntity.getFlight().getFreeSeats() == 0) {
+            throw new OrderSeatsException("No empty seats");
+        }
+
+        if (order.getCountSeats() > 0 && (order.getCountSeats() <= orderEntity.getFlight().getFreeSeats())) {
+
+            for (int i = 0; i < order.getCountSeats(); i++) {
+                ticketRepository.save(new TicketEntity(order.getPriceOneSeat(), orderEntity));
+            }
+
+            FlightEntity flightEntity = orderEntity.getFlight();
+            flightEntity.setFreeSeats(flightEntity.getFreeSeats() - order.getCountSeats());
+            flightRepository.save(flightEntity);
+
+        } else {
+            throw new OrderSeatsException("Incorrect seats number");
+        }
+
     }
 
     public List<OrderDTO> mapOrderDTOList(List<OrderEntity> orderEntityList) {
         return orderEntityList.stream()
-                .map(a->new OrderDTO(
+                .map(a -> new OrderDTO(
                         a.getId(),
                         a.getFinalCost(),
                         a.getOrderDate(),
@@ -113,7 +157,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    public OrderDTO mapOrderDTO(OrderEntity orderEntity){
+    public OrderDTO mapOrderDTO(OrderEntity orderEntity) {
         return new OrderDTO(orderEntity.getId(),
                 orderEntity.getFinalCost(),
                 orderEntity.getOrderDate(),

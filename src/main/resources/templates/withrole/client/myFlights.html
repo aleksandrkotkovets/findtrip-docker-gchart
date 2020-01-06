@@ -110,6 +110,9 @@
                               <div class="card-footer d-flex justify-content-between">
                                 <h4 th:text="'№ '+${order.id}" ></h4>
                                 <!-- Button trigger modal -->
+
+                                <a th:if="${order.flightDTO.freeSeats != 0}"
+                                 class="btn" style="background-color: #e0a800" th:href="@{/orders/{id}/moreTickets(id=${order.id})}" th:text="#{text.take-more}"></a>
                                 <a   class="btn btn-primary"  th:href="@{/orders/return/{id}(id=${order.id})}" th:text="#{text.return-tickets}"></a>
                                </div>
                                </div>
