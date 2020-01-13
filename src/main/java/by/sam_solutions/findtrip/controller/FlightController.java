@@ -136,16 +136,11 @@ public class FlightController {
         return flightDTO;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping("/admin")
-    public String getShowFlightViewByAdmin(Model model) {
-        return "withrole/admin/showFlights";
-    }
 
-//    @PreAuthorize("hasAnyRole('WORKER')")
-    @GetMapping("/worker")
-    public String getShowFlightViewByWorker(Model model) {
-        return "withrole/worker/showFlights";
+    @PreAuthorize("hasAnyRole('WORKER','ADMIN')")
+    @GetMapping()
+    public String getShowFlightView(Model model) {
+        return "withrole/showFlights";
     }
 
     @PreAuthorize("hasAnyRole('CLIENT')")

@@ -4,6 +4,7 @@ import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.repository.entity.CompanyEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,4 +33,6 @@ public interface CompanyService {
     CompanyDTO findCompanyByName(String company);
 
     List<CompanyDTO> findAll();
+
+    Page<CompanyEntity> findAllByCriteria(PageRequest pageRequest, String name1);
 }

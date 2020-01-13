@@ -37,12 +37,14 @@ public class OrderController {
         return "withrole/client/myFlights";
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/return/{id}")
     public String getOrderById(@PathVariable Long id, Model model) {
         model.addAttribute("order", orderService.findById(id));
         return "order/returnTickets";
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/return")
     @ResponseBody
     public OrderCreateUpdateDTO deleteTicketsOnFlightByUser(@RequestBody OrderCreateUpdateDTO order) {
@@ -50,12 +52,14 @@ public class OrderController {
         return order;
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/{id}/moreTickets")
     public String getTakeMoreTicketsView(@PathVariable Long id,Model model){
         model.addAttribute("order", orderService.findById(id));
         return "order/takeMoreTickets";
     }
 
+    @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/{id}/moreTickets")
     @ResponseBody
     public OrderCreateUpdateDTO editCountTickets(@RequestBody OrderCreateUpdateDTO order){

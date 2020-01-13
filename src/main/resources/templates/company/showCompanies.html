@@ -25,12 +25,22 @@
                 <div class="card-block">
                     <div th:switch="${companies}" class="container my-md-4">
 
-                     <div sec:authorize="hasRole('ROLE_WORKER')">
-                        <p class="my-9" >
-                            <a th:href="@{companies/edit}" class="btn btn-primary">
-                                <i class="fas fa-plus ml-2" th:text="#{text.add-company}"></i></a>
-                        </p>
+                      <div class="d-flex justify-content-between">
+                         <div sec:authorize="hasRole('ROLE_WORKER')">
+                            <p class="my-9" >
+                                <a th:href="@{companies/edit}" class="btn btn-primary">
+                                    <i class="fas fa-plus ml-2" th:text="#{text.add-company}"></i></a>
+                            </p>
+                          </div>
+                            <div>
+                                <form class="form-inline">
+                                  <input type="text" class="form-control mb-2 mr-sm-2" id="nameId" name="name" th:value="${name}" th:placeholder="#{text.name}">
+                                  <button th:href="@{companies/name}" type="submit" class="btn btn-primary mb-2">Search</button>
+                                </form>
+                            </div>
+
                       </div>
+
                         <div class="col-md-12" style="margin-left: 10%">
                             <h2 th:case="null" th:text="#{text.record.found}"></h2>
                             <div th:case="*">

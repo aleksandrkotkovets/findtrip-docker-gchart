@@ -33,17 +33,23 @@ public class CompanyController {
     CompanyService companyService;
 
     @GetMapping()
-    public String showPage(Model model,
-                           @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String showPage(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
+                           @RequestParam(name = "name", required = false, defaultValue = " ") String name) {
+        Page<CompanyEntity> companyEntities;
+        if (!name.equals(" ")) {
 
-        Page<CompanyEntity> companyEntities = companyService.findAll(PageRequest.of(page, 4, Sort.by("name").ascending()));
-        model.addAttribute("companies", companyEntities.getTotalElements() == 0? null : companyEntities  );
+            model.addAttribute("name", name);
+            companyEntities = companyService.findAllByCriteria(PageRequest.of(page, 8, Sort.by("name").ascending()), name);
+        } else {
+            companyEntities = companyService.findAll(PageRequest.of(page, 8, Sort.by("name").ascending()));
+        }
+        model.addAttribute("companies", companyEntities.getTotalElements() == 0 ? null : companyEntities);
         model.addAttribute("currentPage", page);
         return "company/showCompanies";
     }
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
-    public String getAddOrEditCompanyView(Model model,@PathVariable(value = "id") Optional<Long> id) throws EntityNotFoundException {
+    public String getAddOrEditCompanyView(Model model, @PathVariable(value = "id") Optional<Long> id) throws EntityNotFoundException {
 
         if (id.isPresent()) {
             CompanyDTO companyDTO = companyService.findOne(id.get());
@@ -62,7 +68,7 @@ public class CompanyController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCountry(@PathVariable(value = "id") Long id){
+    public String deleteCountry(@PathVariable(value = "id") Long id) {
         companyService.deleteById(id);
         return "redirect:/companies";
     }
@@ -80,9 +86,9 @@ public class CompanyController {
                 apiError.setMessage(message);
             }
 
-            model.addAttribute("company",company);
+            model.addAttribute("company", company);
             model.addAttribute("ratingTypes", Rating.values());
-            model.addAttribute("apiError",apiError);
+            model.addAttribute("apiError", apiError);
             return "company/editCompany";
         }
 
@@ -104,10 +110,10 @@ public class CompanyController {
 
     @GetMapping("/{id}/planes")
     public String getCitiesByCountryId(@PathVariable Long id,
-                                       Model model){
+                                       Model model) {
         CompanyDTO companyDTO = companyService.findOne(id);
         model.addAttribute("company", companyDTO);
-        model.addAttribute("planes", companyDTO.getPlaneDTOList().size()==0 || companyDTO.getPlaneDTOList()==null ? null: companyDTO.getPlaneDTOList());
+        model.addAttribute("planes", companyDTO.getPlaneDTOList().size() == 0 || companyDTO.getPlaneDTOList() == null ? null : companyDTO.getPlaneDTOList());
         return "plane/showPlanes";
     }
 

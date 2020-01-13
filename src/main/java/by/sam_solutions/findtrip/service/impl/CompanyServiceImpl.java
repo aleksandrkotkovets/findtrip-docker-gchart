@@ -10,6 +10,7 @@ import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import by.sam_solutions.findtrip.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,6 +113,11 @@ public class CompanyServiceImpl implements CompanyService {
       List<CompanyEntity> companyEntities =  companyRepository.findAllAndOrderByName();
       List<CompanyDTO> companyDTOList = companyEntities.stream().map(a-> new CompanyDTO(a.getId(), a.getName())).collect(Collectors.toList());
       return companyDTOList;
+    }
+
+    @Override
+    public Page<CompanyEntity> findAllByCriteria(PageRequest pageRequest, String name) {
+        return companyRepository.findAllByNameIgnoreCase(name, pageRequest);
     }
 
 

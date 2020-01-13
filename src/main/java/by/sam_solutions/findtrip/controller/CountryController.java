@@ -31,7 +31,7 @@ public class CountryController {
     public String showPage(Model model,
                            @RequestParam(name = "page", defaultValue = "0") int page) {
 
-        Page<CountryEntity> countryEntities = countryService.findAll(PageRequest.of(page, 4, Sort.by("name").ascending()));
+        Page<CountryEntity> countryEntities = countryService.findAll(PageRequest.of(page, 8, Sort.by("name").ascending()));
         model.addAttribute("countries", countryEntities.getTotalElements() == 0? null : countryEntities  );
         model.addAttribute("currentPage", page);
         return "country/countries";

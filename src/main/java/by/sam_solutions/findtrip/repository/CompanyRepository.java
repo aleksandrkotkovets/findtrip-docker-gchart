@@ -2,6 +2,9 @@ package by.sam_solutions.findtrip.repository;
 
 import by.sam_solutions.findtrip.repository.entity.CompanyEntity;
 import by.sam_solutions.findtrip.repository.entity.Rating;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,4 +34,6 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     @Query(value = "select * from company comp order by comp.name asc", nativeQuery = true)
     List<CompanyEntity> findAllAndOrderByName();
+
+    Page<CompanyEntity> findAllByNameIgnoreCase(String name, Pageable pageable);
 }
