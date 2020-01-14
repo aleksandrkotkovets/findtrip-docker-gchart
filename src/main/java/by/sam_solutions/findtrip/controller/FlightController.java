@@ -23,20 +23,20 @@ import java.util.List;
 public class FlightController {
 
     @Autowired
-    FlightService flightService;
+    private FlightService flightService;
 
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @Autowired
-    CityService cityService;
+    private CityService cityService;
 
     @Autowired
-    CompanyService companyService;
+    private CompanyService companyService;
 
-    List<CountryDTO> countryDTOList;
-    List<CompanyDTO> companyDTOList;
-    List<FlightDTO> flightDTOList;
+    private List<CountryDTO> countryDTOList;
+    private List<CompanyDTO> companyDTOList;
+    private List<FlightDTO> flightDTOList;
 
     @ModelAttribute("countries")
     public List<CountryDTO> getCountries() {

@@ -21,7 +21,18 @@
     <div th:replace="header :: header-css"/>
 </head>
 <body>
-  <div th:replace="header :: header"/>
+  <div sec:authorize="!isAuthenticated()">
+       <div th:replace="header :: header"/>
+  </div>
+  <div sec:authorize="hasRole('CLIENT')">
+        <div th:replace="/home/clientHeader :: client-header"/>
+  </div>
+  <div sec:authorize="hasRole('ADMIN')">
+        <div th:replace="/home/adminHeader :: admin-header"/>
+  </div>
+  <div sec:authorize="hasRole('WORKER')">
+        <div th:replace="/home/workerHeader :: worker-header"/>
+  </div>
 
 <div id="container-1" >
 

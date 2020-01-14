@@ -10,8 +10,6 @@ public interface UserService {
 
     UserEntity save(UserDTO userDTO, String role);
 
-    Long getUserByCriteria(String email, String login, String phoneNumber);
-
     List<UserDTO> getUsersByRole(String role);
 
     void deleteUserById(Long id);
@@ -19,7 +17,6 @@ public interface UserService {
     UserDTO findUserById(Long id);
 
     void update(UserDTO user);
-
 
     Optional<UserEntity> findByLogin(String login);
 }

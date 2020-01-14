@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.service.impl;
 
 import by.sam_solutions.findtrip.controller.dto.UserDTO;
+import by.sam_solutions.findtrip.exception.EditUsersParametersExistException;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
 import by.sam_solutions.findtrip.repository.UserRepository;
 import by.sam_solutions.findtrip.repository.entity.UserEntity;
@@ -28,6 +29,21 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserEntity save(UserDTO userDTO, String role) {
+        Long idExistUser = userRepository.getIdUserByEmail(userDTO.getEmail());
+        if ( idExistUser != null) {
+            throw new EditUsersParametersExistException("User_with_this_email_already_exist", userDTO);
+        }
+
+        idExistUser = userRepository.getIdUserByLogin(userDTO.getLogin());
+        if (idExistUser != null) {
+            throw new EditUsersParametersExistException("This_login_is_exist", userDTO);
+        }
+
+        idExistUser = userRepository.getIdUserByPhoneNumber(userDTO.getPhoneNumber());
+        if (idExistUser != null) {
+            throw new EditUsersParametersExistException("This_phone_number_already_exist",userDTO);
+        }
+
         UserEntity userEntity = new UserEntity();
         userEntity.setLogin(userDTO.getLogin());
         userEntity.setEmail(userDTO.getEmail());
@@ -40,35 +56,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userEntity);
     }
 
-
-
     @Override
-    public Long getUserByCriteria(String email, String login, String phoneNumber) {
-
-        Long id = null;
-
-        if (email != null && !email.equals("")) {
-            id = userRepository.getIdExistUserByEmail(email);
-        }
-
-        if (login != null && !login.equals("")) {
-            id = userRepository.getIdExistUserByLogin(login);
-        }
-
-        if (phoneNumber != null && !phoneNumber.equals("")) {
-            id = userRepository.getIdExistUserByPhoneNumber(phoneNumber);
-        }
-
-        return id;
-    }
-
-
-    @Override
-    public List<UserDTO> getUsersByRole(String  role) {
+    public List<UserDTO> getUsersByRole(String role) {
 
         List<UserEntity> userEntityList = userRepository.findAllByRoleEntity_Role(role);
         List<UserDTO> userDTOList = userEntityList.stream()
-                .map(a-> new UserDTO(
+                .map(a -> new UserDTO(
                         a.getId(),
                         a.getLogin(),
                         a.getPassword(),
@@ -85,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+    @Transactional
     @Override
     public void deleteUserById(Long id) throws UserNotFoundException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -96,7 +89,6 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User with id=" + id + " not found");
         }
     }
-
 
     @Override
     public UserDTO findUserById(Long id) {
@@ -120,40 +112,40 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void update(UserDTO user) {
-        UserEntity newUserEntity = new UserEntity();
-        newUserEntity.setId(user.getId());
-        newUserEntity.setLogin(user.getLogin());
-        newUserEntity.setPassword(user.getPassword());
-        newUserEntity.setEmail(user.getEmail());
-        newUserEntity.setFirstName(user.getFirstName());
-        newUserEntity.setLastName(user.getFirstName());
-        newUserEntity.setPatronymic(user.getPatronymic());
-        newUserEntity.setPhoneNumber(user.getPhoneNumber());
-        newUserEntity.setRoleEntity(roleService.findByRole(user.getRole()));
 
-        if(newUserEntity.getId() == null){
-            userRepository.save(newUserEntity);
-        }else {
-            UserEntity editUserEntity = new UserEntity();
-            if( userRepository.findById(newUserEntity.getId()).isPresent()){
-                editUserEntity = userRepository.findById(newUserEntity.getId()).get();
-                editUserEntity.setId(newUserEntity.getId());
-                editUserEntity.setLogin(newUserEntity.getLogin());
-                editUserEntity.setPassword(newUserEntity.getPassword());
-                editUserEntity.setEmail(newUserEntity.getEmail());
-                editUserEntity.setFirstName(newUserEntity.getFirstName());
-                editUserEntity.setLastName(newUserEntity.getFirstName());
-                editUserEntity.setPatronymic(newUserEntity.getPatronymic());
-                editUserEntity.setPhoneNumber(newUserEntity.getPhoneNumber());
-                editUserEntity.setRoleEntity(newUserEntity.getRoleEntity());
-                userRepository.save(editUserEntity);
-            }else {
-                throw new UserNotFoundException("User with id="+newUserEntity.getId()+" not found");
-            }
+        Long idExistUser = userRepository.getIdUserByEmail(user.getEmail());
 
+        if (idExistUser != null &&  !idExistUser.equals(user.getId())) {
+            throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
         }
-    }
 
+        idExistUser = userRepository.getIdUserByLogin(user.getLogin());
+        if (idExistUser != null && !idExistUser.equals(user.getId())) {
+            throw new EditUsersParametersExistException("This_login_is_exist", user);
+        }
+
+        idExistUser = userRepository.getIdUserByPhoneNumber(user.getPhoneNumber());
+        if (idExistUser != null && !idExistUser.equals(user.getId())) {
+            throw new EditUsersParametersExistException("This_phone_number_already_exist", user);
+        }
+
+        Optional<UserEntity> editUserEntity = userRepository.findById(user.getId());
+        if (editUserEntity.isPresent()) {
+
+            editUserEntity.get().setLogin(user.getLogin());
+            editUserEntity.get().setPassword(user.getPassword());
+            editUserEntity.get().setEmail(user.getEmail());
+            editUserEntity.get().setFirstName(user.getFirstName());
+            editUserEntity.get().setLastName(user.getFirstName());
+            editUserEntity.get().setPatronymic(user.getPatronymic());
+            editUserEntity.get().setPhoneNumber(user.getPhoneNumber());
+
+            userRepository.save(editUserEntity.get());
+        } else {
+            throw new UserNotFoundException("User with id=" + user.getId() + " not found");
+        }
+
+    }
 
     @Override
     public Optional<UserEntity> findByLogin(String login) {

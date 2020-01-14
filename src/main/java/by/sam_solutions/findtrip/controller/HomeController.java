@@ -24,19 +24,19 @@ import java.util.Map;
 public class HomeController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @Autowired
-    CityService cityService;
+    private CityService cityService;
 
     @Autowired
-    FlightService flightService;
+    private FlightService flightService;
 
     @ModelAttribute("countries")
     public List<CountryDTO> getCountries(){
@@ -112,17 +112,7 @@ public class HomeController {
             model.addAttribute("apiError", apiError);
             return "registration";
         }
-        if (userService.getUserByCriteria(client.getEmail(), null, null) != null) {
-            throw new RegistrationParameterIsExistException("User_with_this_email_already_exist", client);
-        }
 
-        if (userService.getUserByCriteria(null, client.getLogin(), null) != null) {
-            throw new RegistrationParameterIsExistException("This_login_is_exist", client);
-        }
-
-        if (userService.getUserByCriteria(null, null, client.getPhoneNumber()) != null) {
-            throw new RegistrationParameterIsExistException("This_phone_number_already_exist", client);
-        }
         userService.save(client, "ROLE_CLIENT");
 
         return "redirect:/";

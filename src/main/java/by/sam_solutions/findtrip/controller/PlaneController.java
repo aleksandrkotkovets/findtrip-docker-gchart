@@ -20,10 +20,10 @@ import java.util.Optional;
 public class PlaneController {
 
     @Autowired
-    PlaneService planeService;
+    private PlaneService planeService;
 
     @Autowired
-    CompanyService companyService;
+    private CompanyService companyService;
 
 
     @GetMapping(path = {"/edit", "/edit/{id}"})

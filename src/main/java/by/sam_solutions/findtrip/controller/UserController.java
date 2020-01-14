@@ -25,10 +25,10 @@ public class UserController {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
 
     @GetMapping()
@@ -87,40 +87,14 @@ public class UserController {
             model.addAttribute("apiError",apiError);
             return "user/addEditUser";
         }
+
         if (user.getId() != null) {
-            if (userService.getUserByCriteria(user.getEmail(), null, null) != null
-                    && userService.getUserByCriteria(user.getEmail(), null, null) != user.getId()) {
-                throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
-            }
-
-            if (userService.getUserByCriteria(null, user.getLogin(), null) != null
-                    && userService.getUserByCriteria(null, user.getLogin(), null) != user.getId()) {
-                throw new EditUsersParametersExistException("This_login_is_exist", user);
-            }
-
-            if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null
-                    && userService.getUserByCriteria(null, null, user.getPhoneNumber()) != user.getId()) {
-                throw new EditUsersParametersExistException("This_phone_number_already_exist", user);
-            }
             userService.update(user);
         } else {
-
-            if (userService.getUserByCriteria(user.getEmail(), null, null) != null) {
-                throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
-            }
-
-            if (userService.getUserByCriteria(null, user.getLogin(), null) != null) {
-                throw new EditUsersParametersExistException("This_login_is_exist", user);
-            }
-
-            if (userService.getUserByCriteria(null, null, user.getPhoneNumber()) != null) {
-                throw new EditUsersParametersExistException("This_phone_number_already_exist",user);
-            }
             userService.save(user, role);
-
         }
-//        String redirect = "redirect:/users?&role="+role;
-        return "redirect:/home";
+
+        return "redirect:/users?&role="+role;
     }
 
 

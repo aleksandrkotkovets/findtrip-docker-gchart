@@ -11,13 +11,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 
     @Query(value = "SELECT u.id FROM UserEntity u WHERE u.login = ?1")
-    Long getIdExistUserByLogin(String login);
+    Long getIdUserByLogin(String login);
 
     @Query(value = "SELECT u.id FROM UserEntity u WHERE u.email = ?1")
-    Long getIdExistUserByEmail(String email);
+    Long getIdUserByEmail(String email);
 
     @Query(value = "SELECT u.id FROM UserEntity u WHERE u.phoneNumber = ?1")
-    Long getIdExistUserByPhoneNumber(String phoneNumber);
+    Long getIdUserByPhoneNumber(String phoneNumber);
 
     List<UserEntity> findAllByRoleEntity_Role(String role);
 
@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findById(Long id);
 
     UserEntity findByLogin(String login);
+
+
 }

@@ -21,10 +21,10 @@ import java.util.Optional;
 public class CityController {
 
     @Autowired
-    CityService cityService;
+    private  CityService cityService;
 
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
     public String getAddOrEditCityView(

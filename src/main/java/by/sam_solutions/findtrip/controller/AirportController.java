@@ -19,13 +19,13 @@ import java.util.List;
 public class AirportController {
 
     @Autowired
-    AirportService airportService;
+    private AirportService airportService;
 
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @Autowired
-    CityService cityService;
+    private CityService cityService;
 
     @GetMapping
     public String getShowAirportsView(Model model) {
@@ -74,8 +74,8 @@ public class AirportController {
     @GetMapping(value = "/countries/{id}")
     @ResponseBody
     public List<CityDTO> getCities(@PathVariable Long id) {
-        List<CityDTO> list = cityService.getCityListByCountry(id);
-        return list;
+        List<CityDTO> cityDTOList = cityService.getCityListByCountry(id);
+        return cityDTOList;
     }
 
     @PostMapping("/add")

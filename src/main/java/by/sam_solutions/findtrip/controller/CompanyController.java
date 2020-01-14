@@ -30,7 +30,7 @@ import java.util.Optional;
 public class CompanyController {
 
     @Autowired
-    CompanyService companyService;
+    private CompanyService companyService;
 
     @GetMapping()
     public String showPage(Model model, @RequestParam(name = "page", defaultValue = "0") int page,

@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/checkout")
