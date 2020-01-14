@@ -29,8 +29,6 @@ public class CountryServiceImpl implements CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
-
-    @Transactional
     @Override
     public Page<CountryEntity> findAll(Pageable pageable) {
         return countryRepository.findAll(pageable);

@@ -9,8 +9,6 @@ public interface PlaneService {
 
     PlaneEntity add(PlaneEntity plain);
 
-    PlaneEntity update(PlaneEntity plain);
-
     List<PlaneEntity> getAll();
 
     PlaneEntity findById();

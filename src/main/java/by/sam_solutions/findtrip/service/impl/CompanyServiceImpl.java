@@ -26,15 +26,14 @@ import java.util.stream.Collectors;
 public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
-    CompanyRepository companyRepository;
-
+    private CompanyRepository companyRepository;
 
     @Override
     public Page<CompanyEntity> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
 
-
+    @Transactional
     @Override
     public void deleteById(Long id) {
         companyRepository.deleteById(id);

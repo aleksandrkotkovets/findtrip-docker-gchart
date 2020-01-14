@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
-    TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @Override
     public List<TicketDTO> mapTicketDTOList(List<TicketEntity> tickets) {

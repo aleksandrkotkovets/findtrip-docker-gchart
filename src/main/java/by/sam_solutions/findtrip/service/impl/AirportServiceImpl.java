@@ -12,6 +12,7 @@ import by.sam_solutions.findtrip.repository.entity.CityEntity;
 import by.sam_solutions.findtrip.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -23,10 +24,10 @@ import java.util.Optional;
 public class AirportServiceImpl implements AirportService {
 
    @Autowired
-   AirportRepository airportRepository;
+   private AirportRepository airportRepository;
 
    @Autowired
-    CityRepository cityRepository;
+   private CityRepository cityRepository;
 
 
     @Override
@@ -87,6 +88,7 @@ public class AirportServiceImpl implements AirportService {
         return airportDTO;
     }
 
+    @Transactional
     @Override
     public void updateAirport(AirportDTO airportDTO) {
 
@@ -121,11 +123,13 @@ public class AirportServiceImpl implements AirportService {
 
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         airportRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void save(AirportDTO airportDTO) {
 

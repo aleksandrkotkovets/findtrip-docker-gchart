@@ -30,22 +30,22 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    FlightService flightService;
+    private FlightService flightService;
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @Override
     public void add(OrderCreateUpdateDTO orderDTO) {
@@ -111,6 +111,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Transactional
     @Override
     public void editCountTickets(OrderCreateUpdateDTO order) {
         OrderEntity orderEntity = orderRepository.findById(order.getId()).get();
@@ -135,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    public List<OrderDTO> mapOrderDTOList(List<OrderEntity> orderEntityList) {
+    private List<OrderDTO> mapOrderDTOList(List<OrderEntity> orderEntityList) {
         return orderEntityList.stream()
                 .map(a -> new OrderDTO(
                         a.getId(),
@@ -157,7 +158,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    public OrderDTO mapOrderDTO(OrderEntity orderEntity) {
+    private OrderDTO mapOrderDTO(OrderEntity orderEntity) {
         return new OrderDTO(orderEntity.getId(),
                 orderEntity.getFinalCost(),
                 orderEntity.getOrderDate(),

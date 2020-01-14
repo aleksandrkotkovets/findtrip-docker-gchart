@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 public class CityServiceImpl implements CityService {
 
     @Autowired
-    CityRepository cityRepository;
+    private CityRepository cityRepository;
 
     @Autowired
-    CountryRepository countryRepository;
+    private CountryRepository countryRepository;
 
 
     @Override
@@ -53,6 +53,7 @@ public class CityServiceImpl implements CityService {
         }
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         cityRepository.deleteById(id);

@@ -20,22 +20,18 @@ import java.util.Optional;
 public class PlaneServiceImpl  implements PlaneService {
 
     @Autowired
-    PlaneRepository planeRepository;
+    private PlaneRepository planeRepository;
 
     @Autowired
-    CompanyRepository companyRepository;
+    private CompanyRepository companyRepository;
 
-
+    @Transactional
     @Override
     public PlaneEntity add(PlaneEntity plain) {
         PlaneEntity savedPlain = planeRepository.save(plain);
         return savedPlain;
     }
 
-    @Override
-    public PlaneEntity update(PlaneEntity plain) {
-        return null;
-    }
 
     @Override
     public List<PlaneEntity> getAll() {
@@ -43,14 +39,11 @@ public class PlaneServiceImpl  implements PlaneService {
     }
 
 
-
     @Override
     public PlaneEntity findById() {
         return null;
     }
 
-
-    @Transactional
     @Override
     public PlaneDTO findOne(Long id) {
         Optional<PlaneEntity> planeEntity =  planeRepository.findById(id);
@@ -72,11 +65,13 @@ public class PlaneServiceImpl  implements PlaneService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         planeRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(PlaneDTO planeDTO, Long companyId, String  companyName) {
 

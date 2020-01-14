@@ -13,6 +13,7 @@ import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
@@ -31,23 +32,23 @@ public class FlightServiceImpl implements FlightService {
 
 
     @Autowired
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
 
     @Autowired
-    PlaneRepository planeRepository;
+    private PlaneRepository planeRepository;
 
     @Autowired
-    AirportRepository airportRepository;
+    private AirportRepository airportRepository;
 
     @Autowired
-    CityService cityService;
+    private CityService cityService;
 
     private final int GET_HOURS_FROM_MILLISECONDS = 3_600_000;
     private final int THREE_DAYS = 72;
     private final int DAY_IN_MILLISECONDS = 86_399_000;
 
+    @Transactional
     @Override
-
     public void addFlight(FlightCreateUpdateDTO flightDTO) {
         Optional<PlaneEntity> planeEntity = planeRepository.findById(flightDTO.getPlaneId());
 
@@ -97,6 +98,7 @@ public class FlightServiceImpl implements FlightService {
         return mapFlightDTO(flightEntity.get());
     }
 
+    @Transactional
     @Override
     public void edit(FlightCreateUpdateDTO flightDTO) {
         FlightEntity editEntity = flightRepository.findById(flightDTO.getId()).get();
