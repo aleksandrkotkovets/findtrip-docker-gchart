@@ -27,7 +27,7 @@ public class PlaneController {
 
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
-    public String getAddOrEditCityView(
+    public String getAddOrEditPlaneView(
             Model model,
             @RequestParam(name = "company", required = false) String company,
             @PathVariable(value = "id") Optional<Long> id) throws EntityNotFoundException {
@@ -51,7 +51,7 @@ public class PlaneController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCountry(@PathVariable(value = "id") Long id) {
+    public String deletePlane(@PathVariable(value = "id") Long id) {
         Long idCompany = planeService.getCompanyIdByPlaneId(id);
         planeService.deleteById(id);
         return idCompany==null ? "redirect:/companies" : "redirect:/companies/"+idCompany+"/planes";
@@ -59,7 +59,7 @@ public class PlaneController {
 
 
     @PostMapping(path = "/edit")
-    public String addOrEditCountry(@Valid @ModelAttribute("plane") PlaneDTO planeDTO,
+    public String addOrEditPlane(@Valid @ModelAttribute("plane") PlaneDTO planeDTO,
                                    @RequestParam("companyName") String companyName,
                                    BindingResult result, Model model) {
         Long companyId = companyService.getCompanyIdByName(companyName);

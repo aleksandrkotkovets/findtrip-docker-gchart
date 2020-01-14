@@ -13,7 +13,7 @@ public class CityEntity extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "cityEntity")
     List<AirportEntity> airports;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "country_id")
     private CountryEntity countryEntity;
 

@@ -2,6 +2,7 @@ package by.sam_solutions.findtrip.repository.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "country")
@@ -11,7 +12,7 @@ public class CountryEntity extends BaseEntity {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE , mappedBy = "countryEntity")
-    List<CityEntity> cities;
+    Set<CityEntity> cities;
 
     public String getName() {
         return name;
@@ -21,11 +22,11 @@ public class CountryEntity extends BaseEntity {
         this.name = name;
     }
 
-    public List<CityEntity> getCities() {
+    public Set<CityEntity> getCities() {
         return cities;
     }
 
-    public void setCities(List<CityEntity> cities) {
+    public void setCities(Set<CityEntity> cities) {
         this.cities = cities;
     }
 

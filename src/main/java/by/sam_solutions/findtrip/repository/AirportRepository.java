@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AirportRepository extends JpaRepository<AirportEntity, Long> {
 
-    @Query(value = "SELECT ap.id FROM airport ap WHERE ap.id = ?1",nativeQuery = true)
+    @Query(value = "SELECT ap.id FROM AirportEntity ap WHERE ap.id = ?1")
     Long findIdAirport(Long id);
 
-    @Query(value = "SELECT airp.id FROM airport airp WHERE airp.name = ?1",nativeQuery = true)
+    @Query(value = "SELECT ap.id FROM AirportEntity ap WHERE ap.name = ?1")
     Long findIdByName(String name);
 
-    @Query(value = "SELECT airp.id FROM airport airp WHERE airp.code = ?1",nativeQuery = true)
+    @Query(value = "SELECT ap.id FROM AirportEntity ap WHERE ap.code = ?1")
     Long findIdByCode(String code);
 
 }

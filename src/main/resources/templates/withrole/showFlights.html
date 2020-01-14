@@ -18,7 +18,12 @@
     <div th:replace="/home/adminHeader :: acss"></div>
 </head>
 <body>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div th:replace="/home/adminHeader :: admin-header"/>
+</div>
+<div sec:authorize="hasRole('ROLE_WORKER')">
   <div th:replace="/home/workerHeader :: worker-header"/>
+</div>
 <div id="container-1">
 
 </div>

@@ -50,7 +50,7 @@ public class CityController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCountry(@PathVariable(value = "id") Long id){
+    public String deleteCity(@PathVariable(value = "id") Long id){
         Long idCountry = cityService.getCountryIdByCityId(id);
         cityService.delete(id);
         return "redirect:/country/"+idCountry+"/cities";
@@ -58,7 +58,7 @@ public class CityController {
 
 
     @PostMapping(path = "/edit")
-    public String addOrEditCountry(@Valid @ModelAttribute("city") CityDTO cityDTO,
+    public String addOrEditCity(@Valid @ModelAttribute("city") CityDTO cityDTO,
                                    @RequestParam(name = "countryName") String countryName,
                                    BindingResult result,
                                    Model model) {

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
-    @Query(value = "select o.id from app_order o where o.flight_id=?1 and o.user_id=?2",nativeQuery = true)
+    @Query(value = "select o.id from OrderEntity o where o.flight.id=?1 and o.user.id=?2")
     Long getOrderIdByFlightIdAndUserId(Long idFlight, Long idUser);
 
     List<OrderEntity> findAllByUserId(Long id);

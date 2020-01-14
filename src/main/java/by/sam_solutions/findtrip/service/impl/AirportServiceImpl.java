@@ -28,7 +28,7 @@ public class AirportServiceImpl implements AirportService {
    @Autowired
     CityRepository cityRepository;
 
-   /**Next step: will add flights */
+
     @Override
     public List<AirportDTO> findAll() {
         List<AirportEntity> airportEntities = airportRepository.findAll();

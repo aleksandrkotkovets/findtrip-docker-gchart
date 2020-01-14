@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void add(OrderCreateUpdateDTO orderDTO) {
-
+        Long id = orderRepository.getOrderIdByFlightIdAndUserId(orderDTO.getIdFlight(), orderDTO.getIdClient());
         if (orderRepository.getOrderIdByFlightIdAndUserId(orderDTO.getIdFlight(), orderDTO.getIdClient()) != null) {
             throw new OrderOnThisFlightAlreadyExistException("Order on this flight already exist", orderDTO);
         }

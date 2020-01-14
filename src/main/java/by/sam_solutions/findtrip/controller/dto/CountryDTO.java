@@ -3,6 +3,7 @@ package by.sam_solutions.findtrip.controller.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 public class CountryDTO {
 
@@ -12,7 +13,7 @@ public class CountryDTO {
     @Size(min = 3,max = 40)
     private  String name;
 
-    private  List<CityDTO> cityDTOList;
+    private Set<CityDTO> cityDTOSet;
 
     public CountryDTO(){
 
@@ -31,12 +32,12 @@ public class CountryDTO {
         this.name = name;
     }
 
-    public List<CityDTO> getCityDTOList() {
-        return cityDTOList;
+    public Set<CityDTO> getCityDTOSet() {
+        return cityDTOSet;
     }
 
-    public void setCityDTOList(List<CityDTO> cityDTOList) {
-        this.cityDTOList = cityDTOList;
+    public void setCityDTOSet(Set<CityDTO> cityDTOSet) {
+        this.cityDTOSet = cityDTOSet;
     }
 
     public Long getId() {

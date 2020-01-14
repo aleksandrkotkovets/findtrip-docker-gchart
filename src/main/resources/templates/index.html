@@ -43,7 +43,7 @@
                    <h1 for="city_from" class="col-form-label text-center" style="color: black"  th:text="#{text.from}"></h1>
                    <select class="form-control col-lg-auto " name="city_from"  id="select1"  required  >
                      <optgroup th:each="country : ${countries}"  th:label="${country.name}">
-                       <option th:each="city : ${country.cityDTOList}" th:value="${city.id}"  th:text="${city.name}"> </option>
+                       <option th:each="city : ${country.cityDTOSet}" th:value="${city.id}"  th:text="${city.name}"> </option>
                      </optgroup>
                    </select>
                 </div>
@@ -52,7 +52,7 @@
                    <h1 for="city_to" class="col-form-label text-center" style="color: black"  th:text="#{text.to}"></h1>
                     <select class="form-control col-lg-auto " name="city_to"  id="select2"  required  >
                         <optgroup th:each="country : ${countries}"  th:label="${country.name}">
-                          <option th:each="city : ${country.cityDTOList}" th:value="${city.id}"  th:text="${city.name}"> </option>
+                          <option th:each="city : ${country.cityDTOSet}" th:value="${city.id}"  th:text="${city.name}"> </option>
                         </optgroup>
                     </select>
                  </div>

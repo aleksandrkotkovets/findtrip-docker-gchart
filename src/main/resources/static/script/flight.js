@@ -286,7 +286,7 @@ $(document).ready(function () {
             data: JSON.stringify(flightDTO),
             success: function(flight){
                 alert("Flight was created successfully");
-                url = protocol + hostUrl + "/findtrip/flights/worker";
+                url = protocol + hostUrl + "/findtrip/flights";
                 window.location.replace(url) ;
             },
             error: function (error) {
@@ -648,7 +648,7 @@ $(document).ready(function () {
             data: JSON.stringify(flightDTO),
             success:function(flight){
                 alert("Flight was edited successfully")
-                url = protocol + hostUrl + "/findtrip/flights/worker";
+                url = protocol + hostUrl + "/findtrip/flights";
                 window.location.replace(url) ;
             },
             error: function (error) {

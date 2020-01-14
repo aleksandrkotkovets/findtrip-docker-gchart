@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.invoke.CallSite;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,8 +56,8 @@ public class CountryServiceImpl implements CountryService {
             countryDTO.setName(countryEntity.get().getName());
             countryDTO.setId(countryEntity.get().getId());
 
-            List<CityDTO> cityDTOList = countryEntity.get().getCities().stream().map(a -> new CityDTO(a.getId(), a.getName())).collect(Collectors.toList());
-            countryDTO.setCityDTOList(cityDTOList);
+            Set<CityDTO> cityDTOSet = countryEntity.get().getCities().stream().map(a -> new CityDTO(a.getId(), a.getName())).collect(Collectors.toSet());
+            countryDTO.setCityDTOSet(cityDTOSet);
 
             return countryDTO;
         } else {
@@ -71,7 +68,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Long getCountryIdByName(String name) {
-        return countryRepository.getIdExistCountryByName(name);
+        return countryRepository.getIdCountryByName(name);
     }
 
     @Transactional
@@ -122,7 +119,7 @@ public class CountryServiceImpl implements CountryService {
         for (CountryEntity countryEntity: countryEntityList){
             countryDTO = new CountryDTO(countryEntity.getId(), countryEntity.getName());
 
-            List<CityDTO> cityDTOList= new ArrayList<>();
+            Set<CityDTO> cityDTOSet= new HashSet<>();
             for(CityEntity cityEntity: countryEntity.getCities()){
                 cityDTO = new CityDTO(cityEntity.getId(),cityEntity.getName());
 
@@ -133,9 +130,9 @@ public class CountryServiceImpl implements CountryService {
                 }
 
                 cityDTO.setAirportDTOList(airportDTOList);
-                cityDTOList.add(cityDTO);
+                cityDTOSet.add(cityDTO);
             }
-            countryDTO.setCityDTOList(cityDTOList);
+            countryDTO.setCityDTOSet(cityDTOSet);
             countryDTOList.add(countryDTO);
         }
         return countryDTOList;

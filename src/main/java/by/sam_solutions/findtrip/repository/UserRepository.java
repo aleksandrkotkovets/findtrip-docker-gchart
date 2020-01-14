@@ -10,21 +10,14 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 
-    @Query(
-            value = "SELECT u.id FROM app_user u WHERE u.login = ?1",
-            nativeQuery = true)
+    @Query(value = "SELECT u.id FROM UserEntity u WHERE u.login = ?1")
     Long getIdExistUserByLogin(String login);
 
-    @Query(
-            value = "SELECT u.id FROM app_user u WHERE u.email = ?1",
-            nativeQuery = true)
+    @Query(value = "SELECT u.id FROM UserEntity u WHERE u.email = ?1")
     Long getIdExistUserByEmail(String email);
 
-    @Query(
-            value = "SELECT u.id FROM app_user u WHERE u.phone_number = ?1",
-            nativeQuery = true)
+    @Query(value = "SELECT u.id FROM UserEntity u WHERE u.phoneNumber = ?1")
     Long getIdExistUserByPhoneNumber(String phoneNumber);
-
 
     List<UserEntity> findAllByRoleEntity_Role(String role);
 

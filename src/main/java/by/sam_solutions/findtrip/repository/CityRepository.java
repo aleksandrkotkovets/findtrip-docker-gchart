@@ -10,13 +10,12 @@ public interface CityRepository extends JpaRepository<CityEntity, Long > {
 
     void deleteById(Long id);
 
-    @Query(
-            value = "SELECT city.id FROM city city WHERE city.name = ?1",
-            nativeQuery = true)
+    @Query(value = "SELECT c.id FROM CityEntity c WHERE c.name = ?1")
     Long getIdExistCityByName(String name);
 
     List<CityEntity> findAllByCountryEntity_Id(Long id);
 
-    @Query(value = "select ct.country_id from city ct where ct.id=?1", nativeQuery = true)
+    @Query(value = "select ct.countryEntity.id from CityEntity ct where ct.id=?1")
     Long getIdCountryByCityId(Long id);
+
 }

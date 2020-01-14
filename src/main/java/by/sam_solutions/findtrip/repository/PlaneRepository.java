@@ -19,13 +19,11 @@ public interface PlaneRepository extends JpaRepository<PlaneEntity, Long> {
 
     void delete(PlaneEntity plainEntity);
 
-   void deleteById(Long id);
+    void deleteById(Long id);
 
-
-
-    @Query(value = "select p.id  from plane p where p.side_number=?1", nativeQuery = true)
+    @Query(value = "select p.id  from PlaneEntity p where p.sideNumber=?1")
     Long findIdBySideNumber(String sideNumber);
 
-    @Query(value = "select p.company_id from plane p where p.id=?1",nativeQuery = true)
+    @Query(value = "select p.company.id from PlaneEntity p where p.id=?1")
     Long getCompanyIdByPlaneId(Long id);
 }

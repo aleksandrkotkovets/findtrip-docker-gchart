@@ -104,7 +104,7 @@ public class CountryController {
                                        Model model){
        CountryDTO countryDTO = countryService.findOne(id);
        model.addAttribute("country", countryDTO);
-       model.addAttribute("cities", countryDTO.getCityDTOList().size()==0 || countryDTO.getCityDTOList()==null ? null: countryDTO.getCityDTOList());
+       model.addAttribute("cities", countryDTO.getCityDTOSet().size()==0 || countryDTO.getCityDTOSet()==null ? null: countryDTO.getCityDTOSet());
        return "city/cities";
    }
 }

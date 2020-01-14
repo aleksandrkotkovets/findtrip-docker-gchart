@@ -29,10 +29,10 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     void deleteById(Long id);
 
-    @Query(value = "SELECT comp.id FROM company comp WHERE comp.name = ?1",nativeQuery = true)
+    @Query(value = "SELECT comp.id FROM CompanyEntity comp WHERE comp.name = ?1")
     Long getCompanyIdByName(String name);
 
-    @Query(value = "select * from company comp order by comp.name asc", nativeQuery = true)
+    @Query(value = "select comp from CompanyEntity comp order by comp.name asc")
     List<CompanyEntity> findAllAndOrderByName();
 
     Page<CompanyEntity> findAllByNameIgnoreCase(String name, Pageable pageable);
