@@ -11,25 +11,29 @@ public class WalletEntity extends BaseEntity {
 
     @NotNull
     @Column(name = "sum")
-    private Long sum;
+    private Double sum;
 
-    @NotNull
+
     @OneToOne(mappedBy = "wallet")
     private UserEntity owner;
 
     public WalletEntity() {
     }
 
-    public WalletEntity(@NotNull Long sum, @NotNull UserEntity owner) {
+    public WalletEntity(@NotNull Double sum) {
+        this.sum = sum;
+    }
+
+    public WalletEntity(@NotNull Double sum, UserEntity owner) {
         this.sum = sum;
         this.owner = owner;
     }
 
-    public Long getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(Long sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 

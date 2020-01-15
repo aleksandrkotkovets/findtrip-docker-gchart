@@ -5,8 +5,10 @@ import by.sam_solutions.findtrip.exception.EditUsersParametersExistException;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
 import by.sam_solutions.findtrip.repository.UserRepository;
 import by.sam_solutions.findtrip.repository.entity.UserEntity;
+import by.sam_solutions.findtrip.repository.entity.WalletEntity;
 import by.sam_solutions.findtrip.service.RoleService;
 import by.sam_solutions.findtrip.service.UserService;
+import by.sam_solutions.findtrip.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +22,19 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final Double DEFAULT_SUM = 0D;
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleService roleService;
 
+
     @Transactional
     @Override
     public UserEntity save(UserDTO userDTO, String role) {
+
         Long idExistUser = userRepository.getIdUserByEmail(userDTO.getEmail());
         if ( idExistUser != null) {
             throw new EditUsersParametersExistException("User_with_this_email_already_exist", userDTO);
@@ -53,6 +59,11 @@ public class UserServiceImpl implements UserService {
         userEntity.setPatronymic(userDTO.getPatronymic());
         userEntity.setPhoneNumber(userDTO.getPhoneNumber());
         userEntity.setRoleEntity(roleService.findByRole(role));
+
+        if(role.equals("ROLE_CLIENT")){
+            userEntity.setWallet(new WalletEntity(DEFAULT_SUM));
+        }
+
         return userRepository.save(userEntity);
     }
 

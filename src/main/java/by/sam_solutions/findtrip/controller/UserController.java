@@ -9,6 +9,7 @@ import by.sam_solutions.findtrip.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'WORKER')")
     @GetMapping()
     public String getAllUsersByRole(@RequestParam(value = "role") String role,  Model model) {
         List<UserDTO> users = roleService.getUsersByRole(role);
@@ -39,6 +40,7 @@ public class UserController {
         return "user/showUsers";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'WORKER')")
     @GetMapping(path = "/delete")
     public String deleteEmployeeById(Model model,
                                      @RequestParam("id") Long id,
@@ -52,7 +54,7 @@ public class UserController {
     public String getAddOrEditUserView(
                                        Model model,
                                        @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
-                                       @PathVariable(value = "id") Optional<Long> id) throws UserNotFoundException {
+                                       @PathVariable(value = "id") Optional<Long> id)  {
 
 
         if (id.isPresent()) {
@@ -94,7 +96,7 @@ public class UserController {
             userService.save(user, role);
         }
 
-        return "redirect:/users?&role="+role;
+        return "redirect:/home";
     }
 
 

@@ -35,7 +35,7 @@
                             <div>
                                 <form class="form-inline">
                                   <input type="text" class="form-control mb-2 mr-sm-2" id="nameId" name="name" th:value="${name}" th:placeholder="#{text.name}">
-                                  <button th:href="@{companies/name}" type="submit" class="btn btn-primary mb-2">Search</button>
+                                  <button th:href="@{companies/name}" type="submit" class="btn btn-primary mb-2" th:text="#{text.search}"></button>
                                 </form>
                             </div>
 

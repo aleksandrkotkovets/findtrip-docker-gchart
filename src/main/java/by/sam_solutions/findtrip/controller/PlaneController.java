@@ -25,12 +25,10 @@ public class PlaneController {
     @Autowired
     private CompanyService companyService;
 
-
     @GetMapping(path = {"/edit", "/edit/{id}"})
-    public String getAddOrEditPlaneView(
-            Model model,
-            @RequestParam(name = "company", required = false) String company,
-            @PathVariable(value = "id") Optional<Long> id) throws EntityNotFoundException {
+    public String getAddOrEditPlaneView(Model model,
+                                        @RequestParam(name = "company", required = false) String company,
+                                        @PathVariable(value = "id") Optional<Long> id)  {
 
         if (id.isPresent()) {
             PlaneDTO planeDTO = planeService.findOne(id.get());

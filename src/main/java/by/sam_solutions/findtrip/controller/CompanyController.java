@@ -37,7 +37,6 @@ public class CompanyController {
                            @RequestParam(name = "name", required = false, defaultValue = " ") String name) {
         Page<CompanyEntity> companyEntities;
         if (!name.equals(" ")) {
-
             model.addAttribute("name", name);
             companyEntities = companyService.findAllByCriteria(PageRequest.of(page, 8, Sort.by("name").ascending()), name);
         } else {
