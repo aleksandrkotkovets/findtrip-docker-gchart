@@ -34,7 +34,7 @@ public class FlightDTO {
 
     private String travelTime;
 
-//    private Set<TicketDTO> tickets;
+    private Integer soldTickets;
 
     private PlaneDTO plane;
 
@@ -42,7 +42,7 @@ public class FlightDTO {
 
     private AirportDTO airportArrival;
 
-    public FlightDTO(Long id, Integer freeSeats, Integer allSeats, Double price, Timestamp departureDate, Timestamp arrivalDate, PlaneDTO planeDTO, AirportDTO airportDeparture, AirportDTO airportArrival) {
+    public FlightDTO(Long id, Integer freeSeats, Integer allSeats, Double price, Timestamp departureDate, Timestamp arrivalDate,Integer soldTickets ,PlaneDTO planeDTO, AirportDTO airportDeparture, AirportDTO airportArrival) {
             this.id = id;
             this.freeSeats  = freeSeats;
             this.allSeats = allSeats;
@@ -52,6 +52,7 @@ public class FlightDTO {
             this.plane = planeDTO;
             this.airportDeparture = airportDeparture;
             this.airportArrival = airportArrival;
+            this.soldTickets =soldTickets;
 
     }
 
@@ -169,5 +170,13 @@ public class FlightDTO {
 
     public void setDateArrival(String dateArrival) {
         this.dateArrival = dateArrival;
+    }
+
+    public Integer getSoldTickets() {
+        return soldTickets;
+    }
+
+    public void setSoldTickets(Integer soldTickets) {
+        this.soldTickets = soldTickets;
     }
 }

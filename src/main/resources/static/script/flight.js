@@ -564,7 +564,21 @@ $(document).ready(function () {
 
     });
 
-    //save button
+    // input-spinner
+
+    var $allSeatsEdit = $("#allSeatsEdit");
+    var $freeSeatsEdit = $("#freeSeatsEdit");
+    var $soldTickets = $('#soldTickets');
+
+    $allSeatsEdit.attr("min", $soldTickets.val());
+
+    $allSeatsEdit.on("change", function (event) {
+        $freeSeatsEdit.attr("max", $allSeatsEdit.val()-$soldTickets.val());
+        $freeSeatsEdit.val($allSeatsEdit.val());
+    });
+
+
+    //edit button
     $('#edit').click(function () {
         $('#error-dates').text("");
         var id = $("#id").val();
@@ -576,8 +590,8 @@ $(document).ready(function () {
         var dateArrival = $("#picker2").val() + "";
         var companyId = $("#select_company").val();
         var planeId = $("#select_plane").val();
-        var allSeats = $('#allSeats').val();
-        var freeSeats = $('#freeSeats').val();
+        var allSeats = $('#allSeatsEdit').val();
+        var freeSeats = $('#freeSeatsEdit').val();
         var ticketPrice = $('#price').val();
         console.log(
             "id=" + id + '\n',

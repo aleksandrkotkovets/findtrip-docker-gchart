@@ -95,6 +95,7 @@ public class FlightController {
         model.addAttribute("allSeats",flightDTO.getAllSeats());
         model.addAttribute("freeSeats", flightDTO.getFreeSeats());
         model.addAttribute("price", flightDTO.getPrice());
+        model.addAttribute("soldTickets", flightService.getNumberSoldTicketById(flightDTO.getId()));
         return "flight/editFlight";
     }
 

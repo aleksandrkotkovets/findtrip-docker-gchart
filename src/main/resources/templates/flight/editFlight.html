@@ -105,9 +105,9 @@
                    </div>
                  </div>
 
-                   <div class="modal-content">
-                    <div class="card-body">
-                        <div class="row vdivide">
+                   <div class="modal-content ">
+                    <div class="card-body ">
+                        <div class="row vdivide ">
 
                              <div class="col-sm-4 text-center">
                                 <h5 class="card-title" th:text="#{text.date}+':'"></h5>
@@ -165,23 +165,30 @@
 
                    <div class="modal-content">
                     <div class="card-body">
-                        <div class="row vdivide">
+                        <div class="row vdivide justify-content-center">
 
                              <div class="text-center">
                                 <h5 class="card-title" th:text="#{text.seats-info}+':'"></h5>
 
                                       <div style="display: flex; flex-direction: row;" class="text-center">
-                                        <div class="container " style="width: 400px">
-                                        <h3 for="allSeats" class="col-form-label" th:text="#{text.all-seats}"></h3>
-                                         <input placeholder="Enter a number" name="allSeats" th:value="${allSeats}" id="allSeats" required type="number"  min="0" max="300" step="1"/>
+                                        <div class="container " style="width: 250px">
+                                            <h3 for="allSeats" class="col-form-label" th:text="#{text.all-seats}"></h3>
+                                             <input placeholder="Enter a number" name="allSeats" th:value="${allSeats}" id="allSeatsEdit" required type="number"  min="0" max="300" step="1"/>
                                         </div>
-                                        <div class="container " style="width: 400px; padding-left: 10px">
-                                        <h3 for="freeSeats" class="col-form-label" th:text="#{text.free-seats}"></h3>
-                                         <input placeholder="Enter a number" th:value="${freeSeats}" id="freeSeats" required type="number"  min="0" step="1"/>
+                                        <div class="container " style="width: 250px; padding-left: 10px">
+                                            <h3 for="freeSeats" class="col-form-label" th:text="#{text.free-seats}"></h3>
+                                             <input placeholder="Enter a number" th:value="${freeSeats}" id="freeSeatsEdit" required type="number"  min="0" step="1"/>
                                         </div>
-                                        <div class="container " style="width: 400px; padding-left: 10px">
-                                        <h3 for="price" class="col-form-label" th:text="#{text.seat-price}"></h3>
-                                         <input data-prefix="$"  data-decimals="2" name="price" th:value="${price}" id="price" min="0" max="1000" step="0.1" type="number" placeholder="Enter ticket price" required/>
+                                        <div class="container " style="width: 250px; padding-left: 10px">
+                                            <h3 for="price" class="col-form-label" th:text="#{text.seat-price}"></h3>
+                                             <input data-prefix="$"  data-decimals="2" name="price" th:value="${price}" id="price" min="0" max="10000" step="0.1" type="number" placeholder="Enter ticket price" required/>
+                                        </div>
+                                        <div class="container " style="width: 250px; padding-left: 10px">
+                                            <h3 class="col-form-label"  th:text="#{text.number-tickets-sold}"></h3>
+                                            <div class="input-group" style="width: 150px" >
+
+                                              <input type="text" class="form-control" id="soldTickets" th:value="${soldTickets}"  readonly>
+                                            </div>
                                         </div>
                                       </div>
 

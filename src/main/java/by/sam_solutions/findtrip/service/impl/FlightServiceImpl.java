@@ -328,6 +328,13 @@ public class FlightServiceImpl implements FlightService {
         return flightDTO;
     }
 
+    @Override
+    public Integer getNumberSoldTicketById(Long id) {
+        FlightEntity flightEntity = flightRepository.findById(id).get();
+        return flightEntity.getOrders().stream()
+                .mapToInt((a)->a.getTickets().size()).sum();
+    }
+
     private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
         List<FlightDTO> flightDTOList = flightEntityList.stream()
                 .map(a -> new FlightDTO(
@@ -337,6 +344,7 @@ public class FlightServiceImpl implements FlightService {
                         a.getPrice(),
                         a.getDepartureDate(),
                         a.getArrivalDate(),
+                        a.getOrders().stream().mapToInt((b)->b.getTickets().size()).sum(),
                         new PlaneDTO(a.getPlane().getId(), a.getPlane().getName(), a.getPlane().getSideNumber(),
                                 new CompanyDTO(a.getPlane().getCompany().getId(), a.getPlane().getCompany().getName(), a.getPlane().getCompany().getRating())),
                         new AirportDTO(a.getAirportDeparture().getId(), a.getAirportDeparture().getName(), a.getAirportDeparture().getCode(),

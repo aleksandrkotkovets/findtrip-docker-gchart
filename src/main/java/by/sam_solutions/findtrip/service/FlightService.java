@@ -19,4 +19,6 @@ public interface FlightService {
     List<FlightDTO> findFlightsByCriteria(Long idCityDeparture, Long idCityArrival, String dateDeparture) throws ParseException;
 
     FlightDTO mapFlightDTO(FlightEntity flight);
+
+    Integer getNumberSoldTicketById(Long id);
 }

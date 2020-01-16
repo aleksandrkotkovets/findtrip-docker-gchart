@@ -100,10 +100,9 @@
                               </div>
                                   <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
+                                  <h6 class="card-text" th:text="#{text.number-tickets-sold}+':'+${flight.soldTickets}"></h6>
                                   <a th:href="@{/flights/edit/{id} (id=${flight.id}) }"
-                                   class="btn btn-primary">
-                                   Редактировать
-                                   </a>
+                                   class="btn btn-primary" th:text="#{text.edit}"></a>
                                   <a href="#" class="btn btn-info" >Проданные билеты</a>
                                   <a href="#" class="btn btn-danger" >Удалить</a>
                               </div>
