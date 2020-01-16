@@ -75,6 +75,9 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
     }
 
+    public UserDTO(Long id) {
+    }
+
     public Long getId() {
         return id;
     }

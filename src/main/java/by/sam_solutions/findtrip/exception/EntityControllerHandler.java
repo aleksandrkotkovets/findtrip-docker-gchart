@@ -207,5 +207,17 @@ public class EntityControllerHandler {
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler(WalletBalanceException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handleIncorrectBalance(WalletBalanceException ex) {
+        String error = ex.getMessage();
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("wallet/replenishBalance");
+        modelAndView.addObject("bankCard",ex.getBankCardDTO());
+        modelAndView.addObject("apiError",apiError);
+        return modelAndView;
+    }
+
 
 }

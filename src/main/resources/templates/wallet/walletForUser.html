@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FindTrip|Wallet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="jquery.datetimepicker.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/static/select/bootstrap4/tail.select-default.min.css}" />
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+<body>
+<div th:replace="/home/clientHeader :: client-header"/>
+
+    <div class="content col-md-12" style="padding-left: 0px;" >
+    <div class="container " style="margin-top: 10%; margin-left: 45vh">
+        <div class="" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+             <div class="modal-dialog" role="document">
+             <div class="modal-content" style="width: 400px">
+
+             <div class="modal-header">
+               <h5 class="modal-title"  th:text="#{text.wallet}"></h5>
+             </div>
+
+              <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                <div class="container " style="width: 190px; margin: 0px 0px ">
+                <h5   th:text="#{text.balance}"></h5>
+                <div class="input-group" style="width: 150px" >
+                  <div class="input-group-prepend" style="height: 50%">
+                    <span class="input-group-text">$</span>
+                  </div>
+                  <input type="text" class="form-control" id="balance" th:value="${wallet.sum}" data-decimals="2" readonly>
+                </div>
+                </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <a  th:href="@{/wallet/replenish}" class="btn btn-success" data-dismiss="modal" th:text="#{text.replenish}"></a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+     </div>
+
+</div>
+
+</body>
+</html>
