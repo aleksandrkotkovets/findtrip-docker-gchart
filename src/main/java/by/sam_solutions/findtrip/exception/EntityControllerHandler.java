@@ -111,7 +111,7 @@ public class EntityControllerHandler {
     // Airport add parameter
     @ExceptionHandler(AirportAddParameterExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ModelAndView handleEditParameterIsExist(AirportAddParameterExistException ex) {
+    public ModelAndView handleAirportAddParameterExist(AirportAddParameterExistException ex) {
         String error = ex.getMessage();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
@@ -128,7 +128,7 @@ public class EntityControllerHandler {
     // Company edit parameter
     @ExceptionHandler(EditCompanyParameterExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ModelAndView handleEditParameterIsExist(EditCompanyParameterExistException ex) {
+    public ModelAndView handleEditCompanyParameterExist(EditCompanyParameterExistException ex) {
         String error = ex.getMessage();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
@@ -160,7 +160,7 @@ public class EntityControllerHandler {
     }
 
     @ExceptionHandler({FlightDateIncorrectException.class})
-    public ResponseEntity<Object> handleEmailExist(FlightDateIncorrectException ex, WebRequest request) {
+    public ResponseEntity<Object> handleFlightDateIncorrect(FlightDateIncorrectException ex, WebRequest request) {
         String error = ex.getMessage();
         ApiError apiError =
                 new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
@@ -190,7 +190,7 @@ public class EntityControllerHandler {
     // Some code
     @ExceptionHandler(OrderSeatsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ResponseEntity<Object> handleIncorrectCities(OrderSeatsException ex) {
+    public ResponseEntity<Object> handleIncorrectOrderSeats(OrderSeatsException ex) {
         String error = ex.getMessage();
         ApiError apiError =
                 new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
@@ -200,7 +200,7 @@ public class EntityControllerHandler {
 
     @ExceptionHandler(OrderOnThisFlightAlreadyExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ResponseEntity<Object> handleIncorrectCities(OrderOnThisFlightAlreadyExistException ex) {
+    public ResponseEntity<Object> handleOrderOnThisFlightAlreadyExist(OrderOnThisFlightAlreadyExistException ex) {
         String error = ex.getMessage();
         ApiError apiError =
                 new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
@@ -219,5 +219,13 @@ public class EntityControllerHandler {
         return modelAndView;
     }
 
+    @ExceptionHandler(WalletIncorrectBalanceException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ResponseEntity<Object> handleIncorrectWalletBalance(WalletIncorrectBalanceException ex) {
+        String error = ex.getMessage();
+        ApiError apiError =
+                new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
 
 }

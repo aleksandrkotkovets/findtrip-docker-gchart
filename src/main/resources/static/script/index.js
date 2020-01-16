@@ -85,7 +85,7 @@ $('#buy').click(function () {
         data: JSON.stringify(ticketDTO),
         success: function (ticket) {
             alert("Ticket(s) was both successfully");
-            url = localServerUrl + "findtrip/home";
+            url = localServerUrl + "findtrip/orders/client";
             window.location.replace(url);
         },
         error: function (error) {
@@ -149,7 +149,7 @@ $('#takeMoreTicketsBtn').click(function () {
         data: JSON.stringify(order),
         success: function (order) {
             alert("More ticket(s) was(were) both successfully");
-            url = localServerUrl + "findtrip/home";
+            url = localServerUrl + "findtrip/orders/client";
             window.location.replace(url);
         },
         error: function (error) {

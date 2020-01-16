@@ -47,7 +47,8 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/return")
     @ResponseBody
-    public OrderCreateUpdateDTO deleteTicketsOnFlightByUser(@RequestBody OrderCreateUpdateDTO order) {
+    public OrderCreateUpdateDTO deleteTicketsOnFlightByUser(@RequestBody OrderCreateUpdateDTO order, @AuthenticationPrincipal CustomUserDetail currUser) {
+        order.setIdClient(currUser.getId());
         orderService.deleteTicketsOnFlightByUSer(order);
         return order;
     }
@@ -62,8 +63,9 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/{id}/moreTickets")
     @ResponseBody
-    public OrderCreateUpdateDTO editCountTickets(@RequestBody OrderCreateUpdateDTO order){
-        orderService.editCountTickets(order);
+    public OrderCreateUpdateDTO takeMoreTickets(@RequestBody OrderCreateUpdateDTO order, @AuthenticationPrincipal CustomUserDetail currUser){
+        order.setIdClient(currUser.getId());
+        orderService.takeMoreTickets(order);
         return order;
     }
 

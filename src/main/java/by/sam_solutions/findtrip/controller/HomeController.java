@@ -67,12 +67,12 @@ public class HomeController {
 
         List<FlightDTO> flightDTOList = null;
         /** Расскоментировать*/
-        try {
+        /*try {
             flightDTOList = flightService.findFlightsByCriteria(idCityDeparture, idCityArrival, dateDeparture);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-//        flightDTOList = flightService.findAll();
+        }*/
+        flightDTOList = flightService.findAll();
         modelAndView.addObject("flights", flightDTOList.size()==0? null: flightDTOList);
         return modelAndView;
     }
