@@ -6,10 +6,7 @@ import by.sam_solutions.findtrip.controller.dto.UserDTO;
 import by.sam_solutions.findtrip.exception.OrderOnThisFlightAlreadyExistException;
 import by.sam_solutions.findtrip.exception.OrderSeatsException;
 import by.sam_solutions.findtrip.repository.*;
-import by.sam_solutions.findtrip.repository.entity.FlightEntity;
-import by.sam_solutions.findtrip.repository.entity.OrderEntity;
-import by.sam_solutions.findtrip.repository.entity.TicketEntity;
-import by.sam_solutions.findtrip.repository.entity.UserEntity;
+import by.sam_solutions.findtrip.repository.entity.*;
 import by.sam_solutions.findtrip.service.FlightService;
 import by.sam_solutions.findtrip.service.OrderService;
 import by.sam_solutions.findtrip.service.PaymentService;
@@ -48,9 +45,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PaymentService paymentService;
 
-    @Autowired
-    private WalletRepository walletRepository;
-
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
 
@@ -76,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         UserEntity userEntity = userRepository.findById(orderDTO.getIdClient()).get();
         if (paymentService.payOrder(orderDTO, flightEntity, userEntity)) {
             Double finalCost = Double.parseDouble(decimalFormat.format(orderDTO.getCountSeats() * flightEntity.getPrice()).replace(',', '.'));
-            OrderEntity orderEntity = orderRepository.save(new OrderEntity(finalCost, new Timestamp(new Date().getTime()), userEntity, flightEntity));
+            OrderEntity orderEntity = orderRepository.save(new OrderEntity(finalCost,OrderStatus.ACTIVE, new Timestamp(new Date().getTime()), userEntity, flightEntity));
             for (int i = 0; i < orderDTO.getCountSeats(); i++) {
                 ticketRepository.save(new TicketEntity(orderDTO.getPriceOneSeat(), orderEntity));
 
@@ -177,11 +171,17 @@ public class OrderServiceImpl implements OrderService {
         return savedOrderDTO;
     }
 
+    @Override
+    public List<OrderDTO> findAllByFlightId(Long idFlight) {
+        return mapOrderDTOList(orderRepository.findAllByFlightId(idFlight));
+    }
+
     private List<OrderDTO> mapOrderDTOList(List<OrderEntity> orderEntityList) {
         return orderEntityList.stream()
                 .map(a -> new OrderDTO(
                         a.getId(),
                         a.getFinalCost(),
+                        a.getStatus(),
                         a.getOrderDate(),
                         new UserDTO(
                                 a.getUser().getLogin(),
@@ -202,6 +202,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDTO mapOrderDTO(OrderEntity orderEntity) {
         return new OrderDTO(orderEntity.getId(),
                 orderEntity.getFinalCost(),
+                orderEntity.getStatus(),
                 orderEntity.getOrderDate(),
                 new UserDTO(
                         orderEntity.getUser().getLogin(),

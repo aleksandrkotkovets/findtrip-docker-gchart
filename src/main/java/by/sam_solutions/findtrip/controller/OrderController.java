@@ -79,11 +79,12 @@ public class OrderController {
         return orderService.takeMoreTickets(order);
     }
 
-    @PostMapping("/sendEmail")
+    @PostMapping("/sendСonfirmPurchaseToEmail")
     @ResponseBody
-    public OrderDTO sendEmailToClient(@RequestBody OrderDTO orderDTO, @AuthenticationPrincipal CustomUserDetail currUser) {
+    public OrderDTO sendСonfirmPurchaseToEmail(@RequestBody OrderDTO orderDTO, @AuthenticationPrincipal CustomUserDetail currUser) {
         emailSender.sendСonfirmPurchaseToEmail(orderDTO);
         return orderDTO;
     }
+
 
 }

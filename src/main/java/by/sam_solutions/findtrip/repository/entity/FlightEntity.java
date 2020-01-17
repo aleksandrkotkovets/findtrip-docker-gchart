@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.repository.entity;
 
 
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,6 @@ import java.util.Set;
 
 import static java.util.Objects.hash;
 import static javax.persistence.CascadeType.ALL;
-
 
 
 @Entity
@@ -42,7 +42,7 @@ public class FlightEntity extends BaseEntity {
     @OneToMany(mappedBy = "flight")
     private Set<OrderEntity> orders;
 
-    @ManyToOne(optional = false, cascade = ALL , fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "plane_id")
     @NotNull
     private PlaneEntity plane;
@@ -56,6 +56,10 @@ public class FlightEntity extends BaseEntity {
     @JoinColumn(name = "airport_arrival_id")
     @NotNull
     private AirportEntity airportArrival;
+
+    @Column(name = "status", length = 8)
+    @Enumerated(EnumType.STRING)
+    private FlightStatus status;
 
     public FlightEntity() {
     }
@@ -130,5 +134,13 @@ public class FlightEntity extends BaseEntity {
 
     public void setAirportArrival(AirportEntity airportArrival) {
         this.airportArrival = airportArrival;
+    }
+
+    public FlightStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(FlightStatus status) {
+        this.status = status;
     }
 }

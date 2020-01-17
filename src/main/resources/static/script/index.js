@@ -85,7 +85,7 @@ $('#buy').click(function () {
         data: JSON.stringify(ticketDTO),
         success: function (order) {
             alert("Ticket(s) was both successfully");
-            sendOrderToEmails(order);
+            sendСonfirmPurchaseToEmail(order);
             url = localServerUrl + "findtrip/orders/client";
             window.location.replace(url);
         },
@@ -150,7 +150,7 @@ $('#takeMoreTicketsBtn').click(function () {
         data: JSON.stringify(order),
         success: function (order) {
             alert("More ticket(s) was(were) both successfully");
-            sendOrderToEmails(order);
+            sendСonfirmPurchaseToEmail(order);
             url = localServerUrl + "findtrip/orders/client";
             window.location.replace(url);
         },
@@ -167,9 +167,9 @@ $('#takeMoreTicketsBtn').click(function () {
 });
 
 
-function sendOrderToEmails(order) {
+function sendСonfirmPurchaseToEmail(order) {
     $.ajax({
-        url:"http://localhost:8080/findtrip"  + '/orders/sendEmail',
+        url:"http://localhost:8080/findtrip"  + '/orders/sendСonfirmPurchaseToEmail',
         contentType: "application/json",
         method: "POST",
         data: JSON.stringify(order),

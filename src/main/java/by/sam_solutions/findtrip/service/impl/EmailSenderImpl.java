@@ -34,7 +34,7 @@ public class EmailSenderImpl implements EmailSender {
         mailMessage.setFrom(APP_MAIL);
         mailMessage.setTo(orderDTO.getUserDTO().getEmail());
         mailMessage.setSubject("Your tickets purchase Order #"+orderDTO.getId()+" on findtrip.com");
-        mailMessage.setText("Hello, dear friend.\n" +
+        mailMessage.setText("Hello, Dear friend.\n" +
                 "Your Order #"+ orderDTO.getId()+" has been successfully paid.\n" +
                 "Final cost($): " +orderDTO.getFinalCost()+'\n'+
                 "Count tickets: " +orderDTO.getTicketDTOList().size()+'\n'+
@@ -55,8 +55,9 @@ public class EmailSenderImpl implements EmailSender {
         mailMessage.setFrom(APP_MAIL);
         mailMessage.setTo(orderDTO.getUserDTO().getEmail());
         mailMessage.setSubject("Your  Order #"+orderDTO.getId()+" on findtrip.com has been canceled");
-        mailMessage.setText("Hello, dear friend.\n" +
+        mailMessage.setText("Hello, Dear friend.\n" +
                 "Your Order #"+ orderDTO.getId()+" has been canceled.\n" +
+                "Money($) "+ orderDTO.getFinalCost()+" has already been returned to your wallet.\n" +
                 "-------------------------------------------------------------------\n" +
                 "This message was automatically generated. Please do not reply to this message.");
 

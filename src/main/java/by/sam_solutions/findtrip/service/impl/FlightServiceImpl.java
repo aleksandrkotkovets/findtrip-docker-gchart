@@ -3,11 +3,9 @@ package by.sam_solutions.findtrip.service.impl;
 import by.sam_solutions.findtrip.controller.dto.*;
 import by.sam_solutions.findtrip.exception.CityIncorrectException;
 import by.sam_solutions.findtrip.exception.FlightDateIncorrectException;
-import by.sam_solutions.findtrip.repository.AirportRepository;
-import by.sam_solutions.findtrip.repository.FlightRepository;
-import by.sam_solutions.findtrip.repository.PlaneRepository;
-import by.sam_solutions.findtrip.repository.entity.FlightEntity;
-import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
+import by.sam_solutions.findtrip.exception.FlightStatusIncorrectException;
+import by.sam_solutions.findtrip.repository.*;
+import by.sam_solutions.findtrip.repository.entity.*;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,12 @@ public class FlightServiceImpl implements FlightService {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private WalletRepository walletRepository;
 
     private final int GET_HOURS_FROM_MILLISECONDS = 3_600_000;
     private final int THREE_DAYS = 72;
@@ -84,6 +88,7 @@ public class FlightServiceImpl implements FlightService {
         flightEntity.setAirportArrival(airportRepository.findById(flightDTO.getAirportToId()).get());
         flightEntity.setAirportDeparture(airportRepository.findById(flightDTO.getAirportFromId()).get());
         flightEntity.setPlane(planeEntity.get());
+        flightEntity.setStatus(FlightStatus.ACTIVE);
         flightRepository.save(flightEntity);
     }
 
@@ -264,6 +269,7 @@ public class FlightServiceImpl implements FlightService {
         flightDTO.setPrice(flightEntity.getPrice());
         flightDTO.setDepartureDate(flightEntity.getDepartureDate());
         flightDTO.setArrivalDate(flightEntity.getArrivalDate());
+        flightDTO.setStatus(flightEntity.getStatus());
 
         CountryDTO countryDepartureDTO = new CountryDTO();
         countryDepartureDTO.setId(flightEntity.getAirportDeparture().getCityEntity().getCountryEntity().getId());
@@ -332,7 +338,37 @@ public class FlightServiceImpl implements FlightService {
     public Integer getNumberSoldTicketById(Long id) {
         FlightEntity flightEntity = flightRepository.findById(id).get();
         return flightEntity.getOrders().stream()
-                .mapToInt((a)->a.getTickets().size()).sum();
+                .mapToInt((a) -> a.getTickets().size()).sum();
+    }
+
+    @Override
+    public void canceledFlight(Long idFlight) {
+        Optional<FlightEntity> flightEntity = flightRepository.findById(idFlight);
+        /** продолжить с сравнением на active*/
+        // попробовать добавить рейс и с ним равнить
+        if (!flightEntity.get().getStatus().equals(OrderStatus.ACTIVE)) {
+//            throw new FlightStatusIncorrectException("Flight_status_is_incorrect_for_cancellation");
+            System.out.println(flightEntity.get().getStatus());
+        }
+        System.out.println("tyt");
+
+        /*if (flightEntity.isPresent()) {
+
+            flightEntity.get().setStatus(FlightStatus.CANCELED);
+            flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
+
+            WalletEntity walletEntity;
+            Double currBalance;
+            for (OrderEntity orderEntity : flightEntity.get().getOrders()) {
+                walletEntity = orderEntity.getUser().getWallet();
+                currBalance = walletEntity.getSum();
+                walletEntity.setSum(currBalance + orderEntity.getFinalCost());
+                walletRepository.save(walletEntity);
+            }
+
+            flightRepository.save(flightEntity.get());
+        }*/
+
     }
 
     private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
@@ -344,7 +380,8 @@ public class FlightServiceImpl implements FlightService {
                         a.getPrice(),
                         a.getDepartureDate(),
                         a.getArrivalDate(),
-                        a.getOrders().stream().mapToInt((b)->b.getTickets().size()).sum(),
+                        a.getOrders().stream().mapToInt((b) -> b.getTickets().size()).sum(),
+                        a.getStatus(),
                         new PlaneDTO(a.getPlane().getId(), a.getPlane().getName(), a.getPlane().getSideNumber(),
                                 new CompanyDTO(a.getPlane().getCompany().getId(), a.getPlane().getCompany().getName(), a.getPlane().getCompany().getRating())),
                         new AirportDTO(a.getAirportDeparture().getId(), a.getAirportDeparture().getName(), a.getAirportDeparture().getCode(),

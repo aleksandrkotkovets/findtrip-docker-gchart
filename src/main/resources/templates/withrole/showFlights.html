@@ -13,8 +13,6 @@
     <link  rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/c/main.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/c/menu.css}" >
-    <link  rel="stylesheet" type="text/css" th:href="@{/static/datetimepicker/jquery.datetimepicker.css}" >
-    <link  rel="stylesheet" type="text/css" th:href="@{/static/datetimepicker/jquery.datetimepicker.min.css}" >
     <div th:replace="/home/adminHeader :: acss"></div>
 </head>
 <body>
@@ -24,12 +22,9 @@
 <div sec:authorize="hasRole('ROLE_WORKER')">
   <div th:replace="/home/workerHeader :: worker-header"/>
 </div>
-<div id="container-1">
 
-</div>
-
-
-
+<!--<div class="alert alert-success"   role="alert" id="alertCansFlightSuccessId" style="width: 400px;margin:5px 0 0 150vh;position: absolute"></div>
+-->
 <div id="container-2">
 
     <div class="menu col-md-3" style="padding: 0px 0px" >
@@ -57,6 +52,8 @@
                             <i class="fas fa-plus ml-2" th:text="#{text.flights}"></i></a>
                     </p>
                    <p></p>
+
+
                     <div class="col-md-12">
                          <h2 th:case="null" th:text="#{text.record.found}"></h2>
                         <div th:case="*">
@@ -98,13 +95,19 @@
 
                                     </div>
                               </div>
+                                  <input type="hidden"  th:value="${flight.id}" id="idFlight">
                                   <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.number-tickets-sold}+':'+${flight.soldTickets}"></h6>
-                                  <a th:href="@{/flights/edit/{id} (id=${flight.id}) }"
-                                   class="btn btn-primary" th:text="#{text.edit}"></a>
-                                  <a href="#" class="btn btn-info" >Проданные билеты</a>
-                                  <a href="#" class="btn btn-danger" >Удалить</a>
+
+                              </div>
+                              <div class="card-footer d-flex flex-row bd-highlight mb-3">
+                                <a th:href="@{/flights/edit/{id} (id=${flight.id}) }"
+                                 class="btn btn-primary" th:text="#{text.edit}" ></a>
+                                 <a href="#" class="btn btn-info" style="margin-left: 10px" >Проданные билеты</a>
+                                 <form th:action="@{/flights/canceled/{id}(id=${flight.id})}" method="get">
+                                 <button  type="submit" id="canceledId" class="btn btn-danger" style="margin-left: 10px">Отменить</button>
+                                 </form>
                               </div>
                           </div>
 

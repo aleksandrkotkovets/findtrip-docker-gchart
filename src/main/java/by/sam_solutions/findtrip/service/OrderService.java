@@ -16,4 +16,6 @@ public interface OrderService {
     void deleteTicketsOnFlightByUSer(OrderCreateUpdateDTO order);
 
     OrderDTO takeMoreTickets(OrderCreateUpdateDTO order);
+
+    List<OrderDTO> findAllByFlightId(Long idFlight);
 }

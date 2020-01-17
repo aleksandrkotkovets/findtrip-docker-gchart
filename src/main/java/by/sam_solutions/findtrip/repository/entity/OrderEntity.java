@@ -17,6 +17,10 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "final_cost")
     private Double finalCost;
 
+    @Column(name = "status", length = 8)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     @NotNull
     @Column(name = "order_date",columnDefinition = "timestamp")
     private Timestamp orderDate;
@@ -37,9 +41,10 @@ public class OrderEntity extends BaseEntity {
     public OrderEntity() {
     }
 
-    public OrderEntity(@NotNull Double finalCost, @NotNull Timestamp orderDate, @NotNull UserEntity user, @NotNull FlightEntity flight) {
+    public OrderEntity(@NotNull Double finalCost, OrderStatus status, @NotNull Timestamp orderDate, @NotNull UserEntity user, @NotNull FlightEntity flight) {
         this.finalCost = finalCost;
         this.orderDate = orderDate;
+        this.status = status;
         this.user = user;
         this.flight = flight;
     }
@@ -84,4 +89,11 @@ public class OrderEntity extends BaseEntity {
         this.finalCost = finalCost;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 }

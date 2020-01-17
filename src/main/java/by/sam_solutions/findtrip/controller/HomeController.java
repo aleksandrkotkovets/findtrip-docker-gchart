@@ -121,7 +121,7 @@ public class HomeController {
 
     @GetMapping("/403")
     public String error403() {
-        return "403";
+        return "statuscode/403";
     }
 
 }

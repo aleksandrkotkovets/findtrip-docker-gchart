@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.controller.dto;
 
-import javax.persistence.TemporalType;
+import by.sam_solutions.findtrip.repository.entity.FlightStatus;
+
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -36,19 +37,22 @@ public class FlightDTO {
 
     private Integer soldTickets;
 
+    private FlightStatus status;
+
     private PlaneDTO plane;
 
     private AirportDTO airportDeparture;
 
     private AirportDTO airportArrival;
 
-    public FlightDTO(Long id, Integer freeSeats, Integer allSeats, Double price, Timestamp departureDate, Timestamp arrivalDate,Integer soldTickets ,PlaneDTO planeDTO, AirportDTO airportDeparture, AirportDTO airportArrival) {
+    public FlightDTO(Long id, Integer freeSeats, Integer allSeats, Double price, Timestamp departureDate, Timestamp arrivalDate,Integer soldTickets, FlightStatus status ,PlaneDTO planeDTO, AirportDTO airportDeparture, AirportDTO airportArrival) {
             this.id = id;
             this.freeSeats  = freeSeats;
             this.allSeats = allSeats;
             this.price = price;
             this.departureDate = departureDate;
             this.arrivalDate = arrivalDate;
+            this.status = status;
             this.plane = planeDTO;
             this.airportDeparture = airportDeparture;
             this.airportArrival = airportArrival;
@@ -177,5 +181,13 @@ public class FlightDTO {
 
     public void setSoldTickets(Integer soldTickets) {
         this.soldTickets = soldTickets;
+    }
+
+    public FlightStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(FlightStatus status) {
+        this.status = status;
     }
 }

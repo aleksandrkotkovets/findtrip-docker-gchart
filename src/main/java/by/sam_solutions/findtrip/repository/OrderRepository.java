@@ -13,4 +13,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     Long getOrderIdByFlightIdAndUserId(Long idFlight, Long idUser);
 
     List<OrderEntity> findAllByUserId(Long id);
+
+    List<OrderEntity> findAllByFlightId(Long id);
 }

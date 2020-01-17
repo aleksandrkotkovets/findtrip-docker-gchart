@@ -1,5 +1,7 @@
 package by.sam_solutions.findtrip.controller.dto;
 
+import by.sam_solutions.findtrip.repository.entity.OrderStatus;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -7,6 +9,7 @@ public class OrderDTO {
 
     private Long id;
     private Double finalCost;
+    private OrderStatus status;
     private Timestamp orderDate;
     private UserDTO userDTO;
     private FlightDTO flightDTO;
@@ -15,9 +18,10 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(Long id, Double finalCost, Timestamp orderDate, UserDTO userDTO, FlightDTO flightDTO, List<TicketDTO> ticketDTOList) {
+    public OrderDTO(Long id, Double finalCost,OrderStatus status, Timestamp orderDate, UserDTO userDTO, FlightDTO flightDTO, List<TicketDTO> ticketDTOList) {
         this.id = id;
         this.finalCost = finalCost;
+        this.status = status;
         this.orderDate = orderDate;
         this.userDTO = userDTO;
         this.flightDTO = flightDTO;
@@ -74,5 +78,13 @@ public class OrderDTO {
 
     public void setTicketDTOList(List<TicketDTO> ticketDTOList) {
         this.ticketDTOList = ticketDTOList;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }

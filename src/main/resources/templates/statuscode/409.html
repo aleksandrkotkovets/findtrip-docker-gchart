@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+<body>
+          <div sec:authorize="hasRole('CLIENT')">
+                <div th:replace="/home/clientHeader :: client-header"/>
+          </div>
+          <div sec:authorize="hasRole('ADMIN')">
+                <div th:replace="/home/adminHeader :: admin-header"/>
+          </div>
+          <div sec:authorize="hasRole('WORKER')">
+                <div th:replace="/home/workerHeader :: worker-header"/>
+          </div>
+
+        <div class="container"  style="width: 600px;margin-top: 20vh; margin-left: 60vh">
+             <div class="alert alert-warning" role="alert"  th:unless="${apiError == null}" th:text="#{${'text.error.' + apiError?.getMessage()}}"></div>
+
+                <div class="starter-template">
+                    <h3>Try again.</h3>
+                </div>
+
+        </div>
+</body>
+</html>

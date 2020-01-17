@@ -12,6 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +23,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -227,5 +231,17 @@ public class EntityControllerHandler {
                 new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
+
+    @ExceptionHandler(FlightStatusIncorrectException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handleFlightStatusIncorrect(FlightStatusIncorrectException ex) {
+        String error = ex.getMessage();
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("statuscode/409");
+        modelAndView.addObject("apiError",apiError);
+        return modelAndView;
+    }
+
 
 }

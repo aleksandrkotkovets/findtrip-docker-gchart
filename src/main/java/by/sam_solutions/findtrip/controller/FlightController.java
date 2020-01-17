@@ -2,10 +2,7 @@ package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.*;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
-import by.sam_solutions.findtrip.service.CityService;
-import by.sam_solutions.findtrip.service.CompanyService;
-import by.sam_solutions.findtrip.service.CountryService;
-import by.sam_solutions.findtrip.service.FlightService;
+import by.sam_solutions.findtrip.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +31,12 @@ public class FlightController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private EmailSender emailSender;
+
+    @Autowired
+    private OrderService orderService;
+
     private List<CountryDTO> countryDTOList;
     private List<CompanyDTO> companyDTOList;
     private List<FlightDTO> flightDTOList;
@@ -41,18 +44,18 @@ public class FlightController {
     @ModelAttribute("countries")
     public List<CountryDTO> getCountries() {
         countryDTOList = countryService.findAll();
-        return  countryDTOList;
+        return countryDTOList;
     }
 
     @ModelAttribute("flights")
     public List<FlightDTO> getFlights() {
         flightDTOList = flightService.findAll();
-        return  flightDTOList;
+        return flightDTOList;
     }
 
     @GetMapping("/countries")
     @ResponseBody
-    public List<CountryDTO> getCountriesJson(){
+    public List<CountryDTO> getCountriesJson() {
         return countryDTOList;
     }
 
@@ -64,7 +67,7 @@ public class FlightController {
 
     @GetMapping("/companies")
     @ResponseBody
-    public List<CompanyDTO> getCompaniesJson(){
+    public List<CompanyDTO> getCompaniesJson() {
         return companyDTOList;
     }
 
@@ -75,24 +78,24 @@ public class FlightController {
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditFlightView(@PathVariable Long id,Model model) {
+    public String getEditFlightView(@PathVariable Long id, Model model) {
         FlightDTO flightDTO = flightService.getById(id);
 
-        String dDeparture =new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(flightDTO.getDepartureDate().getTime()));
-        String dArrival =new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(flightDTO.getArrivalDate().getTime()));
+        String dDeparture = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(flightDTO.getDepartureDate().getTime()));
+        String dArrival = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(flightDTO.getArrivalDate().getTime()));
 
         model.addAttribute("id", flightDTO.getId());
         model.addAttribute("countries_fr", flightDTO.getAirportDeparture().getCityDTO().getCountryDTO());
-        model.addAttribute("countries_to",flightDTO.getAirportArrival().getCityDTO().getCountryDTO());
-        model.addAttribute("cities_fr",flightDTO.getAirportDeparture().getCityDTO());
-        model.addAttribute("cities_to",flightDTO.getAirportArrival().getCityDTO());
-        model.addAttribute("airports_fr",flightDTO.getAirportDeparture());
-        model.addAttribute("airports_to",flightDTO.getAirportArrival());
+        model.addAttribute("countries_to", flightDTO.getAirportArrival().getCityDTO().getCountryDTO());
+        model.addAttribute("cities_fr", flightDTO.getAirportDeparture().getCityDTO());
+        model.addAttribute("cities_to", flightDTO.getAirportArrival().getCityDTO());
+        model.addAttribute("airports_fr", flightDTO.getAirportDeparture());
+        model.addAttribute("airports_to", flightDTO.getAirportArrival());
         model.addAttribute("picker1", dDeparture);
-        model.addAttribute("picker2",dArrival);
+        model.addAttribute("picker2", dArrival);
         model.addAttribute("companies", flightDTO.getPlane().getCompanyDTO());
         model.addAttribute("planes", flightDTO.getPlane());
-        model.addAttribute("allSeats",flightDTO.getAllSeats());
+        model.addAttribute("allSeats", flightDTO.getAllSeats());
         model.addAttribute("freeSeats", flightDTO.getFreeSeats());
         model.addAttribute("price", flightDTO.getPrice());
         model.addAttribute("soldTickets", flightService.getNumberSoldTicketById(flightDTO.getId()));
@@ -131,8 +134,7 @@ public class FlightController {
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public FlightCreateUpdateDTO editFlight(@PathVariable Long id,
-                                    @RequestBody FlightCreateUpdateDTO flightDTO) {
+    public FlightCreateUpdateDTO editFlight(@PathVariable Long id, @RequestBody FlightCreateUpdateDTO flightDTO) {
         flightService.edit(flightDTO);
         return flightDTO;
     }
@@ -146,11 +148,22 @@ public class FlightController {
 
     @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/show/{id}")
-    public String getShowFlightViewByClient(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetail currentUser, Model model ) {
-        model.addAttribute("flight",flightService.getById(id));
+    public String getShowFlightViewByClient(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+        model.addAttribute("flight", flightService.getById(id));
         return "flight/checkoutOrder";
     }
 
+    @GetMapping("/canceled/{id}")
+    public String canceledFlight(@PathVariable(name = "id") Long idFlight){
+        flightService.canceledFlight(idFlight);
+        sendСancellationСonfirmToEmail(idFlight);
+        return "redirect:/flights";
+    }
 
+
+    private void sendСancellationСonfirmToEmail(Long idFlight) {
+        List<OrderDTO> orderDTOList = orderService.findAllByFlightId(idFlight);
+        orderDTOList.stream().forEach(a->emailSender.sendСancellationСonfirmToEmail(a));
+    }
 
 }

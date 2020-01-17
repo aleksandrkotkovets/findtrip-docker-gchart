@@ -21,4 +21,6 @@ public interface FlightService {
     FlightDTO mapFlightDTO(FlightEntity flight);
 
     Integer getNumberSoldTicketById(Long id);
+
+    void canceledFlight(Long idFlight);
 }
