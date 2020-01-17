@@ -51,6 +51,15 @@ spring:
             enabled: true
 # Force the encoding to the configured charset on HTTP requests and responses.
             force: true
+---
+#email configuration
 
+spring:
+  mail:
+    host: smtp.mailtrap.io
+    port: 2525
+    username: b2592fe3eaad13
+    password: 0bf2ccb8316813
 
-
+server:
+  port: 8080

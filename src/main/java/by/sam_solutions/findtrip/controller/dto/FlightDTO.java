@@ -53,7 +53,6 @@ public class FlightDTO {
             this.airportDeparture = airportDeparture;
             this.airportArrival = airportArrival;
             this.soldTickets =soldTickets;
-
     }
 
     public FlightDTO() {

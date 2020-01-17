@@ -1,10 +1,16 @@
 package by.sam_solutions.findtrip.controller;
 
+import by.sam_solutions.findtrip.config.EmailConfig;
 import by.sam_solutions.findtrip.controller.dto.OrderCreateUpdateDTO;
 import by.sam_solutions.findtrip.controller.dto.OrderDTO;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
+import by.sam_solutions.findtrip.service.EmailSender;
 import by.sam_solutions.findtrip.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,16 +23,21 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    @Autowired
     private OrderService orderService;
+    private EmailSender emailSender;
+
+    @Autowired
+    public OrderController(OrderService orderService, EmailSender emailSender) {
+        this.orderService = orderService;
+        this.emailSender = emailSender;
+    }
 
     @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/checkout")
     @ResponseBody
-    public OrderCreateUpdateDTO addTicket(@RequestBody OrderCreateUpdateDTO orderDTO, @AuthenticationPrincipal CustomUserDetail currentUser) {
+    public OrderDTO addTicket(@RequestBody OrderCreateUpdateDTO orderDTO, @AuthenticationPrincipal CustomUserDetail currentUser) {
         orderDTO.setIdClient(currentUser.getId());
-        orderService.add(orderDTO);
-        return orderDTO;
+        return  orderService.add(orderDTO);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT')")
@@ -63,10 +74,16 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLIENT')")
     @PostMapping("/{id}/moreTickets")
     @ResponseBody
-    public OrderCreateUpdateDTO takeMoreTickets(@RequestBody OrderCreateUpdateDTO order, @AuthenticationPrincipal CustomUserDetail currUser){
+    public OrderDTO takeMoreTickets(@RequestBody OrderCreateUpdateDTO order, @AuthenticationPrincipal CustomUserDetail currUser){
         order.setIdClient(currUser.getId());
-        orderService.takeMoreTickets(order);
-        return order;
+        return orderService.takeMoreTickets(order);
+    }
+
+    @PostMapping("/sendEmail")
+    @ResponseBody
+    public OrderDTO sendEmailToClient(@RequestBody OrderDTO orderDTO, @AuthenticationPrincipal CustomUserDetail currUser) {
+        emailSender.sendСonfirmPurchaseToEmail(orderDTO);
+        return orderDTO;
     }
 
 }

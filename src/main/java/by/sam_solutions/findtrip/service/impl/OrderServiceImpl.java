@@ -5,10 +5,11 @@ import by.sam_solutions.findtrip.controller.dto.OrderDTO;
 import by.sam_solutions.findtrip.controller.dto.UserDTO;
 import by.sam_solutions.findtrip.exception.OrderOnThisFlightAlreadyExistException;
 import by.sam_solutions.findtrip.exception.OrderSeatsException;
-import by.sam_solutions.findtrip.exception.WalletBalanceException;
-import by.sam_solutions.findtrip.exception.WalletIncorrectBalanceException;
 import by.sam_solutions.findtrip.repository.*;
-import by.sam_solutions.findtrip.repository.entity.*;
+import by.sam_solutions.findtrip.repository.entity.FlightEntity;
+import by.sam_solutions.findtrip.repository.entity.OrderEntity;
+import by.sam_solutions.findtrip.repository.entity.TicketEntity;
+import by.sam_solutions.findtrip.repository.entity.UserEntity;
 import by.sam_solutions.findtrip.service.FlightService;
 import by.sam_solutions.findtrip.service.OrderService;
 import by.sam_solutions.findtrip.service.PaymentService;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,12 +53,12 @@ public class OrderServiceImpl implements OrderService {
 
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-    /**
-     * Send message on email
-     */
+
     @Transactional
     @Override
-    public void add(OrderCreateUpdateDTO orderDTO) {
+    public OrderDTO add(OrderCreateUpdateDTO orderDTO) {
+        OrderDTO savedOrder = null;
+
         if (orderRepository.getOrderIdByFlightIdAndUserId(orderDTO.getIdFlight(), orderDTO.getIdClient()) != null) {
             throw new OrderOnThisFlightAlreadyExistException("Order on this flight already exist", orderDTO);
         }
@@ -84,24 +84,12 @@ public class OrderServiceImpl implements OrderService {
 
             flightEntity.setFreeSeats(flightEntity.getFreeSeats() - orderDTO.getCountSeats());
             flightRepository.save(flightEntity);
-        }
-    }
 
-    /*@Transactional
-    @Override
-    public boolean payOrder(OrderCreateUpdateDTO orderDTO, FlightEntity flightEntity, UserEntity userEntity) {
-        WalletEntity walletEntity = walletRepository.findByOwnerId(userEntity.getId());
-        Double mustPay = orderDTO.getCountSeats() * flightEntity.getPrice();
-        Double currBalance = walletEntity.getSum();
-        if (mustPay < currBalance) {
-            currBalance -= mustPay;
-            walletEntity.setSum(Double.parseDouble(decimalFormat.format(currBalance).replace(",", ".")));
-            walletRepository.save(walletEntity);
-        } else {
-            throw new WalletIncorrectBalanceException("You need to replenish wallet balance.\nYour balance: " + walletEntity.getSum());
+            orderEntity.setTickets(ticketRepository.findAllByOrderId(orderEntity.getId()));
+            return mapOrderDTO(orderEntity);
         }
-        return true;
-    }*/
+        return savedOrder;
+    }
 
     @Override
     public List<OrderDTO> getOrdersByUserId(Long id) {
@@ -124,11 +112,11 @@ public class OrderServiceImpl implements OrderService {
         if (order.getReturnTickets() > orderEntity.getTickets().size() || order.getReturnTickets() == 0) {
             throw new OrderSeatsException("Incorrect seats number.\nYou want return:" + order.getReturnTickets() + "\nMax return only:" + orderEntity.getTickets().size());
         } else if (order.getReturnTickets() == orderEntity.getTickets().size()) {
-            if(paymentService.returnMoney(order,flightEntity, userRepository.findById(order.getIdClient()).get())) {
+            if (paymentService.returnMoney(order, flightEntity, userRepository.findById(order.getIdClient()).get())) {
                 orderRepository.deleteById(order.getId());
             }
         } else {
-            if(paymentService.returnMoney(order,flightEntity, userRepository.findById(order.getIdClient()).get())) {
+            if (paymentService.returnMoney(order, flightEntity, userRepository.findById(order.getIdClient()).get())) {
                 List<TicketEntity> ticketEntityList = ticketRepository.findAllByOrderId(order.getId());
                 for (int i = 0; i < order.getReturnTickets(); i++) {
                     ticketRepository.deleteById(ticketEntityList.get(i).getId());
@@ -137,8 +125,8 @@ public class OrderServiceImpl implements OrderService {
                 Double mustReturn = order.getReturnTickets() * flightEntity.getPrice();
 
                 orderEntity.setFinalCost(Double.parseDouble(decimalFormat
-                                                                   .format(orderEntity.getFinalCost()-mustReturn)
-                                                                   .replace(',','.')));
+                        .format(orderEntity.getFinalCost() - mustReturn)
+                        .replace(',', '.')));
 
                 orderRepository.save(orderEntity);
             }
@@ -151,7 +139,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void takeMoreTickets(OrderCreateUpdateDTO order) {
+    public OrderDTO takeMoreTickets(OrderCreateUpdateDTO order) {
+        OrderDTO savedOrderDTO = null;
         OrderEntity orderEntity = orderRepository.findById(order.getId()).get();
         Integer currTickets = orderEntity.getTickets().size();
 
@@ -163,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
 
             FlightEntity flightEntity = orderEntity.getFlight();
 
-            if (paymentService.payOrder(order,flightEntity, userRepository.findById(order.getIdClient()).get() )) {
+            if (paymentService.payOrder(order, flightEntity, userRepository.findById(order.getIdClient()).get())) {
 
                 for (int i = 0; i < order.getCountSeats(); i++) {
                     ticketRepository.save(new TicketEntity(order.getPriceOneSeat(), orderEntity));
@@ -173,15 +162,19 @@ public class OrderServiceImpl implements OrderService {
 
                 flightEntity.setFreeSeats(flightEntity.getFreeSeats() - order.getCountSeats());
                 orderEntity.setFinalCost(Double.parseDouble(decimalFormat.format(currTickets * flightEntity.getPrice()).replace(',', '.')));
+                orderEntity.setFlight(flightEntity);
+                orderEntity.setTickets(ticketRepository.findAllByOrderId(orderEntity.getId()));
 
                 orderRepository.save(orderEntity);
                 flightRepository.save(flightEntity);
+
+                savedOrderDTO = mapOrderDTO(orderEntity);
             }
 
         } else {
             throw new OrderSeatsException("Incorrect seats number");
         }
-
+        return savedOrderDTO;
     }
 
     private List<OrderDTO> mapOrderDTOList(List<OrderEntity> orderEntityList) {
