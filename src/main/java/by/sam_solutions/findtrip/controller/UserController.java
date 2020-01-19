@@ -2,7 +2,6 @@ package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
 import by.sam_solutions.findtrip.controller.dto.UserDTO;
-import by.sam_solutions.findtrip.exception.EditUsersParametersExistException;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
 import by.sam_solutions.findtrip.service.RoleService;
 import by.sam_solutions.findtrip.service.UserService;
@@ -17,7 +16,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/users")
@@ -25,11 +25,15 @@ public class UserController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
+
     private UserService userService;
+    private RoleService roleService;
 
     @Autowired
-    private RoleService roleService;
+    public UserController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'WORKER')")
     @GetMapping()

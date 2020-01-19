@@ -2,6 +2,7 @@ package by.sam_solutions.findtrip.service;
 
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.controller.dto.CountryDTO;
+import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
 import by.sam_solutions.findtrip.repository.entity.CompanyEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,4 +36,6 @@ public interface CompanyService {
     List<CompanyDTO> findAll();
 
     Page<CompanyEntity> findAllByCriteria(PageRequest pageRequest, String name1);
+
+    List<PlaneDTO> checkPlaneDTOList(List<PlaneDTO> planeDTOList);
 }

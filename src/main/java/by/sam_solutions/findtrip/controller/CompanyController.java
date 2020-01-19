@@ -2,10 +2,8 @@ package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
-import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
 import by.sam_solutions.findtrip.exception.EditCompanyParameterExistException;
-import by.sam_solutions.findtrip.exception.EditCountryParametersExistException;
 import by.sam_solutions.findtrip.repository.entity.CompanyEntity;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.service.CompanyService;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +26,12 @@ import java.util.Optional;
 @RequestMapping("/companies")
 public class CompanyController {
 
-    @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
+    }
 
     @GetMapping()
     public String showPage(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
@@ -112,8 +113,9 @@ public class CompanyController {
                                        Model model) {
         CompanyDTO companyDTO = companyService.findOne(id);
         model.addAttribute("company", companyDTO);
-        model.addAttribute("planes", companyDTO.getPlaneDTOList().size() == 0 || companyDTO.getPlaneDTOList() == null ? null : companyDTO.getPlaneDTOList());
+        model.addAttribute("planes", companyService.checkPlaneDTOList(companyDTO.getPlaneDTOList()));
         return "plane/showPlanes";
     }
+
 
 }

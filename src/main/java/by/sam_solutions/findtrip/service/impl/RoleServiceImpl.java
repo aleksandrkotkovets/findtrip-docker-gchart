@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,19 +21,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> findAllRoles() {
         List<RoleEntity> rolesEntity = roleRepository.findAll();
-        List<RoleDTO> rolesDTO = rolesEntity.stream().map(a -> new RoleDTO(a.getId(), a.getRole())).collect(Collectors.toList());
-        return rolesDTO;
-    }
-
-    @Override
-    public Set<RoleEntity> findAll() {
-        return null;
-    }
-
-
-    @Override
-    public RoleEntity findById(Long id) {
-        return null;
+        return rolesEntity.stream().map(a -> new RoleDTO(a.getId(), a.getRole())).collect(Collectors.toList());
     }
 
     @Override

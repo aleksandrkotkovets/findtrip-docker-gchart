@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -36,7 +35,7 @@ public class WalletServiceImpl implements WalletService {
         if (currBalance + bankCard.getBalance() < MAX_BALANCE) {
             DecimalFormat decimalFormat = new DecimalFormat("#.##");
             currBalance += bankCard.getBalance();
-            walletEntity.setSum(Double.parseDouble(decimalFormat.format(currBalance).replace(",",".")));
+            walletEntity.setSum(Double.parseDouble(decimalFormat.format(currBalance).replace(",", ".")));
             walletRepository.save(walletEntity);
         } else {
             throw new WalletBalanceException("Your_wallet_balance_should_not_exceed_1_000_000", bankCard);

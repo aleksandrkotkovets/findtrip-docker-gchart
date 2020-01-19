@@ -22,14 +22,10 @@ public class AirportEntity extends BaseEntity {
     private CityEntity cityEntity;
 
     @OneToMany(mappedBy = "airportDeparture", fetch = FetchType.EAGER)
-    private List<FlightEntity> flight_departure;
+    private List<FlightEntity> flightDepartures;
 
     @OneToMany(mappedBy = "airportArrival", fetch = FetchType.EAGER)
-    private List<FlightEntity> flight_arrival;
-
-    public AirportEntity() {
-    }
-
+    private List<FlightEntity> flightArrivals;
 
     public String getName() {
         return name;
@@ -55,31 +51,20 @@ public class AirportEntity extends BaseEntity {
         this.cityEntity = cityEntity;
     }
 
-    public List<FlightEntity> getFlight_departure() {
-        return flight_departure;
+    public List<FlightEntity> getFlightDepartures() {
+        return flightDepartures;
     }
 
-    public void setFlight_departure(List<FlightEntity> flight_departure) {
-        this.flight_departure = flight_departure;
+    public void setFlightDepartures(List<FlightEntity> flightDepartures) {
+        this.flightDepartures = flightDepartures;
     }
 
-    public List<FlightEntity> getFlight_arrival() {
-        return flight_arrival;
+    public List<FlightEntity> getFlightArrivals() {
+        return flightArrivals;
     }
 
-    public void setFlight_arrival(List<FlightEntity> flight_arrival) {
-        this.flight_arrival = flight_arrival;
+    public void setFlightArrivals(List<FlightEntity> flightArrivals) {
+        this.flightArrivals = flightArrivals;
     }
 
-
-    @Override
-    public String toString() {
-        return "AirportEntity{" +
-                "name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                ", cityEntity=" + cityEntity +
-                ", flight_departure=" + flight_departure +
-                ", flight_arrival=" + flight_arrival +
-                '}';
-    }
 }

@@ -24,12 +24,14 @@ public class UserServiceImpl implements UserService {
 
     private final Double DEFAULT_SUM = 0D;
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private RoleService roleService;
 
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
 
     @Transactional
     @Override

@@ -23,12 +23,15 @@ import java.util.Optional;
 @Service
 public class AirportServiceImpl implements AirportService {
 
-   @Autowired
-   private AirportRepository airportRepository;
+    private AirportRepository airportRepository;
+    private CityRepository cityRepository;
 
-   @Autowired
-   private CityRepository cityRepository;
+    @Autowired
 
+    public AirportServiceImpl(AirportRepository airportRepository, CityRepository cityRepository) {
+        this.airportRepository = airportRepository;
+        this.cityRepository = cityRepository;
+    }
 
     @Override
     public List<AirportDTO> findAll() {
@@ -37,21 +40,11 @@ public class AirportServiceImpl implements AirportService {
 
         List<AirportDTO> airportDTOs = new ArrayList<>();
 
-        for(AirportEntity airportEntity: airportEntities) {
+        for (AirportEntity airportEntity : airportEntities) {
 
-            AirportDTO airportDTO = new AirportDTO();
-
-            airportDTO.setId(airportEntity.getId());
-            airportDTO.setName(airportEntity.getName());
-            airportDTO.setCode(airportEntity.getCode());
-
-            CityDTO cityDTO = new CityDTO();
-            cityDTO.setId(airportEntity.getCityEntity().getId());
-            cityDTO.setName(airportEntity.getCityEntity().getName());
-
-            CountryDTO countryDTO = new CountryDTO();
-            countryDTO.setId(airportEntity.getCityEntity().getCountryEntity().getId());
-            countryDTO.setName(airportEntity.getCityEntity().getCountryEntity().getName());
+            AirportDTO airportDTO = new AirportDTO(airportEntity.getId(), airportEntity.getName(), airportEntity.getCode());
+            CityDTO cityDTO = new CityDTO(airportEntity.getCityEntity().getId(), airportEntity.getCityEntity().getName());
+            CountryDTO countryDTO = new CountryDTO(airportEntity.getCityEntity().getCountryEntity().getId(), airportEntity.getCityEntity().getCountryEntity().getName());
 
             cityDTO.setCountryDTO(countryDTO);
             airportDTO.setCityDTO(cityDTO);
@@ -65,7 +58,7 @@ public class AirportServiceImpl implements AirportService {
     public AirportDTO findById(Long id) {
         Optional<AirportEntity> airportEntity = airportRepository.findById(id);
         AirportDTO airportDTO = new AirportDTO();
-        if (airportEntity.isPresent()){
+        if (airportEntity.isPresent()) {
 
             airportDTO.setId(airportEntity.get().getId());
             airportDTO.setName(airportEntity.get().getName());
@@ -82,8 +75,8 @@ public class AirportServiceImpl implements AirportService {
             cityDTO.setCountryDTO(countryDTO);
             airportDTO.setCityDTO(cityDTO);
 
-        }else {
-            throw new EntityNotFoundException("AirportEntity with id="+id+" not found");
+        } else {
+            throw new EntityNotFoundException("AirportEntity with id=" + id + " not found");
         }
         return airportDTO;
     }
@@ -92,32 +85,32 @@ public class AirportServiceImpl implements AirportService {
     @Override
     public void updateAirport(AirportDTO airportDTO) {
 
-        if(airportDTO.getId() != null){
+        if (airportDTO.getId() != null) {
 
-           Optional<AirportEntity> airportEntity =  airportRepository.findById(airportDTO.getId());
+            Optional<AirportEntity> airportEntity = airportRepository.findById(airportDTO.getId());
 
-           if(airportEntity.isPresent()){
+            if (airportEntity.isPresent()) {
 
 
-            if(airportRepository.findIdByName(airportDTO.getName()) != airportEntity.get().getId() && airportRepository.findIdByName(airportDTO.getName()) != null){
-                throw new EditAirportParametersExistException("Airport_with_this_name_already_exist", airportDTO);
+                if (airportRepository.findIdByName(airportDTO.getName()) != airportEntity.get().getId() && airportRepository.findIdByName(airportDTO.getName()) != null) {
+                    throw new EditAirportParametersExistException("Airport_with_this_name_already_exist", airportDTO);
+                }
+
+                if (airportRepository.findIdByCode(airportDTO.getCode()) != airportEntity.get().getId() && airportRepository.findIdByCode(airportDTO.getCode()) != null) {
+                    throw new EditAirportParametersExistException("Airport_with_this_code_already_exist", airportDTO);
+                }
+
+                airportEntity.get().setName(airportDTO.getName());
+                airportEntity.get().setCode(airportDTO.getCode());
+
+                airportRepository.save(airportEntity.get());
+
+
+            } else {
+                throw new EntityNotFoundException("Airport with id=" + airportEntity.get().getId() + " not found");
             }
 
-            if(airportRepository.findIdByCode(airportDTO.getCode()) != airportEntity.get().getId() && airportRepository.findIdByCode(airportDTO.getCode()) != null){
-                throw new EditAirportParametersExistException("Airport_with_this_code_already_exist", airportDTO);
-            }
-
-            airportEntity.get().setName(airportDTO.getName());
-            airportEntity.get().setCode(airportDTO.getCode());
-
-            airportRepository.save(airportEntity.get());
-
-
-           }else {
-               throw new EntityNotFoundException("Airport with id="+airportEntity.get().getId()+" not found");
-           }
-
-        }else {
+        } else {
             throw new EntityNotFoundException("Id == null");
         }
 
@@ -133,16 +126,16 @@ public class AirportServiceImpl implements AirportService {
     @Override
     public void save(AirportDTO airportDTO) {
 
-        if(airportRepository.findIdByName(airportDTO.getName()) != null){
-            throw new AirportAddParameterExistException("Airport_with_this_name_already_exist",airportDTO);
+        if (airportRepository.findIdByName(airportDTO.getName()) != null) {
+            throw new AirportAddParameterExistException("Airport_with_this_name_already_exist", airportDTO);
         }
 
-        if(airportRepository.findIdByCode(airportDTO.getCode()) != null){
-            throw new AirportAddParameterExistException("Airport_with_this_code_already_exist",airportDTO);
+        if (airportRepository.findIdByCode(airportDTO.getCode()) != null) {
+            throw new AirportAddParameterExistException("Airport_with_this_code_already_exist", airportDTO);
         }
 
         CityEntity cityEntity = cityRepository.findById(airportDTO.getCityDTO().getId()).get();
-        AirportEntity airportEntity= new AirportEntity();
+        AirportEntity airportEntity = new AirportEntity();
         airportEntity.setName(airportDTO.getName());
         airportEntity.setCode(airportDTO.getCode());
         airportEntity.setCityEntity(cityEntity);

@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class CustomUserDetail extends UserEntity implements UserDetails {
-    public CustomUserDetail(final UserEntity user){
+    public CustomUserDetail(final UserEntity user) {
         super(user);
     }
 
@@ -19,13 +19,15 @@ public class CustomUserDetail extends UserEntity implements UserDetails {
         return Collections.singleton(simpleGrantedAuthority);
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return getRoleEntity().getRole().equals("ROLE_ADMIN");
     }
-    public boolean isClient(){
+
+    public boolean isClient() {
         return getRoleEntity().getRole().equals("ROLE_CLIENT");
     }
-    public boolean isWorker(){
+
+    public boolean isWorker() {
         return getRoleEntity().getRole().equals("ROLE_WORKER");
     }
 

@@ -1,7 +1,6 @@
 package by.sam_solutions.findtrip.service.impl;
 
 import by.sam_solutions.findtrip.controller.dto.AirportDTO;
-import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.controller.dto.CityDTO;
 import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
@@ -9,8 +8,8 @@ import by.sam_solutions.findtrip.repository.CityRepository;
 import by.sam_solutions.findtrip.repository.CountryRepository;
 import by.sam_solutions.findtrip.repository.entity.CityEntity;
 import by.sam_solutions.findtrip.repository.entity.CountryEntity;
+import by.sam_solutions.findtrip.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class CityServiceImpl implements CityService {
 
-    @Autowired
     private CityRepository cityRepository;
-
-    @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    public CityServiceImpl(CityRepository cityRepository, CountryRepository countryRepository) {
+        this.cityRepository = cityRepository;
+        this.countryRepository = countryRepository;
+    }
 
     @Override
     public CityDTO findOne(Long id) {
@@ -61,14 +62,12 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public Long getCityIdByName(String name) {
-
         return cityRepository.getIdExistCityByName(name);
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(CityDTO cityDTO, String countryName) {
-
 
         if (cityDTO.getId() == null) {
             CityEntity cityEntity = new CityEntity();
@@ -95,10 +94,9 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<CityDTO> getCityListByCountry(Long id) {
         List<CityEntity> cityEntities = cityRepository.findAllByCountryEntity_Id(id);
-        List<CityDTO> cityDTOs = cityEntities.stream()
+        return cityEntities.stream()
                 .map(c -> new CityDTO(c.getId(), c.getName(), c.getCountryEntity().getId(), c.getCountryEntity().getName()))
                 .collect(Collectors.toList());
-        return cityDTOs;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class EmailSenderImpl implements EmailSender {
     private JavaMailSenderImpl mailSender;
 
     @Autowired
-    public EmailSenderImpl(EmailConfig emailConfig){
+    public EmailSenderImpl(EmailConfig emailConfig) {
         this.emailConfig = emailConfig;
         this.mailSender = new JavaMailSenderImpl();
 
@@ -33,16 +33,16 @@ public class EmailSenderImpl implements EmailSender {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(APP_MAIL);
         mailMessage.setTo(orderDTO.getUserDTO().getEmail());
-        mailMessage.setSubject("Your tickets purchase Order #"+orderDTO.getId()+" on findtrip.com");
+        mailMessage.setSubject("Your tickets purchase Order #" + orderDTO.getId() + " on findtrip.com");
         mailMessage.setText("Hello, Dear friend.\n" +
-                "Your Order #"+ orderDTO.getId()+" has been successfully paid.\n" +
-                "Final cost($): " +orderDTO.getFinalCost()+'\n'+
-                "Count tickets: " +orderDTO.getTicketDTOList().size()+'\n'+
-                "Order date: " +orderDTO.getOrderDate()+'\n'+
-                "User: "+orderDTO.getUserDTO().getLogin()+'\n'+
-                "Telephone: " +orderDTO.getUserDTO().getPhoneNumber()+'\n'+
+                "Your Order #" + orderDTO.getId() + " has been successfully paid.\n" +
+                "Final cost($): " + orderDTO.getFinalCost() + '\n' +
+                "Count tickets: " + orderDTO.getTicketDTOList().size() + '\n' +
+                "Order date: " + orderDTO.getOrderDate() + '\n' +
+                "User: " + orderDTO.getUserDTO().getLogin() + '\n' +
+                "Telephone: " + orderDTO.getUserDTO().getPhoneNumber() + '\n' +
                 "\n\n\n\n" +
-                "Printing tickets in the infokiosk by order number." +'\n'+
+                "Printing tickets in the infokiosk by order number." + '\n' +
                 "-------------------------------------------------------------------\n" +
                 "This message was automatically generated. Please do not reply to this message.");
 
@@ -54,10 +54,10 @@ public class EmailSenderImpl implements EmailSender {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(APP_MAIL);
         mailMessage.setTo(orderDTO.getUserDTO().getEmail());
-        mailMessage.setSubject("Your  Order #"+orderDTO.getId()+" on findtrip.com has been canceled");
+        mailMessage.setSubject("Your  Order #" + orderDTO.getId() + " on findtrip.com has been canceled");
         mailMessage.setText("Hello, Dear friend.\n" +
-                "Your Order #"+ orderDTO.getId()+" has been canceled.\n" +
-                "Money($) "+ orderDTO.getFinalCost()+" has already been returned to your wallet.\n" +
+                "Your Order #" + orderDTO.getId() + " has been canceled.\n" +
+                "Money($) " + orderDTO.getFinalCost() + " has already been returned to your wallet.\n" +
                 "-------------------------------------------------------------------\n" +
                 "This message was automatically generated. Please do not reply to this message.");
 

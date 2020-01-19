@@ -19,11 +19,14 @@ import java.util.Optional;
 @Service
 public class PlaneServiceImpl  implements PlaneService {
 
-    @Autowired
     private PlaneRepository planeRepository;
+    private CompanyRepository companyRepository;
 
     @Autowired
-    private CompanyRepository companyRepository;
+    public PlaneServiceImpl(PlaneRepository planeRepository, CompanyRepository companyRepository) {
+        this.planeRepository = planeRepository;
+        this.companyRepository = companyRepository;
+    }
 
     @Transactional
     @Override

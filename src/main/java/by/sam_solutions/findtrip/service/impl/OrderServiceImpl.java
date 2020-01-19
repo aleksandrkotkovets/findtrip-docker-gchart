@@ -24,26 +24,24 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
     private FlightRepository flightRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private TicketRepository ticketRepository;
-
-    @Autowired
     private FlightService flightService;
-
-    @Autowired
     private TicketService ticketService;
+    private PaymentService paymentService;
 
     @Autowired
-    private PaymentService paymentService;
+    public OrderServiceImpl(FlightRepository flightRepository, UserRepository userRepository, OrderRepository orderRepository, TicketRepository ticketRepository, FlightService flightService, TicketService ticketService, PaymentService paymentService) {
+        this.flightRepository = flightRepository;
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.ticketRepository = ticketRepository;
+        this.flightService = flightService;
+        this.ticketService = ticketService;
+        this.paymentService = paymentService;
+    }
 
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 

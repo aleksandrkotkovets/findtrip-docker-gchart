@@ -1,10 +1,10 @@
 package by.sam_solutions.findtrip.controller;
 
+import by.sam_solutions.findtrip.controller.dto.ApiError;
+import by.sam_solutions.findtrip.controller.dto.CityDTO;
 import by.sam_solutions.findtrip.exception.EditCityParametersExistException;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.CountryService;
-import by.sam_solutions.findtrip.controller.dto.ApiError;
-import by.sam_solutions.findtrip.controller.dto.CityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,17 +20,20 @@ import java.util.Optional;
 @RequestMapping(value = "/cities")
 public class CityController {
 
-    @Autowired
-    private  CityService cityService;
+    private CityService cityService;
+    private CountryService countryService;
 
     @Autowired
-    private CountryService countryService;
+    public CityController(CityService cityService, CountryService countryService) {
+        this.cityService = cityService;
+        this.countryService = countryService;
+    }
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
     public String getAddOrEditCityView(
             Model model,
             @RequestParam(name = "country", required = false) String country,
-            @PathVariable(value = "id") Optional<Long> id ) throws EntityNotFoundException {
+            @PathVariable(value = "id") Optional<Long> id) throws EntityNotFoundException {
 
         if (id.isPresent()) {
             CityDTO cityDTO = cityService.findOne(id.get());
@@ -50,18 +53,18 @@ public class CityController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCity(@PathVariable(value = "id") Long id){
+    public String deleteCity(@PathVariable(value = "id") Long id) {
         Long idCountry = cityService.getCountryIdByCityId(id);
         cityService.delete(id);
-        return "redirect:/country/"+idCountry+"/cities";
+        return "redirect:/country/" + idCountry + "/cities";
     }
 
 
     @PostMapping(path = "/edit")
     public String addOrEditCity(@Valid @ModelAttribute("city") CityDTO cityDTO,
-                                   @RequestParam(name = "countryName") String countryName,
-                                   BindingResult result,
-                                   Model model) {
+                                @RequestParam(name = "countryName") String countryName,
+                                BindingResult result,
+                                Model model) {
 
         if (result.hasErrors()) {
             ApiError apiError = new ApiError();
@@ -70,9 +73,9 @@ public class CityController {
                 message += str.getDefaultMessage();
                 apiError.setMessage(message);
             }
-            model.addAttribute("city",cityDTO);
-            model.addAttribute("countryName",cityDTO);
-            model.addAttribute("apiError",apiError);
+            model.addAttribute("city", cityDTO);
+            model.addAttribute("countryName", cityDTO);
+            model.addAttribute("apiError", apiError);
             return "city/editCity";
         }
 
@@ -90,7 +93,7 @@ public class CityController {
             cityService.saveOrUpdate(cityDTO, countryName);
         }
         Long idCountry = countryService.getCountryIdByName(countryName);
-        return "redirect:/country/"+idCountry+"/cities";
+        return "redirect:/country/" + idCountry + "/cities";
     }
 
 

@@ -17,9 +17,9 @@ import java.text.DecimalFormat;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-
     private WalletRepository walletRepository;
 
+    @Autowired
     public PaymentServiceImpl(WalletRepository walletRepository) {
         this.walletRepository = walletRepository;
     }
@@ -47,7 +47,7 @@ public class PaymentServiceImpl implements PaymentService {
     public boolean returnMoney(OrderCreateUpdateDTO orderDTO, FlightEntity flightEntity, UserEntity userEntity) {
         WalletEntity walletEntity = walletRepository.findByOwnerId(userEntity.getId());
         Double mustReturn = orderDTO.getReturnTickets() * flightEntity.getPrice();
-        Double currBalance = walletEntity.getSum()+mustReturn;
+        Double currBalance = walletEntity.getSum() + mustReturn;
 
         walletEntity.setSum(Double.parseDouble(decimalFormat.format(currBalance).replace(",", ".")));
         walletRepository.save(walletEntity);
@@ -58,14 +58,14 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public boolean returnMoneyForFlightCancellation(FlightEntity flightEntity) {
-            WalletEntity walletEntity;
-            Double currBalance;
-            for (OrderEntity orderEntity : flightEntity.getOrders()) {
-                walletEntity = orderEntity.getUser().getWallet();
-                currBalance = walletEntity.getSum();
-                walletEntity.setSum(currBalance + orderEntity.getFinalCost());
-                walletRepository.save(walletEntity);
-            }
+        WalletEntity walletEntity;
+        Double currBalance;
+        for (OrderEntity orderEntity : flightEntity.getOrders()) {
+            walletEntity = orderEntity.getUser().getWallet();
+            currBalance = walletEntity.getSum();
+            walletEntity.setSum(currBalance + orderEntity.getFinalCost());
+            walletRepository.save(walletEntity);
+        }
 
         return true;
     }

@@ -15,18 +15,22 @@ import java.util.stream.Collectors;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    @Autowired
     private TicketRepository ticketRepository;
+    private OrderService orderService;
+
 
     @Autowired
-    private OrderService orderService;
+    public TicketServiceImpl(TicketRepository ticketRepository, OrderService orderService) {
+        this.ticketRepository = ticketRepository;
+        this.orderService = orderService;
+    }
 
     @Override
     public List<TicketDTO> mapTicketDTOList(List<TicketEntity> tickets) {
-        return tickets.stream().map(a-> new TicketDTO(
-                                    a.getId(),
-                                    new OrderDTO(a.getOrder().getId()),
-                                    a.getPrice()))
+        return tickets.stream().map(a -> new TicketDTO(
+                a.getId(),
+                new OrderDTO(a.getOrder().getId()),
+                a.getPrice()))
                 .collect(Collectors.toList());
     }
 }

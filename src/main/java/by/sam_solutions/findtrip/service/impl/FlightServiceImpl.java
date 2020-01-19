@@ -5,8 +5,14 @@ import by.sam_solutions.findtrip.exception.CityIncorrectException;
 import by.sam_solutions.findtrip.exception.FlightDateIncorrectException;
 import by.sam_solutions.findtrip.exception.FlightStatusIncorrectException;
 import by.sam_solutions.findtrip.exception.PaymentException;
-import by.sam_solutions.findtrip.repository.*;
-import by.sam_solutions.findtrip.repository.entity.*;
+import by.sam_solutions.findtrip.repository.AirportRepository;
+import by.sam_solutions.findtrip.repository.FlightRepository;
+import by.sam_solutions.findtrip.repository.PlaneRepository;
+import by.sam_solutions.findtrip.repository.WalletRepository;
+import by.sam_solutions.findtrip.repository.entity.FlightEntity;
+import by.sam_solutions.findtrip.repository.entity.FlightStatus;
+import by.sam_solutions.findtrip.repository.entity.OrderStatus;
+import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.FlightService;
 import by.sam_solutions.findtrip.service.PaymentService;
@@ -20,7 +26,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -358,14 +363,13 @@ public class FlightServiceImpl implements FlightService {
                 flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
 
                 flightRepository.save(flightEntity.get());
-            }else {
+            } else {
                 throw new PaymentException("Money_back_error");
             }
 
         }
 
     }
-
 
 
     private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {

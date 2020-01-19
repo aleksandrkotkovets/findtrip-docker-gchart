@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-
     @Query(value = "SELECT u.id FROM UserEntity u WHERE u.login = ?1")
     Long getIdUserByLogin(String login);
 

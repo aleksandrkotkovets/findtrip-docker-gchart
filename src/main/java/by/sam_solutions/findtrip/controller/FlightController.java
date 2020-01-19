@@ -105,22 +105,19 @@ public class FlightController {
     @GetMapping(value = "/countries/{id}")
     @ResponseBody
     public List<CityDTO> getCities(@PathVariable Long id) {
-        List<CityDTO> list = cityService.getCityListByCountry(id);
-        return list;
+        return cityService.getCityListByCountry(id);
     }
 
     @GetMapping(value = "/cities/{id}")
     @ResponseBody
     public List<AirportDTO> getAirports(@PathVariable Long id) {
-        CityDTO cityDTO = cityService.findOne(id);
-        return cityDTO.getAirportDTOList();
+        return cityService.findOne(id).getAirportDTOList();
     }
 
     @GetMapping(value = "/companies/{id}")
     @ResponseBody
     public List<PlaneDTO> getPlanes(@PathVariable Long id) {
-        CompanyDTO companyDTO = companyService.findOne(id);
-        return companyDTO.getPlaneDTOList();
+        return companyService.findOne(id).getPlaneDTOList();
     }
 
     @PostMapping()
@@ -154,21 +151,21 @@ public class FlightController {
     }
 
     @GetMapping("/canceled/{id}")
-    public String canceledFlight(@PathVariable(name = "id") Long idFlight){
+    public String canceledFlight(@PathVariable(name = "id") Long idFlight) {
         flightService.canceledFlight(idFlight);
         sendСancellationСonfirmToEmail(idFlight);
         return "redirect:/flights";
     }
 
     @GetMapping("/{id}/orders")
-    public String getFlightTicketsSold(@PathVariable Long id, Model model){
-        model.addAttribute("orders",orderService.findAllByFlightId(id));
+    public String getFlightTicketsSold(@PathVariable Long id, Model model) {
+        model.addAttribute("orders", orderService.findAllByFlightId(id));
         return "order/showOrdersOnFlight";
     }
 
     private void sendСancellationСonfirmToEmail(Long idFlight) {
         List<OrderDTO> orderDTOList = orderService.findAllByFlightId(idFlight);
-        orderDTOList.stream().forEach(a->emailSender.sendСancellationСonfirmToEmail(a));
+        orderDTOList.stream().forEach(a -> emailSender.sendСancellationСonfirmToEmail(a));
     }
 
 }

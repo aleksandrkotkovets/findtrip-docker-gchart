@@ -10,11 +10,8 @@ import java.util.Set;
 
 public interface RoleService {
 
-    Set<RoleEntity> findAll();
 
     List<RoleDTO> findAllRoles();
-
-    RoleEntity findById(Long id);
 
     RoleEntity findByRole(String role);
 

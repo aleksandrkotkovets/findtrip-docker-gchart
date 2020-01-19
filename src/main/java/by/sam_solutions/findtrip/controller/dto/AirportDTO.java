@@ -40,10 +40,6 @@ public class AirportDTO {
         this.cityDTO = cityDTO;
     }
 
-/*    private List<FlightEntity> flight_departure;
-
-    private List<FlightEntity> flight_arrival;*/
-
     public Long getId() {
         return id;
     }
