@@ -18,4 +18,5 @@ public interface OrderService {
     OrderDTO takeMoreTickets(OrderCreateUpdateDTO order);
 
     List<OrderDTO> findAllByFlightId(Long idFlight);
+
 }

@@ -58,10 +58,11 @@
                          <h2 th:case="null" th:text="#{text.record.found}"></h2>
                         <div th:case="*">
 
-                          <div class="card border-success" style="margin-bottom: 15px" th:each="flight : ${flights}">
+                          <div id="cardBorder" class="card border-success" style="margin-bottom: 15px" th:each="flight : ${flights}">
                               <!-- Шапка (bg-primary - цвет фона, text-white - цвет текста) -->
-                              <div class="card-header bg-success text-white">
+                              <div class="card-header bg-success text-white d-flex justify-content-between">
                                     <span class="text-left" th:text="${flight.plane.companyDTO.name}"></span>
+                                    <span style="color: yellow;" th:text="${flight.status}"></span>
                               </div>
                               <!-- Текстовый контент -->
                               <div class="card-body">
@@ -95,19 +96,21 @@
 
                                     </div>
                               </div>
-                                  <input type="hidden"  th:value="${flight.id}" id="idFlight">
+                                  <input type="hidden" class="idFlight" th:text="${flight.id}" id="idFlight">
                                   <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.number-tickets-sold}+':'+${flight.soldTickets}"></h6>
 
                               </div>
                               <div class="card-footer d-flex flex-row bd-highlight mb-3">
-                                <a th:href="@{/flights/edit/{id} (id=${flight.id}) }"
+                                <a  th:href="@{/flights/edit/{id} (id=${flight.id}) }"
                                  class="btn btn-primary" th:text="#{text.edit}" ></a>
-                                 <a href="#" class="btn btn-info" style="margin-left: 10px" >Проданные билеты</a>
-                                 <form th:action="@{/flights/canceled/{id}(id=${flight.id})}" method="get">
-                                 <button  type="submit" id="canceledId" class="btn btn-danger" style="margin-left: 10px">Отменить</button>
+                                 <a th:unless="${flight.soldTickets == 0}" th:href="@{flights/{id}/orders(id=${flight.id})}"  class="btn btn-info" style="margin-left: 10px" th:text="#{text.number-tickets-sold}"></a>
+
+                                 <form  th:action="@{/flights/canceled/{id}(id=${flight.id})}" method="get">
+                                 <button th:if="${flight.status.toString() == 'ACTIVE' }" type="submit" id="canceledId" class="btn btn-danger" style="margin-left: 10px" th:text="#{text.cancel}"></button>
                                  </form>
+
                               </div>
                           </div>
 

@@ -19,27 +19,27 @@ import java.util.List;
 @RequestMapping("/flights")
 public class FlightController {
 
-    @Autowired
+
     private FlightService flightService;
-
-    @Autowired
     private CountryService countryService;
-
-    @Autowired
     private CityService cityService;
-
-    @Autowired
     private CompanyService companyService;
-
-    @Autowired
     private EmailSender emailSender;
-
-    @Autowired
     private OrderService orderService;
 
     private List<CountryDTO> countryDTOList;
     private List<CompanyDTO> companyDTOList;
     private List<FlightDTO> flightDTOList;
+
+    @Autowired
+    public FlightController(FlightService flightService, CountryService countryService, CityService cityService, CompanyService companyService, EmailSender emailSender, OrderService orderService) {
+        this.flightService = flightService;
+        this.countryService = countryService;
+        this.cityService = cityService;
+        this.companyService = companyService;
+        this.emailSender = emailSender;
+        this.orderService = orderService;
+    }
 
     @ModelAttribute("countries")
     public List<CountryDTO> getCountries() {
@@ -160,6 +160,11 @@ public class FlightController {
         return "redirect:/flights";
     }
 
+    @GetMapping("/{id}/orders")
+    public String getFlightTicketsSold(@PathVariable Long id, Model model){
+        model.addAttribute("orders",orderService.findAllByFlightId(id));
+        return "order/showOrdersOnFlight";
+    }
 
     private void sendСancellationСonfirmToEmail(Long idFlight) {
         List<OrderDTO> orderDTOList = orderService.findAllByFlightId(idFlight);

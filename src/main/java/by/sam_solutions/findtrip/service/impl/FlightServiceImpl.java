@@ -4,10 +4,12 @@ import by.sam_solutions.findtrip.controller.dto.*;
 import by.sam_solutions.findtrip.exception.CityIncorrectException;
 import by.sam_solutions.findtrip.exception.FlightDateIncorrectException;
 import by.sam_solutions.findtrip.exception.FlightStatusIncorrectException;
+import by.sam_solutions.findtrip.exception.PaymentException;
 import by.sam_solutions.findtrip.repository.*;
 import by.sam_solutions.findtrip.repository.entity.*;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.FlightService;
+import by.sam_solutions.findtrip.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -28,28 +30,27 @@ import java.util.stream.Collectors;
 @Service
 public class FlightServiceImpl implements FlightService {
 
-
-    @Autowired
-    private FlightRepository flightRepository;
-
-    @Autowired
-    private PlaneRepository planeRepository;
-
-    @Autowired
-    private AirportRepository airportRepository;
-
-    @Autowired
-    private CityService cityService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private WalletRepository walletRepository;
-
     private final int GET_HOURS_FROM_MILLISECONDS = 3_600_000;
     private final int THREE_DAYS = 72;
     private final int DAY_IN_MILLISECONDS = 86_399_000;
+
+    private FlightRepository flightRepository;
+    private PlaneRepository planeRepository;
+    private AirportRepository airportRepository;
+    private CityService cityService;
+    private WalletRepository walletRepository;
+    private PaymentService paymentService;
+
+    @Autowired
+    public FlightServiceImpl(FlightRepository flightRepository, PlaneRepository planeRepository, AirportRepository airportRepository, CityService cityService, WalletRepository walletRepository, PaymentService paymentService) {
+        this.flightRepository = flightRepository;
+        this.planeRepository = planeRepository;
+        this.airportRepository = airportRepository;
+        this.cityService = cityService;
+        this.walletRepository = walletRepository;
+        this.paymentService = paymentService;
+    }
+
 
     @Transactional
     @Override
@@ -344,32 +345,28 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public void canceledFlight(Long idFlight) {
         Optional<FlightEntity> flightEntity = flightRepository.findById(idFlight);
-        /** продолжить с сравнением на active*/
-        // попробовать добавить рейс и с ним равнить
-        if (!flightEntity.get().getStatus().equals(OrderStatus.ACTIVE)) {
-//            throw new FlightStatusIncorrectException("Flight_status_is_incorrect_for_cancellation");
-            System.out.println(flightEntity.get().getStatus());
+
+        if (flightEntity.get().getStatus() != FlightStatus.ACTIVE) {
+            throw new FlightStatusIncorrectException("Flight_status_is_incorrect_for_cancellation");
         }
-        System.out.println("tyt");
 
-        /*if (flightEntity.isPresent()) {
 
-            flightEntity.get().setStatus(FlightStatus.CANCELED);
-            flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
+        if (flightEntity.isPresent()) {
 
-            WalletEntity walletEntity;
-            Double currBalance;
-            for (OrderEntity orderEntity : flightEntity.get().getOrders()) {
-                walletEntity = orderEntity.getUser().getWallet();
-                currBalance = walletEntity.getSum();
-                walletEntity.setSum(currBalance + orderEntity.getFinalCost());
-                walletRepository.save(walletEntity);
+            if (paymentService.returnMoneyForFlightCancellation(flightEntity.get())) {
+                flightEntity.get().setStatus(FlightStatus.CANCELED);
+                flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
+
+                flightRepository.save(flightEntity.get());
+            }else {
+                throw new PaymentException("Money_back_error");
             }
 
-            flightRepository.save(flightEntity.get());
-        }*/
+        }
 
     }
+
+
 
     private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
         List<FlightDTO> flightDTOList = flightEntityList.stream()

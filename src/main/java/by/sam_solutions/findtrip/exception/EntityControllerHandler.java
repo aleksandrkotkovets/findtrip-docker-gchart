@@ -4,6 +4,7 @@ import by.sam_solutions.findtrip.controller.dto.ApiError;
 import by.sam_solutions.findtrip.repository.*;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.service.CountryService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,7 @@ public class EntityControllerHandler {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("country/editCountry");
         modelAndView.addObject("country", ex.countryDTO);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
 
@@ -91,7 +92,7 @@ public class EntityControllerHandler {
         modelAndView.setViewName("city/editCity");
         modelAndView.addObject("city", ex.cityDTO);
         modelAndView.addObject("countryName", ex.countryName);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
 
         return modelAndView;
     }
@@ -106,7 +107,7 @@ public class EntityControllerHandler {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("airport/editAirport");
         modelAndView.addObject("airport", ex.airportDTO);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
 
         return modelAndView;
     }
@@ -124,7 +125,7 @@ public class EntityControllerHandler {
         modelAndView.addObject("name", ex.airportDTO.getName());
         modelAndView.addObject("code", ex.airportDTO.getCode());
         modelAndView.addObject("countries", countryRepository.findAll());
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
 
         return modelAndView;
     }
@@ -140,7 +141,7 @@ public class EntityControllerHandler {
         modelAndView.setViewName("company/editCompany");
         modelAndView.addObject("company", ex.companyDTO);
         modelAndView.addObject("ratingTypes", Rating.values());
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
 
         return modelAndView;
     }
@@ -148,7 +149,7 @@ public class EntityControllerHandler {
     // Plane Edit parameter
     @ExceptionHandler(EditPlaneParametersExistException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    public ModelAndView handleEditPlaneParameterIsExist(EditPlaneParametersExistException ex, HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
+    public ModelAndView handleEditPlaneParameterIsExist(EditPlaneParametersExistException ex, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         String error = ex.getMessage();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
@@ -157,7 +158,7 @@ public class EntityControllerHandler {
         modelAndView.addObject("plane", ex.planeDTO);
         modelAndView.addObject("companyName", ex.companyName);
         modelAndView.addObject("companyId", ex.companyId);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
 
         return modelAndView;
 
@@ -181,12 +182,12 @@ public class EntityControllerHandler {
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("flight/showFlights");
-        modelAndView.addObject("picker1",ex.date);
-        modelAndView.addObject("city_from",ex.cityDepart);
-        modelAndView.addObject("city_to",ex.cityArr);
+        modelAndView.addObject("picker1", ex.date);
+        modelAndView.addObject("city_from", ex.cityDepart);
+        modelAndView.addObject("city_to", ex.cityArr);
         modelAndView.addObject("countries", countryService.findAll(Sort.by("name")));
-        modelAndView.addObject("flights",null);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("flights", null);
+        modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
 
@@ -218,8 +219,8 @@ public class EntityControllerHandler {
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("wallet/replenishBalance");
-        modelAndView.addObject("bankCard",ex.getBankCardDTO());
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("bankCard", ex.getBankCardDTO());
+        modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
 
@@ -232,14 +233,25 @@ public class EntityControllerHandler {
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler(FlightStatusIncorrectException.class)
+    @ExceptionHandler({FlightStatusIncorrectException.class})
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ModelAndView handleFlightStatusIncorrect(FlightStatusIncorrectException ex) {
+        return getModelAndView(ex);
+    }
+
+    @ExceptionHandler(PaymentException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handlePayments(PaymentException ex) {
+        return getModelAndView(ex);
+    }
+
+    @NotNull
+    private ModelAndView getModelAndView(RuntimeException ex) {
         String error = ex.getMessage();
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("statuscode/409");
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
 

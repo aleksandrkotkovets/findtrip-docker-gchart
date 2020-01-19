@@ -4,6 +4,7 @@ import by.sam_solutions.findtrip.controller.dto.OrderCreateUpdateDTO;
 import by.sam_solutions.findtrip.exception.WalletIncorrectBalanceException;
 import by.sam_solutions.findtrip.repository.WalletRepository;
 import by.sam_solutions.findtrip.repository.entity.FlightEntity;
+import by.sam_solutions.findtrip.repository.entity.OrderEntity;
 import by.sam_solutions.findtrip.repository.entity.UserEntity;
 import by.sam_solutions.findtrip.repository.entity.WalletEntity;
 import by.sam_solutions.findtrip.service.PaymentService;
@@ -16,8 +17,12 @@ import java.text.DecimalFormat;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    @Autowired
+
     private WalletRepository walletRepository;
+
+    public PaymentServiceImpl(WalletRepository walletRepository) {
+        this.walletRepository = walletRepository;
+    }
 
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
@@ -46,6 +51,21 @@ public class PaymentServiceImpl implements PaymentService {
 
         walletEntity.setSum(Double.parseDouble(decimalFormat.format(currBalance).replace(",", ".")));
         walletRepository.save(walletEntity);
+
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean returnMoneyForFlightCancellation(FlightEntity flightEntity) {
+            WalletEntity walletEntity;
+            Double currBalance;
+            for (OrderEntity orderEntity : flightEntity.getOrders()) {
+                walletEntity = orderEntity.getUser().getWallet();
+                currBalance = walletEntity.getSum();
+                walletEntity.setSum(currBalance + orderEntity.getFinalCost());
+                walletRepository.save(walletEntity);
+            }
 
         return true;
     }
