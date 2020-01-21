@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.*;
+import by.sam_solutions.findtrip.repository.entity.FlightStatus;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
 import by.sam_solutions.findtrip.service.*;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -178,15 +180,19 @@ public class FlightController {
         modelAndView.setViewName("flight/showFlights");
         modelAndView.addObject("flights", null);
         modelAndView.addObject("rating", Rating.values());
+        modelAndView.addObject("flightCriteriaDTO", new FlightCriteriaDTO());
         return modelAndView;
     }
 
     @PostMapping("/findFlights")
-    public ModelAndView getFlightByCriteria(@ModelAttribute("flightCriteriaDTO") FlightCriteriaDTO flightCriteriaDTO) {
+    public ModelAndView getFlightByCriteria(@ModelAttribute("flightCriteriaDTO") FlightCriteriaDTO flightCriteriaDTO,
+                                            @RequestParam(value = "companyChoice", required = false) Long companyChoice) {
         ModelAndView modelAndView = new ModelAndView("flight/showFlights");
         modelAndView.addObject("picker1", flightCriteriaDTO.getDepartureDate());
         modelAndView.addObject("city_from", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()));
         modelAndView.addObject("city_to", cityService.findOne(flightCriteriaDTO.getIdCityArrival()));
+        modelAndView.addObject("companyChoice", flightCriteriaDTO.getIdCompany()==null? null : companyService.findOne(flightCriteriaDTO.getIdCompany()).getName());
+        modelAndView.addObject("flightCriteriaDTO", flightCriteriaDTO);
 
         List<FlightDTO> flightDTOList = null;
         try {

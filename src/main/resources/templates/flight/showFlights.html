@@ -116,8 +116,17 @@
                 <input placeholder="Enter a number"  name="maxPrice" id="priceTo"  type="number"   max="1000000" step="1"/>
 
               </div>
-
             </div>
+                <div class="fancy-hover" >
+                    <div class="container " style="color: white ;padding-left: 10px">
+                        <h4  style="color: white" for="freeSeats" class="col-form-label" th:text="#{text.choice}"></h4>
+                        <h4 class="col-form-label text-left" th:unless="${flightCriteriaDTO.countSeats==null}" name="countSeats" th:text="#{text.free-seats}+': '+${flightCriteriaDTO.countSeats}+'+'" />
+                        <h4 class="col-form-label text-left" th:unless="${companyChoice==null}" name="companyChoice" th:text="#{text.company}+': '+${companyChoice}" />
+                        <h4 class="col-form-label text-left" th:unless="${flightCriteriaDTO.ratingCompany==null}" name="ratingCompany" th:text="#{text.rating}+': '+${flightCriteriaDTO.ratingCompany.name}" />
+                        <h4 class="col-form-label text-left" th:unless="${flightCriteriaDTO.minPrice==null}" name="minPrice" th:text="#{text.seat-price}+'(min): '+${flightCriteriaDTO.minPrice}" />
+                        <h4 class="col-form-label text-left" th:unless="${flightCriteriaDTO.maxPrice==null}" name="maxPrice" th:text="#{text.seat-price}+'(max): '+${flightCriteriaDTO.maxPrice}" />
+                    </div>
+                </div>
 
     </div>
   </form>

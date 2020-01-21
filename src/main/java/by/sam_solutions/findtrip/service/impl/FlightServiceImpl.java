@@ -190,6 +190,39 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
+    public Integer getNumberSoldTicketById(Long id) {
+        FlightEntity flightEntity = flightRepository.findById(id).get();
+        return flightEntity.getOrders().stream()
+                .mapToInt((a) -> a.getTickets().size()).sum();
+    }
+
+    @Transactional
+    @Override
+    public void canceledFlight(Long idFlight) {
+        Optional<FlightEntity> flightEntity = flightRepository.findById(idFlight);
+
+        if (flightEntity.get().getStatus() != FlightStatus.ACTIVE) {
+            throw new FlightStatusIncorrectException("Flight_status_is_incorrect_for_cancellation");
+        }
+
+
+        if (flightEntity.isPresent()) {
+
+            if (paymentService.returnMoneyForFlightCancellation(flightEntity.get())) {
+                flightEntity.get().setStatus(FlightStatus.CANCELED);
+                flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
+
+                flightRepository.save(flightEntity.get());
+            } else {
+                throw new PaymentException("Money_back_error");
+            }
+
+        }
+
+    }
+
+
+    @Override
     public List<FlightDTO> findFlightsByCriteria(FlightCriteriaDTO flightCriteriaDTO) {
 
         if (flightCriteriaDTO.getIdCityDeparture() == null || flightCriteriaDTO.getIdCityArrival() == null || flightCriteriaDTO.getDepartureDate().equals("") ){
@@ -215,13 +248,13 @@ public class FlightServiceImpl implements FlightService {
                 dateD = new Timestamp(new Date().getTime());
             }
 
+            flightCriteriaDTO.setStatus(FlightStatus.ACTIVE);
             Example<FlightEntity> flightEntityExample = Example.of(createFlightEntityExample(flightCriteriaDTO));
 
             flightEntities = flightRepository.findAll(getSpecAndExample(dateD,finishD,flightCriteriaDTO,flightEntityExample), Sort.by("departureDate"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
         return mapListFlightDTO(flightEntities);
     }
@@ -267,6 +300,7 @@ public class FlightServiceImpl implements FlightService {
         return travelTime;
     }
 
+    @Override
     public FlightDTO mapFlightDTO(FlightEntity flightEntity) {
         FlightDTO flightDTO = new FlightDTO();
 
@@ -342,37 +376,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Integer getNumberSoldTicketById(Long id) {
-        FlightEntity flightEntity = flightRepository.findById(id).get();
-        return flightEntity.getOrders().stream()
-                .mapToInt((a) -> a.getTickets().size()).sum();
-    }
-
-    @Override
-    public void canceledFlight(Long idFlight) {
-        Optional<FlightEntity> flightEntity = flightRepository.findById(idFlight);
-
-        if (flightEntity.get().getStatus() != FlightStatus.ACTIVE) {
-            throw new FlightStatusIncorrectException("Flight_status_is_incorrect_for_cancellation");
-        }
-
-
-        if (flightEntity.isPresent()) {
-
-            if (paymentService.returnMoneyForFlightCancellation(flightEntity.get())) {
-                flightEntity.get().setStatus(FlightStatus.CANCELED);
-                flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
-
-                flightRepository.save(flightEntity.get());
-            } else {
-                throw new PaymentException("Money_back_error");
-            }
-
-        }
-
-    }
-
-    private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
+    public List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
         List<FlightDTO> flightDTOList = flightEntityList.stream()
                 .map(a -> new FlightDTO(
                         a.getId(),

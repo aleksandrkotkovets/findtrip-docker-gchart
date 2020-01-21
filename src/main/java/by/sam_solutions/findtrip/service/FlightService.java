@@ -19,10 +19,11 @@ public interface FlightService {
 
     List<FlightDTO> findFlightsByCriteria(FlightCriteriaDTO flightCriteriaDTO) throws ParseException;
 
-    FlightDTO mapFlightDTO(FlightEntity flight);
-
     Integer getNumberSoldTicketById(Long id);
 
     void canceledFlight(Long idFlight);
 
+    FlightDTO mapFlightDTO(FlightEntity flightEntity);
+
+    List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList);
 }
