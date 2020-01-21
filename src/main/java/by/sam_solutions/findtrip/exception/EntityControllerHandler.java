@@ -1,6 +1,7 @@
 package by.sam_solutions.findtrip.exception;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
+import by.sam_solutions.findtrip.controller.dto.FlightCriteriaDTO;
 import by.sam_solutions.findtrip.repository.*;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.service.CountryService;
@@ -187,6 +188,7 @@ public class EntityControllerHandler {
         modelAndView.addObject("city_to", ex.cityArr);
         modelAndView.addObject("countries", countryService.findAll(Sort.by("name")));
         modelAndView.addObject("flights", null);
+        modelAndView.addObject("flightCriteriaDTO", ex.flightCriteriaDTO);
         modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
@@ -204,6 +206,7 @@ public class EntityControllerHandler {
         modelAndView.addObject("city_to", ex.cityDTOArriv);
         modelAndView.addObject("countries", countryService.findAll(Sort.by("name")));
         modelAndView.addObject("flights", null);
+        modelAndView.addObject("flightCriteriaDTO", ex.flightCriteriaDTO);
         modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }

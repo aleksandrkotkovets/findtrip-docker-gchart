@@ -226,11 +226,11 @@ public class FlightServiceImpl implements FlightService {
     public List<FlightDTO> findFlightsByCriteria(FlightCriteriaDTO flightCriteriaDTO) {
 
         if (flightCriteriaDTO.getIdCityDeparture() == null || flightCriteriaDTO.getIdCityArrival() == null || flightCriteriaDTO.getDepartureDate().equals("") ){
-            throw new DatasException("Fill_in_all_the_fields", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate());
+            throw new DatasException("Fill_in_all_the_fields", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate(), flightCriteriaDTO);
         }
 
         if (flightCriteriaDTO.getIdCityDeparture() == flightCriteriaDTO.getIdCityArrival()) {
-            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate());
+            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate(),flightCriteriaDTO);
         }
 
         List<FlightEntity> flightEntities = new ArrayList<>();
@@ -241,7 +241,7 @@ public class FlightServiceImpl implements FlightService {
             Timestamp finishD = new Timestamp(dateD.getTime() + DAY_IN_MILLISECONDS);
 
             if (dateD.before(currD)) {
-                throw new DatasException("Incorrect_dates", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate());
+                throw new DatasException("Incorrect_dates", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate(),flightCriteriaDTO);
             }
 
             if (dateD.equals(currD)) {
