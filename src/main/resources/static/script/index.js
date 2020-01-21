@@ -35,7 +35,14 @@ $(document).ready(function () {
         finalCost.val(price.val() * countSeats.val());
     });
 
+    //price spinner
+    var priceFrom = $("#priceFrom");
+    var priceTo = $("#priceTo");
 
+    priceTo.attr("min",parseInt(priceFrom.val(),10)+1 );
+    priceFrom.on("change", function (event) {
+        priceTo.attr("min", parseInt(priceFrom.val(),10)+1);
+    })
 });
 
 

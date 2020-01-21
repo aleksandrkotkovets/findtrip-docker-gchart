@@ -67,4 +67,14 @@ public class AirportEntity extends BaseEntity {
         this.flightArrivals = flightArrivals;
     }
 
+    @Override
+    public String toString() {
+        return "AirportEntity{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", cityEntity=" + cityEntity +
+                ", flightDepartures=" + flightDepartures +
+                ", flightArrivals=" + flightArrivals +
+                '}';
+    }
 }

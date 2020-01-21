@@ -36,12 +36,12 @@
 
 
          <div class="control-group">
-             <form th:action="@{/findFlights}" method="post">
+             <form th:action="@{/flights/findFlights}" method="post">
               <div style="display: flex; flex-direction: row; padding-left: 300px;" >
 
                  <div  >
                    <h1 for="city_from" class="col-form-label text-center" style="color: black"  th:text="#{text.from}"></h1>
-                   <select class="form-control col-lg-auto " name="city_from"  id="select1"  required  >
+                   <select class="form-control col-lg-auto " name="idCityDeparture"  id="select1"  required  >
                      <optgroup th:each="country : ${countries}"  th:label="${country.name}">
                        <option th:each="city : ${country.cityDTOSet}" th:value="${city.id}"  th:text="${city.name}"> </option>
                      </optgroup>
@@ -50,7 +50,7 @@
 
                 <div style="padding-left: 10px" >
                    <h1 for="city_to" class="col-form-label text-center" style="color: black"  th:text="#{text.to}"></h1>
-                    <select class="form-control col-lg-auto " name="city_to"  id="select2"  required  >
+                    <select class="form-control col-lg-auto " name="idCityArrival"  id="select2"  required  >
                         <optgroup th:each="country : ${countries}"  th:label="${country.name}">
                           <option th:each="city : ${country.cityDTOSet}" th:value="${city.id}"  th:text="${city.name}"> </option>
                         </optgroup>
@@ -64,11 +64,12 @@
                         <div class="input-group-prepend">
                           <button type="button" id="toggle" class="input-group-text"><i class="fa fa-calendar-alt" ></i></button>
                         </div>
-                          <input type="text" name="picker1" id="picker1" class="form-control far">
+                          <input type="text" name="departureDate" id="picker1" class="form-control far">
                     </div>
                 </div>
 
                  <div style="padding-top: 37px">
+                       <input type="hidden" name="status" th:value="${T(by.sam_solutions.findtrip.repository.entity.FlightStatus).ACTIVE}">
                        <input type="submit" class="btn btn-success" th:value="#{text.show}">
                  </div>
 

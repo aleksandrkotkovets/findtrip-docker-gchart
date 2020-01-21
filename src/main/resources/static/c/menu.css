@@ -5,9 +5,7 @@
 
 
 .fancy-hover {
-    background: #2c93f5;
-    background: rgba(44, 147, 245, 0.9);
-    color: #FFF;
+    background: #287dd0;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -15,7 +13,7 @@
     position: relative;
     overflow: hidden;
     border-bottom: solid 1px #333;
-    z-index: 2;
+    /*z-index: 2;*/
     transition: background-color 0.2s linear;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -54,7 +52,7 @@
 }
 
 
-.fancy-hover:hover { background-color: rgba(194, 194, 194, 0.9); }
+.fancy-hover:hover { background-color: rgba(47, 151, 255, 0.9); }
 .fancy-hover:hover:before { opacity: 0.6; }
 .fancy-hover:hover:after { opacity: 0.85; transition-delay: 0s; }
 

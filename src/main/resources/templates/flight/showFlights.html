@@ -34,80 +34,104 @@
         <div th:replace="/home/workerHeader :: worker-header"/>
   </div>
 
-<div id="container-1" >
+<div>
+  <form th:action="@{/flights/findFlights}" th:object="${flightCriteriaDTO}" method="post">
+    <div id="container-1" >
 
-    <div class="d-flex ">
+        <div class="d-flex ">
+             <div class="control-group">
 
+                  <div style="display: flex; flex-direction: row; padding-left: 300px;" >
 
-         <div class="control-group">
-             <form th:action="@{/findFlights}" method="post">
-              <div style="display: flex; flex-direction: row; padding-left: 300px;" >
+                     <div  >
+                       <h1 for="city_from" class="col-form-label text-center" style="color: blue"  th:text="#{text.from}"></h1>
+                       <select class="form-control col-lg-auto " name="idCityDeparture"  id="select1"  required  >
+                         <optgroup th:each="country : ${countries}"  th:label="${country.name}">
+                           <option th:each="city : ${country.cityDTOSet}"  th:value="${city.id}"  th:text="${city.name}"> </option>
+                         </optgroup>
+                       </select>
 
-                 <div  >
-                   <h1 for="city_from" class="col-form-label text-center" style="color: blue"  th:text="#{text.from}"></h1>
-                   <select class="form-control col-lg-auto " name="city_from"  id="select1"  required  >
-                     <optgroup th:each="country : ${countries}"  th:label="${country.name}">
-                       <option th:each="city : ${country.cityDTOSet}" th:name="c" th:value="${city.id}"  th:text="${city.name}"> </option>
-                     </optgroup>
-                   </select>
-
-                </div>
-
-                <div style="padding-left: 10px; " >
-                   <h1 for="city_to" class="col-form-label text-center" style="color: blue"  th:text="#{text.to}"></h1>
-                    <select class="form-control col-lg-auto " name="city_to"  id="select2"  required  >
-                        <optgroup th:each="country : ${countries}"  th:label="${country.name}">
-                          <option th:each="city : ${country.cityDTOSet}" th:value="${city.id}"  th:text="${city.name}"> </option>
-                        </optgroup>
-                    </select>
-
-                 </div>
-
-
-                <div class="container text-center " style="padding-left: 10px;width: 200px;">
-                    <h1 for="picker1" class="col-form-label" th:text="#{text.time-departure}"></h1>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <button type="button" id="toggle" class="input-group-text"><i class="fa fa-calendar-alt" ></i></button>
-                        </div>
-                          <input type="text" name="picker1" id="picker1" class="form-control far">
                     </div>
+
+                    <div style="padding-left: 10px; " >
+                       <h1 for="city_to" class="col-form-label text-center" style="color: blue"  th:text="#{text.to}"></h1>
+                        <select class="form-control col-lg-auto " name="idCityArrival"  id="select2"  required  >
+                            <optgroup th:each="country : ${countries}"  th:label="${country.name}">
+                              <option th:each="city : ${country.cityDTOSet}" th:value="${city.id}"  th:text="${city.name}"> </option>
+                            </optgroup>
+                        </select>
+
+                     </div>
+
+
+                    <div class="container text-center " style="padding-left: 10px;width: 200px;">
+                        <h1 for="picker1" class="col-form-label" th:text="#{text.time-departure}"></h1>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <button type="button" id="toggle" class="input-group-text"><i class="fa fa-calendar-alt" ></i></button>
+                            </div>
+                              <input type="text" name="departureDate" required id="picker1" class="form-control far">
+                        </div>
+                    </div>
+
+                     <div style="padding-top: 37px">
+                           <input type="hidden" name="status" th:value="${T(by.sam_solutions.findtrip.repository.entity.FlightStatus).ACTIVE}">
+                           <input type="submit" class="btn btn-success" id="showExample" th:value="#{text.show}">
+                     </div>
+
+                   </div>
+
+             </div>
+
+        </div>
+    </div>
+
+    <div class="menu col-md-3 text-center"  style="padding: 0px 0px; position: absolute; margin:8vh 0px 0 28vh;width: 300px" >
+
+            <div class="fancy-hover" >
+                <div class="container " style="width: 400px; padding-left: 10px">
+                    <h4  style="color: white" for="freeSeats" class="col-form-label" th:text="#{text.free-seats}"></h4>
+                    <input placeholder="Enter a number" name="countSeats" id="freeSeats"  type="number"  min="0" max="299" step="1"/>
                 </div>
+            </div>
+            <div class="fancy-hover" style="height: 450px; " >
+              <div style="margin-top: -80px" >
+                 <h1 for="city_from" class="col-form-label text-center" style="color: white"  th:text="#{text.company}"></h1>
+                 <select class="form-control col-lg-auto"  name="idCompany"  id="select1">
+                     <option th:each="company : ${companies}"  th:value="${company.id}"  th:text="${company.name}"> </option>
+                 </select>
+                 <h1 for="city_from" class="col-form-label text-center" style="color: white"  th:text="#{text.rating}"></h1>
+                <select class="form-control col-lg-auto"  name="ratingCompany">
+                <option value="" th:text="'Select an Option...'" ></option>
+                <option th:each="state : ${T(by.sam_solutions.findtrip.repository.entity.Rating).values()}"
+                            th:value="${state}"
+                            th:text="${state.name}">
+                </option>
+                </select>
+                <hr />
+                <h4  style="color: white" for="freeSeats" class="col-form-label" th:text="#{text.seat-price}"></h4>
+                <h4 class="col-form-label" th:text="#{text.from}"></h4>
+                <input  placeholder="Enter a number" name="minPrice" id="priceFrom"  type="number"  min="0" max="999999" step="1"/>
+                <h4 class="col-form-label" th:text="#{text.price-to}"></h4>
+                <input placeholder="Enter a number"  name="maxPrice" id="priceTo"  type="number"   max="1000000" step="1"/>
 
-                 <div style="padding-top: 37px">
-                       <input type="submit" class="btn btn-success" id="show" th:value="#{text.show}">
-                 </div>
+              </div>
 
-               </div>
-            </form>
-         </div>
+            </div>
 
     </div>
+  </form>
 </div>
 
+<div id="container-2" style="margin-left: 60vh" >
 
 
-<div id="container-2" >
-
-    <div class="menu col-md-3" style="padding: 0px 0px" >
-        <div class="fancy-hover" id="home">
-            Filters
-        </div>
-        <div class="fancy-hover" id="top">
-            Filters
-        </div>
-        <div class="fancy-hover" id="wait">
-             Filters
-        </div>
-        <div class="fancy-hover fancy-hover--blue" id="search">
-            Filters
-        </div>
-    </div>
 
     <div class="content col-md-8" style="padding-left: 0px" >
     <div class="container " style="width: 800px; margin-top: -20px;">
 
     <h2  th:if="${apiError == null}"
+         th:unless="${city_from?.name == null}"
          th:text="${city_from?.name}+'-'+${city_to?.name}+'   '+${picker1}" style="color: #540070"></h2>
      <div class="alert alert-warning" role="alert"  th:unless="${apiError == null}" th:text="#{${'text.error.' + apiError?.getMessage()}}"></div>
 
@@ -121,8 +145,37 @@
 
                           <div class="card border-success" style="margin-bottom: 15px" th:each="flight : ${flights}">
                               <!-- Шапка (bg-primary - цвет фона, text-white - цвет текста) -->
-                              <div class="card-header bg-success text-white">
-                                    <span class="text-left" th:text="${flight.plane.companyDTO.name}"></span>
+                              <div class="card-header bg-success text-white d-flex justify-content-between">
+                                    <h4 class="text-left" th:text="${flight.plane.companyDTO.name}"></h4>
+                                    <h4 >
+                                            <th:block th:switch="${flight.plane.companyDTO.rating.name}">
+                                                    <div th:case="'ONE STAR'">
+                                                         <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                    </div>
+                                                    <div th:case="'TWO STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                                     <div th:case="'THREE STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                                    <div th:case="'FOUR STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                                    <div th:case="'FIVE STARS'"  >
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 -8px"></i>
+                                                        <i class="far fa-star ml-2 myc" style="float:left;margin:0 0px"></i>
+                                                    </div>
+                                             </th:block>
+                                    </h4>
                               </div>
                               <!-- Текстовый контент -->
                               <div class="card-body">

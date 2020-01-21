@@ -1,27 +1,23 @@
 package by.sam_solutions.findtrip.service.impl;
 
 import by.sam_solutions.findtrip.controller.dto.*;
-import by.sam_solutions.findtrip.exception.CityIncorrectException;
-import by.sam_solutions.findtrip.exception.FlightDateIncorrectException;
-import by.sam_solutions.findtrip.exception.FlightStatusIncorrectException;
-import by.sam_solutions.findtrip.exception.PaymentException;
-import by.sam_solutions.findtrip.repository.AirportRepository;
-import by.sam_solutions.findtrip.repository.FlightRepository;
-import by.sam_solutions.findtrip.repository.PlaneRepository;
-import by.sam_solutions.findtrip.repository.WalletRepository;
-import by.sam_solutions.findtrip.repository.entity.FlightEntity;
-import by.sam_solutions.findtrip.repository.entity.FlightStatus;
-import by.sam_solutions.findtrip.repository.entity.OrderStatus;
-import by.sam_solutions.findtrip.repository.entity.PlaneEntity;
+import by.sam_solutions.findtrip.exception.*;
+import by.sam_solutions.findtrip.repository.*;
+import by.sam_solutions.findtrip.repository.entity.*;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.FlightService;
 import by.sam_solutions.findtrip.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.convert.QueryByExamplePredicateBuilder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,15 +41,19 @@ public class FlightServiceImpl implements FlightService {
     private CityService cityService;
     private WalletRepository walletRepository;
     private PaymentService paymentService;
+    private CityRepository cityRepository;
+    private CompanyRepository companyRepository;
 
     @Autowired
-    public FlightServiceImpl(FlightRepository flightRepository, PlaneRepository planeRepository, AirportRepository airportRepository, CityService cityService, WalletRepository walletRepository, PaymentService paymentService) {
+    public FlightServiceImpl(FlightRepository flightRepository, PlaneRepository planeRepository, AirportRepository airportRepository, CityService cityService, WalletRepository walletRepository, PaymentService paymentService, CityRepository cityRepository, CompanyRepository companyRepository) {
         this.flightRepository = flightRepository;
         this.planeRepository = planeRepository;
         this.airportRepository = airportRepository;
         this.cityService = cityService;
         this.walletRepository = walletRepository;
         this.paymentService = paymentService;
+        this.cityRepository = cityRepository;
+        this.companyRepository = companyRepository;
     }
 
 
@@ -185,38 +185,39 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<FlightDTO> findAll() {
-        List<FlightEntity> flightEntityList = flightRepository.findAll(Sort.by("departureDate").ascending());
-
+        List<FlightEntity> flightEntityList = flightRepository.findAll(Sort.by("departureDate","status").ascending());
         return mapListFlightDTO(flightEntityList);
     }
 
     @Override
-    public List<FlightDTO> findFlightsByCriteria(Long idCityDeparture, Long idCityArrival, String dateDeparture) {
+    public List<FlightDTO> findFlightsByCriteria(FlightCriteriaDTO flightCriteriaDTO) {
 
-        if (idCityDeparture == idCityArrival) {
-            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(idCityDeparture), cityService.findOne(idCityArrival), dateDeparture);
+        if (flightCriteriaDTO.getIdCityDeparture() == null || flightCriteriaDTO.getIdCityArrival() == null || flightCriteriaDTO.getDepartureDate().equals("") ){
+            throw new DatasException("Fill_in_all_the_fields", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate());
+        }
+
+        if (flightCriteriaDTO.getIdCityDeparture() == flightCriteriaDTO.getIdCityArrival()) {
+            throw new CityIncorrectException("Enter_different_cities", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate());
         }
 
         List<FlightEntity> flightEntities = new ArrayList<>();
         try {
 
-
-            Timestamp dateD = parseDate(dateDeparture);
+            Timestamp dateD = parseDate(flightCriteriaDTO.getDepartureDate());
             Timestamp currD = parseDate(parseDate(new Timestamp(new Date().getTime())));
             Timestamp finishD = new Timestamp(dateD.getTime() + DAY_IN_MILLISECONDS);
 
-
             if (dateD.before(currD)) {
-                throw new CityIncorrectException("Incorrect_dates", cityService.findOne(idCityDeparture), cityService.findOne(idCityArrival), dateDeparture);
+                throw new DatasException("Incorrect_dates", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate());
             }
 
             if (dateD.equals(currD)) {
                 dateD = new Timestamp(new Date().getTime());
             }
 
-            flightEntities = flightRepository.findAllByAirportDeparture_CityEntityIdAndAirportArrival_CityEntityIdAndDepartureDateBetween(idCityDeparture, idCityArrival, dateD, finishD, Sort.by("departureDate"));
+            Example<FlightEntity> flightEntityExample = Example.of(createFlightEntityExample(flightCriteriaDTO));
 
-
+            flightEntities = flightRepository.findAll(getSpecAndExample(dateD,finishD,flightCriteriaDTO,flightEntityExample), Sort.by("departureDate"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -371,7 +372,6 @@ public class FlightServiceImpl implements FlightService {
 
     }
 
-
     private List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList) {
         List<FlightDTO> flightDTOList = flightEntityList.stream()
                 .map(a -> new FlightDTO(
@@ -414,5 +414,62 @@ public class FlightServiceImpl implements FlightService {
 
         }
         return flightDTOList;
+    }
+
+    private FlightEntity createFlightEntityExample(FlightCriteriaDTO flightCriteriaDTO) {
+        FlightEntity flightEntity = new FlightEntity();
+
+        if (flightCriteriaDTO.getIdCityDeparture() != null && !flightCriteriaDTO.getIdCityDeparture().equals("")) {
+            AirportEntity airportEntityDepartures = new AirportEntity();
+            airportEntityDepartures.setCityEntity(cityRepository.findById(flightCriteriaDTO.getIdCityDeparture()).get());
+            flightEntity.setAirportDeparture(airportEntityDepartures);
+        }
+
+        if (flightCriteriaDTO.getIdCityArrival() != null && !flightCriteriaDTO.getIdCityArrival().equals("")) {
+            AirportEntity airportEntityArrival = new AirportEntity();
+            airportEntityArrival.setCityEntity(cityRepository.findById(flightCriteriaDTO.getIdCityArrival()).get());
+            flightEntity.setAirportArrival(airportEntityArrival);
+        }
+
+
+        if (flightCriteriaDTO.getIdCompany() != null && !flightCriteriaDTO.getIdCompany().equals("")) {
+            PlaneEntity planeEntity = new PlaneEntity();
+            planeEntity.setCompany(companyRepository.findById(flightCriteriaDTO.getIdCompany()).get());
+            flightEntity.setPlane(planeEntity);
+        } else if (flightCriteriaDTO.getRatingCompany() != null && !flightCriteriaDTO.getRatingCompany().equals("")) {
+            PlaneEntity planeEntity = new PlaneEntity();
+            CompanyEntity companyEntity = new CompanyEntity();
+            companyEntity.setRating(flightCriteriaDTO.getRatingCompany());
+            planeEntity.setCompany(companyEntity);
+            flightEntity.setPlane(planeEntity);
+        }
+
+        flightEntity.setStatus(flightCriteriaDTO.getStatus());
+        return flightEntity;
+    }
+
+    private Specification<FlightEntity> getSpecAndExample(Timestamp dateD, Timestamp finishD,FlightCriteriaDTO flightCriteriaDTO, Example<FlightEntity> example) {
+        return (Specification<FlightEntity>) (root, query, builder) -> {
+            final List<Predicate> predicates = new ArrayList<>();
+
+            if (flightCriteriaDTO.getMinPrice() != null && !flightCriteriaDTO.getMinPrice().equals("") ) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), flightCriteriaDTO.getMinPrice()));
+            }
+
+            if (flightCriteriaDTO.getMaxPrice() != null && !flightCriteriaDTO.getMinPrice().equals("")) {
+                predicates.add(builder.lessThanOrEqualTo(root.get("price"), flightCriteriaDTO.getMaxPrice()));
+            }
+
+            if (flightCriteriaDTO.getCountSeats() != null && flightCriteriaDTO.getCountSeats() != 0 && !flightCriteriaDTO.getIdCityArrival().equals("")) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("freeSeats"), flightCriteriaDTO.getCountSeats()));
+            }
+
+            predicates.add(builder.greaterThan(root.get("departureDate"), dateD));
+            predicates.add(builder.lessThan(root.get("departureDate"), finishD));
+
+            predicates.add(QueryByExamplePredicateBuilder.getPredicate(root, builder, example));
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 }

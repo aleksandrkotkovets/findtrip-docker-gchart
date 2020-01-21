@@ -96,7 +96,7 @@
 
                                     </div>
                               </div>
-                                  <input type="hidden" class="idFlight" th:text="${flight.id}" id="idFlight">
+                                  <input type="hidden" class="idFlight" th:value="${flight.id}" id="idFlight">
                                   <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
                                   <h6 class="card-text" th:text="#{text.number-tickets-sold}+':'+${flight.soldTickets}"></h6>

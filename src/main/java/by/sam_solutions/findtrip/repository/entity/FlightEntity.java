@@ -143,4 +143,20 @@ public class FlightEntity extends BaseEntity {
     public void setStatus(FlightStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "FlightEntity{" +
+                "freeSeats=" + freeSeats +
+                ", allSeats=" + allSeats +
+                ", price=" + price +
+                ", departureDate=" + departureDate +
+                ", arrivalDate=" + arrivalDate +
+                ", orders=" + orders +
+                ", plane=" + plane +
+                ", airportDeparture=" + airportDeparture +
+                ", airportArrival=" + airportArrival +
+                ", status=" + status +
+                '}';
+    }
 }

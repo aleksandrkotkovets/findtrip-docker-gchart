@@ -15,16 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    private TicketRepository ticketRepository;
-    private OrderService orderService;
-
-
-    @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository, OrderService orderService) {
-        this.ticketRepository = ticketRepository;
-        this.orderService = orderService;
-    }
-
     @Override
     public List<TicketDTO> mapTicketDTOList(List<TicketEntity> tickets) {
         return tickets.stream().map(a -> new TicketDTO(

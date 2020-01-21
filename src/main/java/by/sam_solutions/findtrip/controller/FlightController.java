@@ -1,16 +1,20 @@
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.*;
+import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
 import by.sam_solutions.findtrip.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +47,7 @@ public class FlightController {
 
     @ModelAttribute("countries")
     public List<CountryDTO> getCountries() {
-        countryDTOList = countryService.findAll();
+        countryDTOList = countryService.findAll(Sort.by("name").ascending());
         return countryDTOList;
     }
 
@@ -145,7 +149,7 @@ public class FlightController {
 
     @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/show/{id}")
-    public String getShowFlightViewByClient(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    public String getShowFlightViewByClient(@PathVariable Long id, Model model) {
         model.addAttribute("flight", flightService.getById(id));
         return "flight/checkoutOrder";
     }
@@ -166,6 +170,32 @@ public class FlightController {
     private void sendСancellationСonfirmToEmail(Long idFlight) {
         List<OrderDTO> orderDTOList = orderService.findAllByFlightId(idFlight);
         orderDTOList.stream().forEach(a -> emailSender.sendСancellationСonfirmToEmail(a));
+    }
+
+    @GetMapping("/findFlights")
+    public ModelAndView getFlightByCriteria() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("flight/showFlights");
+        modelAndView.addObject("flights", null);
+        modelAndView.addObject("rating", Rating.values());
+        return modelAndView;
+    }
+
+    @PostMapping("/findFlights")
+    public ModelAndView getFlightByCriteria(@ModelAttribute("flightCriteriaDTO") FlightCriteriaDTO flightCriteriaDTO) {
+        ModelAndView modelAndView = new ModelAndView("flight/showFlights");
+        modelAndView.addObject("picker1", flightCriteriaDTO.getDepartureDate());
+        modelAndView.addObject("city_from", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()));
+        modelAndView.addObject("city_to", cityService.findOne(flightCriteriaDTO.getIdCityArrival()));
+
+        List<FlightDTO> flightDTOList = null;
+        try {
+            flightDTOList = flightService.findFlightsByCriteria(flightCriteriaDTO);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("flights", flightDTOList.size() == 0 ? null : flightDTOList);
+        return modelAndView;
     }
 
 }

@@ -20,7 +20,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -31,7 +30,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/images/**",
                         "/webjars/**").permitAll()
-                .antMatchers("/registration", "/static/**", "/findFlights").permitAll()
+                .antMatchers("/registration", "/static/**", "/flights/findFlights").permitAll()
                 .antMatchers("/wallet/**").hasAnyRole("CLIENT")
                 .antMatchers().hasAnyRole("ADMIN")
                 .antMatchers().hasAnyRole("WORKER")

@@ -191,6 +191,23 @@ public class EntityControllerHandler {
         return modelAndView;
     }
 
+
+    @ExceptionHandler(DatasException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handleFillDatas(DatasException ex) {
+        String error = ex.getMessage();
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getLocalizedMessage(), error);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("flight/showFlights");
+        modelAndView.addObject("picker1", ex.departureDate);
+        modelAndView.addObject("city_from", ex.cityDTODepart);
+        modelAndView.addObject("city_to", ex.cityDTOArriv);
+        modelAndView.addObject("countries", countryService.findAll(Sort.by("name")));
+        modelAndView.addObject("flights", null);
+        modelAndView.addObject("apiError", apiError);
+        return modelAndView;
+    }
+
     //Order on this flight exist
     // Some code
     @ExceptionHandler(OrderSeatsException.class)
