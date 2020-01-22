@@ -29,16 +29,13 @@
 
     <div class="menu col-md-3" style="padding: 0px 0px" >
         <div class="fancy-hover" id="home">
-            Filters
+          <a style="color: white;" th:href="@{/flights(status='ACTIVE')}"  th:text="#{text.status.active}"></a>
         </div>
         <div class="fancy-hover" id="top">
-            Filters
+          <a style="color: white;" th:href="@{/flights(status='FINISHED')}" th:text="#{text.status.finished}"></a>
         </div>
         <div class="fancy-hover" id="wait">
-             Filters
-        </div>
-        <div class="fancy-hover fancy-hover--blue" id="search">
-            Filters
+          <a style="color: white;" th:href="@{/flights(status='CANCELED')}" th:text="#{text.status.canceled}"></a>
         </div>
     </div>
 
@@ -66,7 +63,7 @@
                               </div>
                               <!-- Текстовый контент -->
                               <div class="card-body">
-                              <div class="d-flex justify-content-between">
+                              <div class="d-flex justify-content-between" style="padding-bottom: 10px">
                                    <div class="d-flex justify-content-start">
                                      <div class="d-flex align-items-start flex-column">
                                         <h1 th:text="${flight.timeDeparture}"></h1>
@@ -97,20 +94,21 @@
                                     </div>
                               </div>
                                   <input type="hidden" class="idFlight" th:value="${flight.id}" id="idFlight">
-                                  <h6 class="card-text" th:text="#{text.free-seats}+':'+${flight.freeSeats}"></h6>
-                                  <h6 class="card-text" th:text="#{text.all-seats}+':'+${flight.allSeats}"></h6>
-                                  <h6 class="card-text" th:text="#{text.number-tickets-sold}+':'+${flight.soldTickets}"></h6>
+                                  <h6 class="card-text" th:text="#{text.seat-price}+': '+${flight.price}"></h6>
+                                  <h6 class="card-text" th:text="#{text.free-seats}+': '+${flight.freeSeats}"></h6>
+                                  <h6 class="card-text" th:text="#{text.all-seats}+': '+${flight.allSeats}"></h6>
+                                  <h6 class="card-text" th:text="#{text.number-tickets-sold}+': '+${flight.soldTickets}"></h6>
 
                               </div>
-                              <div class="card-footer d-flex flex-row bd-highlight mb-3">
-                                <a  th:href="@{/flights/edit/{id} (id=${flight.id}) }"
+                              <div class="card-footer d-flex flex-row bd-highlight " >
+                                <a th:if="${flight.status.toString() == 'ACTIVE' }" th:href="@{/flights/edit/{id} (id=${flight.id}) }"
                                  class="btn btn-primary" th:text="#{text.edit}" ></a>
+
                                  <a th:unless="${flight.soldTickets == 0}" th:href="@{flights/{id}/orders(id=${flight.id})}"  class="btn btn-info" style="margin-left: 10px" th:text="#{text.number-tickets-sold}"></a>
 
                                  <form  th:action="@{/flights/canceled/{id}(id=${flight.id})}" method="get">
                                  <button th:if="${flight.status.toString() == 'ACTIVE' }" type="submit" id="canceledId" class="btn btn-danger" style="margin-left: 10px" th:text="#{text.cancel}"></button>
                                  </form>
-
                               </div>
                           </div>
 

@@ -27,18 +27,16 @@
 
 <div id="container-2" >
 
-    <div class="menu col-md-3" style="padding: 0px 0px" >
+    <div class="menu col-md-3 " style="padding: 0px 0px" >
         <div class="fancy-hover" id="home">
-            Filters
+            <a style="color: white;" th:href="@{/orders/client(status='ACTIVE')}"  th:text="#{text.status.active}"></a>
         </div>
         <div class="fancy-hover" id="top">
-            Filters
+            <a style="color: white;" th:href="@{/orders/client(status='FINISHED')}" th:text="#{text.status.finished}"></a>
+
         </div>
         <div class="fancy-hover" id="wait">
-             Filters
-        </div>
-        <div class="fancy-hover fancy-hover--blue" id="search">
-            Filters
+            <a style="color: white;" th:href="@{/orders/client(status='CANCELED')}" th:text="#{text.status.canceled}"></a>
         </div>
     </div>
 
@@ -111,9 +109,11 @@
                                 <h4 th:text="'№ '+${order.id}" ></h4>
                                 <!-- Button trigger modal -->
 
-                                <a th:if="${order.flightDTO.freeSeats != 0}"
+                                <a th:unless="${order.flightDTO.freeSeats == 0}"
+                                   th:if="${order.status.toString() == 'ACTIVE'}"
                                  class="btn" style="background-color: #e0a800" th:href="@{/orders/{id}/moreTickets(id=${order.id})}" th:text="#{text.take-more}"></a>
-                                <a   class="btn btn-primary"  th:href="@{/orders/return/{id}(id=${order.id})}" th:text="#{text.return-tickets}"></a>
+                                <a th:if="${order.status.toString() == 'ACTIVE'}"
+                                  class="btn btn-primary"  th:href="@{/orders/return/{id}(id=${order.id})}" th:text="#{text.return-tickets}"></a>
                                </div>
                                </div>
 

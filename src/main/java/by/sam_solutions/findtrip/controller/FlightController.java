@@ -3,19 +3,16 @@ package by.sam_solutions.findtrip.controller;
 import by.sam_solutions.findtrip.controller.dto.*;
 import by.sam_solutions.findtrip.repository.entity.FlightStatus;
 import by.sam_solutions.findtrip.repository.entity.Rating;
-import by.sam_solutions.findtrip.security.CustomUserDetail;
 import by.sam_solutions.findtrip.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +32,6 @@ public class FlightController {
 
     private List<CountryDTO> countryDTOList;
     private List<CompanyDTO> companyDTOList;
-    private List<FlightDTO> flightDTOList;
 
     @Autowired
     public FlightController(FlightService flightService, CountryService countryService, CityService cityService, CompanyService companyService, EmailSender emailSender, OrderService orderService) {
@@ -51,12 +47,6 @@ public class FlightController {
     public List<CountryDTO> getCountries() {
         countryDTOList = countryService.findAll(Sort.by("name").ascending());
         return countryDTOList;
-    }
-
-    @ModelAttribute("flights")
-    public List<FlightDTO> getFlights() {
-        flightDTOList = flightService.findAll();
-        return flightDTOList;
     }
 
     @GetMapping("/countries")
@@ -145,7 +135,9 @@ public class FlightController {
 
     @PreAuthorize("hasAnyRole('WORKER','ADMIN')")
     @GetMapping()
-    public String getShowFlightView(Model model) {
+    public String getShowFlightView(@RequestParam(value = "status", required = false, defaultValue = "ACTIVE") FlightStatus status, Model model) {
+        List<FlightDTO> flightDTOList = flightService.findAllByStatus(status);
+        model.addAttribute("flights", flightDTOList.size() != 0 ? flightDTOList : null);
         return "withrole/showFlights";
     }
 
@@ -191,7 +183,7 @@ public class FlightController {
         modelAndView.addObject("picker1", flightCriteriaDTO.getDepartureDate());
         modelAndView.addObject("city_from", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()));
         modelAndView.addObject("city_to", cityService.findOne(flightCriteriaDTO.getIdCityArrival()));
-        modelAndView.addObject("companyChoice", flightCriteriaDTO.getIdCompany()==null? null : companyService.findOne(flightCriteriaDTO.getIdCompany()).getName());
+        modelAndView.addObject("companyChoice", flightCriteriaDTO.getIdCompany() == null ? null : companyService.findOne(flightCriteriaDTO.getIdCompany()).getName());
         modelAndView.addObject("flightCriteriaDTO", flightCriteriaDTO);
 
         List<FlightDTO> flightDTOList = null;

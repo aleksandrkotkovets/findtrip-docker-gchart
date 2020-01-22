@@ -4,6 +4,7 @@ import by.sam_solutions.findtrip.controller.dto.FlightCreateUpdateDTO;
 import by.sam_solutions.findtrip.controller.dto.FlightCriteriaDTO;
 import by.sam_solutions.findtrip.controller.dto.FlightDTO;
 import by.sam_solutions.findtrip.repository.entity.FlightEntity;
+import by.sam_solutions.findtrip.repository.entity.FlightStatus;
 
 import java.text.ParseException;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface FlightService {
     FlightDTO mapFlightDTO(FlightEntity flightEntity);
 
     List<FlightDTO> mapListFlightDTO(List<FlightEntity> flightEntityList);
+
+    List<FlightDTO> findAllByStatus(FlightStatus status);
 }

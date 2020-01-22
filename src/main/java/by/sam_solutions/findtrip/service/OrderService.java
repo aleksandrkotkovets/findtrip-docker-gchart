@@ -2,6 +2,7 @@ package by.sam_solutions.findtrip.service;
 
 import by.sam_solutions.findtrip.controller.dto.OrderCreateUpdateDTO;
 import by.sam_solutions.findtrip.controller.dto.OrderDTO;
+import by.sam_solutions.findtrip.repository.entity.OrderStatus;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface OrderService {
 
     List<OrderDTO> findAllByFlightId(Long idFlight);
 
+    List<OrderDTO> getOrdersByUserIdAndStatus(Long id, OrderStatus status);
 }

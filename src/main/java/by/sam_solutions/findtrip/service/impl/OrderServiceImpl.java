@@ -12,6 +12,7 @@ import by.sam_solutions.findtrip.service.OrderService;
 import by.sam_solutions.findtrip.service.PaymentService;
 import by.sam_solutions.findtrip.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -172,6 +173,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findAllByFlightId(Long idFlight) {
         return mapOrderDTOList(orderRepository.findAllByFlightId(idFlight));
+    }
+
+    @Override
+    public List<OrderDTO> getOrdersByUserIdAndStatus(Long id, OrderStatus status) {
+        return mapOrderDTOList(orderRepository.findAllByUserIdAndStatus(id,status, Sort.by("orderDate").ascending()));
     }
 
 

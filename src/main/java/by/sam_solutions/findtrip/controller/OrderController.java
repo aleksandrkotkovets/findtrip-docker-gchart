@@ -2,6 +2,7 @@ package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.OrderCreateUpdateDTO;
 import by.sam_solutions.findtrip.controller.dto.OrderDTO;
+import by.sam_solutions.findtrip.repository.entity.OrderStatus;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
 import by.sam_solutions.findtrip.service.EmailSender;
 import by.sam_solutions.findtrip.service.OrderService;
@@ -37,8 +38,8 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('CLIENT')")
     @GetMapping("/client")
-    public String getOrdersByUser(Model model, @AuthenticationPrincipal CustomUserDetail currUser) {
-        List<OrderDTO> orderDTOList = orderService.getOrdersByUserId(currUser.getId());
+    public String getOrdersByUser(@RequestParam(value = "status", required = false, defaultValue = "ACTIVE") OrderStatus status, Model model, @AuthenticationPrincipal CustomUserDetail currUser) {
+        List<OrderDTO> orderDTOList = orderService.getOrdersByUserIdAndStatus(currUser.getId(),status);
         model.addAttribute("orders", orderDTOList.size() != 0 ? orderDTOList : null);
         return "withrole/client/myFlights";
     }

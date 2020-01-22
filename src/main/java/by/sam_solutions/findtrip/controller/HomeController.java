@@ -51,7 +51,6 @@ public class HomeController {
         return "login";
     }
 
-
     @GetMapping(value = "/registration")
     public String getSignUpView(Model model) {
         model.addAttribute("user", new UserDTO());
