@@ -44,7 +44,7 @@
         <div class="card">
             <div class="card-body">
                <div th:switch="${flights}" class="container my-md-12">
-                    <p class="my-9">
+                    <p class="my-9" sec:authorize="hasRole('ROLE_WORKER')">
                         <a th:href="@{/flights/create}" class="btn btn-primary">
                             <i class="fas fa-plus ml-2" th:text="#{text.flights}"></i></a>
                     </p>
@@ -104,10 +104,15 @@
                                 <a th:if="${flight.status.toString() == 'ACTIVE' }" th:href="@{/flights/edit/{id} (id=${flight.id}) }"
                                  class="btn btn-primary" th:text="#{text.edit}" ></a>
 
-                                 <a th:unless="${flight.soldTickets == 0}" th:href="@{flights/{id}/orders(id=${flight.id})}"  class="btn btn-info" style="margin-left: 10px" th:text="#{text.number-tickets-sold}"></a>
+                                 <a
+                                  th:unless="${flight.soldTickets == 0}"
+                                  th:href="@{flights/{id}/orders(id=${flight.id})}"  class="btn btn-info" style="margin-left: 10px"
+                                  th:text="#{text.number-tickets-sold}"></a>
 
                                  <form  th:action="@{/flights/canceled/{id}(id=${flight.id})}" method="get">
-                                 <button th:if="${flight.status.toString() == 'ACTIVE' }" type="submit" id="canceledId" class="btn btn-danger" style="margin-left: 10px" th:text="#{text.cancel}"></button>
+                                 <button
+                                  th:if="${#authorization.expression('hasRole(''ROLE_WORKER'')')}"
+                                  th:unless="${flight.status.toString() != 'ACTIVE' }" type="submit" id="canceledId" class="btn btn-danger" style="margin-left: 10px" th:text="#{text.cancel}"></button>
                                  </form>
                               </div>
                           </div>
