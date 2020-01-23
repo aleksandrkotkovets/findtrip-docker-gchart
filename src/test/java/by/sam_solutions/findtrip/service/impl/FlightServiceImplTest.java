@@ -113,9 +113,6 @@ public class FlightServiceImplTest {
     public void addFlightFlight() {
         FlightCreateUpdateDTO flightCreateUpdateDTO = new FlightCreateUpdateDTO();
         flightCreateUpdateDTO.setPlaneId(1L);
-        flightCreateUpdateDTO.setAllSeats(100);
-        flightCreateUpdateDTO.setFreeSeats(55);
-        flightCreateUpdateDTO.setTicketPrice(1.1);
 
         Optional<PlaneEntity> planeEntity = Optional.of(new PlaneEntity("Boing", "B232"));
         planeEntity.get().setFlights(Set.of());
@@ -137,9 +134,6 @@ public class FlightServiceImplTest {
 
         flightService.addFlight(flightCreateUpdateDTO);
         FlightEntity flightEntity = new FlightEntity();
-        flightEntity.setAllSeats(100);
-        flightEntity.setFreeSeats(55);
-        flightEntity.setPrice(1.1);
         flightEntity.setPlane(planeEntity.get());
         flightEntity.setDepartureDate(new Timestamp(1579626004000L));
         flightEntity.setArrivalDate(new Timestamp(1579795204000L));
@@ -147,7 +141,7 @@ public class FlightServiceImplTest {
         flightEntity.setAirportArrival(airportEntityTo.get());
         flightEntity.setStatus(FlightStatus.ACTIVE);
 
-//        verify(flightRepository).save(flightEntity);
+        verify(flightRepository).save(refEq(flightEntity));
 
 
     }
