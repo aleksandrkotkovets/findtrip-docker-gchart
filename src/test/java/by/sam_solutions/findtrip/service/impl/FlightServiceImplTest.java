@@ -217,37 +217,4 @@ public class FlightServiceImplTest {
         flightService.findFlightsByCriteria(flightCriteriaDTO);
     }
 
-   /* @Test()
-    public void findFlightsByCriteria() throws ParseException {
-        List<FlightEntity> expList = new ArrayList<>();
-
-
-        FlightCriteriaDTO flightCriteriaDTO = new FlightCriteriaDTO();
-        flightCriteriaDTO.setIdCityDeparture(1L);
-        flightCriteriaDTO.setIdCityArrival(2L);
-        flightCriteriaDTO.setDepartureDate("2020-01-29");
-        flightCriteriaDTO.setStatus(FlightStatus.ACTIVE);
-
-        Timestamp dateD = flightService.parseDate(flightCriteriaDTO.getDepartureDate());
-        Timestamp finishD = new Timestamp(dateD.getTime() + DAY_IN_MILLISECONDS);
-
-        FlightEntity flightEntity = new FlightEntity();
-        flightEntity.setAirportDeparture(new AirportEntity());
-        flightEntity.setAirportArrival(new AirportEntity());
-        flightEntity.setStatus(FlightStatus.ACTIVE);
-        Optional<CityEntity> cityEntityDep = Optional.of(new CityEntity());
-        cityEntityDep.get().setId(1L);
-        Optional<CityEntity>  cityEntityArriv = Optional.of(new CityEntity());
-        cityEntityArriv.get().setId(2L);
-        when(cityRepository.findById(flightCriteriaDTO.getIdCityDeparture())).thenReturn(cityEntityDep);
-        when(cityRepository.findById(flightCriteriaDTO.getIdCityArrival())).thenReturn(cityEntityArriv);
-
-        expList.add(flightEntity);
-
-        FlightEntity entity =  flightService.createFlightEntityExample(flightCriteriaDTO);
-        Example<FlightEntity> ex = Example.of(entity);
-        when(flightRepository.findAll(flightService.getSpecAndExample(dateD, finishD, flightCriteriaDTO, ex), Sort.by("departureDate"))).thenReturn(expList);
-        List<FlightDTO> flightDTOList = flightService.findFlightsByCriteria(flightCriteriaDTO);
-        assertEquals(1, flightDTOList.size());
-    }*/
 }

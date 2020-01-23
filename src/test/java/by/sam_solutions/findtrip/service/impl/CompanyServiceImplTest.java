@@ -92,16 +92,16 @@ public class CompanyServiceImplTest {
     }
 
     @Test
-    public void findOneById(){
+    public void findOneById() {
         Long id = 1L;
         Optional<CompanyEntity> companyEntity = Optional.of(new CompanyEntity(id, "Fake", Rating.ONE_STAR, Set.of()));
         when(companyRepository.findById(id)).thenReturn(companyEntity);
         CompanyDTO actualCompany = companyService.findOne(id);
-        assertEquals(id,actualCompany.getId());
+        assertEquals(id, actualCompany.getId());
     }
 
     @Test
-    public void findOneByIdNotFound(){
+    public void findOneByIdNotFound() {
         Long id = 2L;
         when(companyRepository.findById(id)).thenReturn(Optional.empty());
         CompanyDTO actualCompany = companyService.findOne(id);
@@ -114,7 +114,7 @@ public class CompanyServiceImplTest {
         CompanyEntity companyEntity = new CompanyEntity(id, "Fake");
         when(companyRepository.getCompanyIdByName(companyEntity.getName())).thenReturn(id);
         Long actualId = companyService.getCompanyIdByName(companyEntity.getName());
-        assertEquals(id,actualId);
+        assertEquals(id, actualId);
     }
 
     @Test
@@ -123,8 +123,5 @@ public class CompanyServiceImplTest {
         Long actualId = companyService.getCompanyIdByName("F");
         assertNull(actualId);
     }
-
-
-
 
 }
