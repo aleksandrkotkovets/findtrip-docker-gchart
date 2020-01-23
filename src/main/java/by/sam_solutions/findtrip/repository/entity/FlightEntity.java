@@ -108,7 +108,7 @@ public class FlightEntity extends BaseEntity {
         return orders;
     }
 
-    public void setTickets(Set<OrderEntity> orders) {
+    public void setOrders(Set<OrderEntity> orders) {
         this.orders = orders;
     }
 

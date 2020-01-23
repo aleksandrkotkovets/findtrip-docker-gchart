@@ -1,11 +1,12 @@
 package by.sam_solutions.findtrip.service.impl;
 
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import by.sam_solutions.findtrip.controller.dto.FlightCreateUpdateDTO;
-import by.sam_solutions.findtrip.exception.FlightDateIncorrectException;
-import by.sam_solutions.findtrip.repository.*;
+import by.sam_solutions.findtrip.controller.dto.FlightCriteriaDTO;
+import by.sam_solutions.findtrip.exception.*;
+import by.sam_solutions.findtrip.repository.AirportRepository;
+import by.sam_solutions.findtrip.repository.FlightRepository;
+import by.sam_solutions.findtrip.repository.PlaneRepository;
 import by.sam_solutions.findtrip.repository.entity.*;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.PaymentService;
@@ -14,20 +15,22 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FlightServiceImplTest {
+
+    private final int GET_HOURS_FROM_MILLISECONDS = 3_600_000;
+    private final int THREE_DAYS = 72;
+    private final int DAY_IN_MILLISECONDS = 86_399_000;
 
     @Mock
     private FlightRepository flightRepository;
@@ -43,12 +46,6 @@ public class FlightServiceImplTest {
 
     @Mock
     private PaymentService paymentService;
-
-    @Mock
-    private CityRepository cityRepository;
-
-    @Mock
-    private CompanyRepository companyRepository;
 
     @InjectMocks
     private FlightServiceImpl flightService;
@@ -145,19 +142,112 @@ public class FlightServiceImplTest {
 
 
     }
-    @Test
-    public void getById() {
-    }
 
     @Test
     public void getNumberSoldTicketById() {
+        Optional<FlightEntity> flightEntity = Optional.of(new FlightEntity());
+        flightEntity.get().setId(1L);
+        OrderEntity orderEntityFirst = new OrderEntity();
+        orderEntityFirst.setTickets(Arrays.asList(new TicketEntity(), new TicketEntity(), new TicketEntity()));
+        OrderEntity orderEntitySecond = new OrderEntity();
+        orderEntitySecond.setTickets(Arrays.asList(new TicketEntity(), new TicketEntity()));
+        flightEntity.get().setOrders(Set.of(orderEntityFirst,orderEntitySecond));
+        when(flightRepository.findById(flightEntity.get().getId())).thenReturn(flightEntity);
+        Integer actualNumberSoldTickets = flightService.getNumberSoldTicketById(flightEntity.get().getId());
+        Integer expected = 5;
+        assertEquals(expected,actualNumberSoldTickets);
     }
 
-    @Test
+    @Test(expected = FlightStatusIncorrectException.class)
+    public void canceledFlight_FlightStatusIncorrect() {
+        Optional<FlightEntity> flightEntity = Optional.of(new FlightEntity());
+        flightEntity.get().setId(1L);
+        flightEntity.get().setStatus(FlightStatus.CANCELED);
+        when(flightRepository.findById(flightEntity.get().getId())).thenReturn(flightEntity);
+        flightService.canceledFlight(flightEntity.get().getId());
+    }
+
+    @Test(expected = PaymentException.class)
+    public void canceledFlight_WithPaymentException() {
+        Optional<FlightEntity> flightEntity = Optional.of(new FlightEntity());
+        flightEntity.get().setId(1L);
+        flightEntity.get().setStatus(FlightStatus.ACTIVE);
+        when(flightRepository.findById(flightEntity.get().getId())).thenReturn(flightEntity);
+        when(paymentService.returnMoneyForFlightCancellation(flightEntity.get())).thenReturn(false);
+        flightService.canceledFlight(flightEntity.get().getId());
+    }
+
+    @Test()
     public void canceledFlight() {
+        Optional<FlightEntity> flightEntity = Optional.of(new FlightEntity());
+        flightEntity.get().setId(1L);
+        flightEntity.get().setStatus(FlightStatus.ACTIVE);
+        OrderEntity orderEntityFirst = new OrderEntity();
+        orderEntityFirst.setStatus(OrderStatus.ACTIVE);
+        flightEntity.get().setOrders(Set.of(orderEntityFirst));
+        when(flightRepository.findById(flightEntity.get().getId())).thenReturn(flightEntity);
+        when(paymentService.returnMoneyForFlightCancellation(flightEntity.get())).thenReturn(true);
+        flightService.canceledFlight(flightEntity.get().getId());
+        flightEntity.get().setStatus(FlightStatus.CANCELED);
+        flightEntity.get().getOrders().stream().forEach(a -> a.setStatus(OrderStatus.CANCELED));
+        verify(flightRepository).save(flightEntity.get());
     }
 
-    @Test
-    public void findFlightsByCriteria() {
+    @Test(expected = DatasException.class)
+    public void findFlightsByCriteria_BlankFields() {
+        FlightCriteriaDTO flightCriteriaDTO = new FlightCriteriaDTO();
+        flightService.findFlightsByCriteria(flightCriteriaDTO);
     }
+
+    @Test(expected = CityIncorrectException.class)
+    public void findFlightsByCriteria_EqualsCities() {
+        FlightCriteriaDTO flightCriteriaDTO = new FlightCriteriaDTO();
+        flightCriteriaDTO.setIdCityDeparture(1L);
+        flightCriteriaDTO.setIdCityArrival(1L);
+        flightCriteriaDTO.setDepartureDate("2020-01-29");
+        flightService.findFlightsByCriteria(flightCriteriaDTO);
+    }
+
+    @Test(expected = DatasException.class)
+    public void findFlightsByCriteria_DatesDepartBeforeCurrDate() {
+        FlightCriteriaDTO flightCriteriaDTO = new FlightCriteriaDTO();
+        flightCriteriaDTO.setIdCityDeparture(1L);
+        flightCriteriaDTO.setIdCityArrival(2L);
+        flightCriteriaDTO.setDepartureDate("2020-01-01");
+        flightService.findFlightsByCriteria(flightCriteriaDTO);
+    }
+
+   /* @Test()
+    public void findFlightsByCriteria() throws ParseException {
+        List<FlightEntity> expList = new ArrayList<>();
+
+
+        FlightCriteriaDTO flightCriteriaDTO = new FlightCriteriaDTO();
+        flightCriteriaDTO.setIdCityDeparture(1L);
+        flightCriteriaDTO.setIdCityArrival(2L);
+        flightCriteriaDTO.setDepartureDate("2020-01-29");
+        flightCriteriaDTO.setStatus(FlightStatus.ACTIVE);
+
+        Timestamp dateD = flightService.parseDate(flightCriteriaDTO.getDepartureDate());
+        Timestamp finishD = new Timestamp(dateD.getTime() + DAY_IN_MILLISECONDS);
+
+        FlightEntity flightEntity = new FlightEntity();
+        flightEntity.setAirportDeparture(new AirportEntity());
+        flightEntity.setAirportArrival(new AirportEntity());
+        flightEntity.setStatus(FlightStatus.ACTIVE);
+        Optional<CityEntity> cityEntityDep = Optional.of(new CityEntity());
+        cityEntityDep.get().setId(1L);
+        Optional<CityEntity>  cityEntityArriv = Optional.of(new CityEntity());
+        cityEntityArriv.get().setId(2L);
+        when(cityRepository.findById(flightCriteriaDTO.getIdCityDeparture())).thenReturn(cityEntityDep);
+        when(cityRepository.findById(flightCriteriaDTO.getIdCityArrival())).thenReturn(cityEntityArriv);
+
+        expList.add(flightEntity);
+
+        FlightEntity entity =  flightService.createFlightEntityExample(flightCriteriaDTO);
+        Example<FlightEntity> ex = Example.of(entity);
+        when(flightRepository.findAll(flightService.getSpecAndExample(dateD, finishD, flightCriteriaDTO, ex), Sort.by("departureDate"))).thenReturn(expList);
+        List<FlightDTO> flightDTOList = flightService.findFlightsByCriteria(flightCriteriaDTO);
+        assertEquals(1, flightDTOList.size());
+    }*/
 }

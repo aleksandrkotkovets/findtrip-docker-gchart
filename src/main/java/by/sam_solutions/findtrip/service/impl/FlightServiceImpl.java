@@ -277,12 +277,12 @@ public class FlightServiceImpl implements FlightService {
         return parseTime;
     }
 
-    private String parseDate(Timestamp timestamp) {
+    public String parseDate(Timestamp timestamp) {
         return new SimpleDateFormat("yyyy-MM-dd ").format(timestamp.getTime());
 
     }
 
-    private Timestamp parseDate(String date) throws ParseException {
+    public Timestamp parseDate(String date) throws ParseException {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date dateD = formatter.parse(date);
         Timestamp timestampD = new Timestamp(dateD.getTime());
@@ -425,7 +425,7 @@ public class FlightServiceImpl implements FlightService {
 
     }
 
-    private FlightEntity createFlightEntityExample(FlightCriteriaDTO flightCriteriaDTO) {
+    public FlightEntity createFlightEntityExample(FlightCriteriaDTO flightCriteriaDTO) {
         FlightEntity flightEntity = new FlightEntity();
 
         if (flightCriteriaDTO.getIdCityDeparture() != null && !flightCriteriaDTO.getIdCityDeparture().equals("")) {
@@ -457,7 +457,7 @@ public class FlightServiceImpl implements FlightService {
         return flightEntity;
     }
 
-    private Specification<FlightEntity> getSpecAndExample(Timestamp dateD, Timestamp finishD, FlightCriteriaDTO flightCriteriaDTO, Example<FlightEntity> example) {
+    public Specification<FlightEntity> getSpecAndExample(Timestamp dateD, Timestamp finishD, FlightCriteriaDTO flightCriteriaDTO, Example<FlightEntity> example) {
         return (Specification<FlightEntity>) (root, query, builder) -> {
             final List<Predicate> predicates = new ArrayList<>();
 
