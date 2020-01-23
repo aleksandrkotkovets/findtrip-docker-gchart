@@ -158,4 +158,20 @@ public class UserEntity extends BaseEntity {
     public void setOrders(Set<OrderEntity> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", orders=" + orders +
+                ", wallet=" + wallet +
+                ", roleEntity=" + roleEntity +
+                '}';
+    }
 }

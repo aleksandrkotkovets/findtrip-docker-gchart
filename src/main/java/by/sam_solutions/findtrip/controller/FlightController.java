@@ -4,6 +4,8 @@ import by.sam_solutions.findtrip.controller.dto.*;
 import by.sam_solutions.findtrip.repository.entity.FlightStatus;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.service.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequestMapping("/flights")
 public class FlightController {
 
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private FlightService flightService;
     private CountryService countryService;
@@ -120,6 +123,7 @@ public class FlightController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public FlightCreateUpdateDTO addFlight(@RequestBody FlightCreateUpdateDTO flightDTO) {
+        LOGGER.info("Create flight where flightCreateUpdateDTO: " + flightDTO);
         flightService.addFlight(flightDTO);
         return flightDTO;
     }
@@ -128,6 +132,7 @@ public class FlightController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public FlightCreateUpdateDTO editFlight(@PathVariable Long id, @RequestBody FlightCreateUpdateDTO flightDTO) {
+        LOGGER.info("Edit flight where new flightCreateUpdateDTO: " + flightDTO);
         flightService.edit(flightDTO);
         return flightDTO;
     }
@@ -150,6 +155,7 @@ public class FlightController {
 
     @GetMapping("/canceled/{id}")
     public String canceledFlight(@PathVariable(name = "id") Long idFlight) {
+        LOGGER.info("Cancel flight where flight id: " + idFlight);
         flightService.canceledFlight(idFlight);
         sendСancellationСonfirmToEmail(idFlight);
         return "redirect:/flights";
@@ -162,6 +168,7 @@ public class FlightController {
     }
 
     private void sendСancellationСonfirmToEmail(Long idFlight) {
+        LOGGER.info("Send a cancellation email to all users");
         List<OrderDTO> orderDTOList = orderService.findAllByFlightId(idFlight);
         orderDTOList.stream().forEach(a -> emailSender.sendСancellationСonfirmToEmail(a));
     }
@@ -179,6 +186,7 @@ public class FlightController {
     @PostMapping("/findFlights")
     public ModelAndView getFlightByCriteria(@ModelAttribute("flightCriteriaDTO") FlightCriteriaDTO flightCriteriaDTO,
                                             @RequestParam(value = "companyChoice", required = false) Long companyChoice) {
+        LOGGER.info("Get flights by criteria: " + flightCriteriaDTO);
         ModelAndView modelAndView = new ModelAndView("flight/showFlights");
         modelAndView.addObject("picker1", flightCriteriaDTO.getDepartureDate());
         modelAndView.addObject("city_from", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()));
@@ -190,6 +198,7 @@ public class FlightController {
         try {
             flightDTOList = flightService.findFlightsByCriteria(flightCriteriaDTO);
         } catch (ParseException e) {
+            LOGGER.error("Parse dates error");
             e.printStackTrace();
         }
         modelAndView.addObject("flights", flightDTOList.size() == 0 ? null : flightDTOList);

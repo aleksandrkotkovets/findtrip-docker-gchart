@@ -102,4 +102,18 @@ public class FlightCriteriaDTO {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "FlightCriteriaDTO{" +
+                "idCityDeparture=" + idCityDeparture +
+                ", idCityArrival=" + idCityArrival +
+                ", departureDate='" + departureDate + '\'' +
+                ", countSeats=" + countSeats +
+                ", idCompany=" + idCompany +
+                ", ratingCompany=" + ratingCompany +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", status=" + status +
+                '}';
+    }
 }

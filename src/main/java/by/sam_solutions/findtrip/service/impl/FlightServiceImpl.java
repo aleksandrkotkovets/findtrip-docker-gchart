@@ -7,6 +7,8 @@ import by.sam_solutions.findtrip.repository.entity.*;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.FlightService;
 import by.sam_solutions.findtrip.service.PaymentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService {
+
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private final int GET_HOURS_FROM_MILLISECONDS = 3_600_000;
     private final int THREE_DAYS = 72;
@@ -57,9 +61,11 @@ public class FlightServiceImpl implements FlightService {
     @Transactional
     @Override
     public void addFlight(FlightCreateUpdateDTO flightDTO) {
+        LOGGER.info("Create flight where flightDTO: " + flightDTO);
         Optional<PlaneEntity> planeEntity = planeRepository.findById(flightDTO.getPlaneId());
 
         if (planeEntity.isEmpty()) {
+            LOGGER.error("PlaneEntity with id=" + flightDTO.getPlaneId() + " not found");
             throw new EntityNotFoundException("PlaneEntity with id=" + flightDTO.getPlaneId() + " not found");
         }
 
@@ -67,6 +73,7 @@ public class FlightServiceImpl implements FlightService {
         Timestamp dateArrival = new Timestamp(flightDTO.getDateArrival());
 
         if ((dateArrival.getTime() - dateDeparture.getTime()) / GET_HOURS_FROM_MILLISECONDS > THREE_DAYS) {
+            LOGGER.error("Flight duration more than three days. Departure date: " + dateArrival + ", Arrival date: " + dateDeparture);
             throw new FlightDateIncorrectException("Flight duration more than three days", flightDTO);
         }
 
@@ -74,11 +81,13 @@ public class FlightServiceImpl implements FlightService {
 
             //first exception
             if (dateDeparture.after(flightEntity.getDepartureDate()) && dateDeparture.before(flightEntity.getArrivalDate())) {
+                LOGGER.error("This plane already has a flight in this time lapse");
                 throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
             }
 
             //second exception
             if (dateArrival.after(flightEntity.getDepartureDate()) && dateArrival.before(flightEntity.getArrivalDate())) {
+                LOGGER.error("This plane already has a flight in this time lapse");
                 throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
             }
 
@@ -111,9 +120,12 @@ public class FlightServiceImpl implements FlightService {
     @Transactional
     @Override
     public void edit(FlightCreateUpdateDTO flightDTO) {
+        LOGGER.info("Edit flight where new flightDTO: " + flightDTO);
+
         FlightEntity editEntity = flightRepository.findById(flightDTO.getId()).get();
 
         if (editEntity == null) {
+            LOGGER.error("Flight with id=" + flightDTO.getId() + " not found");
             throw new EntityNotFoundException("Flight with id=" + flightDTO.getId() + " not found");
         }
 
@@ -128,13 +140,13 @@ public class FlightServiceImpl implements FlightService {
 
                 if (dateDeparture.after(flightEntity.getDepartureDate()) &&
                         dateDeparture.before(flightEntity.getArrivalDate())) {
-
+                    LOGGER.error("This plane already has a flight in this time lapse");
                     throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
                 }
 
                 if (dateArrival.after(flightEntity.getDepartureDate()) &&
                         dateArrival.before(flightEntity.getArrivalDate())) {
-
+                    LOGGER.error("This plane already has a flight in this time lapse");
                     throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
                 }
             }
@@ -151,11 +163,15 @@ public class FlightServiceImpl implements FlightService {
 
                 if (dateDeparture.after(flightEntity.getDepartureDate()) &&
                         dateDeparture.before(flightEntity.getArrivalDate())) {
+                    LOGGER.error("This plane already has a flight in this time lapse");
+
                     throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
                 }
 
                 if (dateArrival.after(flightEntity.getDepartureDate()) &&
                         dateArrival.before(flightEntity.getArrivalDate())) {
+                    LOGGER.error("This plane already has a flight in this time lapse");
+
                     throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
                 }
             }
@@ -198,9 +214,12 @@ public class FlightServiceImpl implements FlightService {
     @Transactional
     @Override
     public void canceledFlight(Long idFlight) {
+        LOGGER.info("Cancel flight where flight id: " + idFlight);
+
         Optional<FlightEntity> flightEntity = flightRepository.findById(idFlight);
 
         if (flightEntity.get().getStatus() != FlightStatus.ACTIVE) {
+            LOGGER.error("Flight status incorrect for cancellation. Current status: " + flightEntity.get().getStatus());
             throw new FlightStatusIncorrectException("Flight_status_is_incorrect_for_cancellation");
         }
 
@@ -213,6 +232,7 @@ public class FlightServiceImpl implements FlightService {
 
                 flightRepository.save(flightEntity.get());
             } else {
+                LOGGER.error("Money back error. Flight uncanceled");
                 throw new PaymentException("Money_back_error");
             }
 
@@ -223,12 +243,14 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<FlightDTO> findFlightsByCriteria(FlightCriteriaDTO flightCriteriaDTO) {
-
+        LOGGER.info("Find flight by criteria: " + flightCriteriaDTO);
         if (flightCriteriaDTO.getIdCityDeparture() == null || flightCriteriaDTO.getIdCityArrival() == null || flightCriteriaDTO.getDepartureDate().equals("")) {
+            LOGGER.warn("Fill in all the fields");
             throw new DatasException("Fill_in_all_the_fields", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate(), flightCriteriaDTO);
         }
 
         if (flightCriteriaDTO.getIdCityDeparture() == flightCriteriaDTO.getIdCityArrival()) {
+            LOGGER.error("Enter different cities");
             throw new CityIncorrectException("Enter_different_cities", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate(), flightCriteriaDTO);
         }
 
@@ -240,6 +262,7 @@ public class FlightServiceImpl implements FlightService {
             Timestamp finishD = new Timestamp(dateD.getTime() + DAY_IN_MILLISECONDS);
 
             if (dateD.before(currD)) {
+                LOGGER.error("Incorrect dates");
                 throw new DatasException("Incorrect_dates", cityService.findOne(flightCriteriaDTO.getIdCityDeparture()), cityService.findOne(flightCriteriaDTO.getIdCityArrival()), flightCriteriaDTO.getDepartureDate(), flightCriteriaDTO);
             }
 

@@ -3,6 +3,8 @@ package by.sam_solutions.findtrip.service.impl;
 import by.sam_solutions.findtrip.config.EmailConfig;
 import by.sam_solutions.findtrip.controller.dto.OrderDTO;
 import by.sam_solutions.findtrip.service.EmailSender;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailSenderImpl implements EmailSender {
+
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private final String APP_MAIL = "findtripautosender@gmail.com";
 
@@ -29,7 +33,7 @@ public class EmailSenderImpl implements EmailSender {
 
     @Override
     public void sendСonfirmPurchaseToEmail(OrderDTO orderDTO) {
-
+        LOGGER.info("Send confirm purchase to email: " + orderDTO.getUserDTO().getEmail() + ". Order: " + orderDTO);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(APP_MAIL);
         mailMessage.setTo(orderDTO.getUserDTO().getEmail());
@@ -51,6 +55,7 @@ public class EmailSenderImpl implements EmailSender {
 
     @Override
     public void sendСancellationСonfirmToEmail(OrderDTO orderDTO) {
+        LOGGER.info("Send cancellation confirm  to email: " + orderDTO.getUserDTO().getEmail() + ". Order: " + orderDTO);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(APP_MAIL);
         mailMessage.setTo(orderDTO.getUserDTO().getEmail());

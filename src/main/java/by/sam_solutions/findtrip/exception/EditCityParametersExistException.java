@@ -14,7 +14,7 @@ public class EditCityParametersExistException extends RuntimeException {
         super(message);
     }
 
-    public EditCityParametersExistException(String message, CityDTO cityDTO,Long idCity, String countryName) {
+    public EditCityParametersExistException(String message, CityDTO cityDTO, Long idCity, String countryName) {
         super(message);
         this.cityDTO = cityDTO;
         this.countryName = countryName;

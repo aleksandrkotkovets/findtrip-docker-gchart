@@ -1,12 +1,9 @@
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.ApiError;
-import by.sam_solutions.findtrip.controller.dto.CountryDTO;
 import by.sam_solutions.findtrip.controller.dto.UserDTO;
 import by.sam_solutions.findtrip.security.CustomUserDetail;
-import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.CountryService;
-import by.sam_solutions.findtrip.service.FlightService;
 import by.sam_solutions.findtrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class HomeController {

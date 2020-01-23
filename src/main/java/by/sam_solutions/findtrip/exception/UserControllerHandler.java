@@ -3,13 +3,12 @@ package by.sam_solutions.findtrip.exception;
 import by.sam_solutions.findtrip.controller.dto.ApiError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,7 +27,7 @@ public class UserControllerHandler {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("registration");
         modelAndView.addObject("user", ex.userDTO);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
 
@@ -42,7 +41,7 @@ public class UserControllerHandler {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/addEditUser");
         modelAndView.addObject("user", ex.userDTO);
-        modelAndView.addObject("apiError",apiError);
+        modelAndView.addObject("apiError", apiError);
         return modelAndView;
     }
 

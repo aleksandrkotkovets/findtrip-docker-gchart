@@ -69,4 +69,14 @@ public class CompanyDTO {
     public void setPlaneDTOList(List<PlaneDTO> planeDTOList) {
         this.planeDTOList = planeDTOList;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", rating=" + rating +
+                ", planeDTOList=" + planeDTOList +
+                '}';
+    }
 }

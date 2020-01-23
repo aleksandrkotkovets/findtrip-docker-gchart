@@ -5,8 +5,6 @@ import by.sam_solutions.findtrip.controller.dto.UserDTO;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
 import by.sam_solutions.findtrip.service.RoleService;
 import by.sam_solutions.findtrip.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,9 +21,6 @@ import java.util.Optional;
 @RequestMapping(value = "/users")
 public class UserController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
-
     private UserService userService;
     private RoleService roleService;
 
@@ -37,7 +32,7 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'WORKER')")
     @GetMapping()
-    public String getAllUsersByRole(@RequestParam(value = "role") String role,  Model model) {
+    public String getAllUsersByRole(@RequestParam(value = "role") String role, Model model) {
         List<UserDTO> users = roleService.getUsersByRole(role);
         model.addAttribute("role", role);
         model.addAttribute("users", users.size() == 0 ? null : users);
@@ -48,17 +43,17 @@ public class UserController {
     @GetMapping(path = "/delete")
     public String deleteEmployeeById(Model model,
                                      @RequestParam("id") Long id,
-                                     @RequestParam(value = "role") String role ) throws UserNotFoundException {
+                                     @RequestParam(value = "role") String role) throws UserNotFoundException {
         userService.deleteUserById(id);
-        String redirect = "redirect:/users?&role="+role;
+        String redirect = "redirect:/users?&role=" + role;
         return redirect;
     }
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
     public String getAddOrEditUserView(
-                                       Model model,
-                                       @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
-                                       @PathVariable(value = "id") Optional<Long> id)  {
+            Model model,
+            @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
+            @PathVariable(value = "id") Optional<Long> id) {
 
 
         if (id.isPresent()) {
@@ -80,7 +75,7 @@ public class UserController {
     @PostMapping(path = "/edit")
     public String addOrEditUser(@Valid @ModelAttribute("user") UserDTO user,
                                 @RequestParam(value = "role", required = false, defaultValue = "ROLE_CLIENT") String role,
-                                BindingResult result,Model model) {
+                                BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             ApiError apiError = new ApiError();
@@ -89,8 +84,8 @@ public class UserController {
                 message += str.getDefaultMessage();
                 apiError.setMessage(message);
             }
-            model.addAttribute("user",user);
-            model.addAttribute("apiError",apiError);
+            model.addAttribute("user", user);
+            model.addAttribute("apiError", apiError);
             return "user/addEditUser";
         }
 

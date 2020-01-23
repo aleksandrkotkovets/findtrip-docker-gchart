@@ -9,7 +9,8 @@ public class CityIncorrectException extends RuntimeException {
     CityDTO cityArr;
     String date;
     FlightCriteriaDTO flightCriteriaDTO;
-    public CityIncorrectException(String message, CityDTO cityDepart, CityDTO cityArr, String date,FlightCriteriaDTO flightCriteriaDTO) {
+
+    public CityIncorrectException(String message, CityDTO cityDepart, CityDTO cityArr, String date, FlightCriteriaDTO flightCriteriaDTO) {
         super(message);
         this.cityDepart = cityDepart;
         this.cityArr = cityArr;

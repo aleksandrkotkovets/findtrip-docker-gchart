@@ -5,6 +5,8 @@ import by.sam_solutions.findtrip.controller.dto.CityDTO;
 import by.sam_solutions.findtrip.exception.EditCityParametersExistException;
 import by.sam_solutions.findtrip.service.CityService;
 import by.sam_solutions.findtrip.service.CountryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping(value = "/cities")
 public class CityController {
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private CityService cityService;
     private CountryService countryService;
@@ -34,13 +37,14 @@ public class CityController {
             Model model,
             @RequestParam(name = "country", required = false) String country,
             @PathVariable(value = "id") Optional<Long> id) throws EntityNotFoundException {
-
+        LOGGER.info("Get add or edit city view");
         if (id.isPresent()) {
             CityDTO cityDTO = cityService.findOne(id.get());
             if (cityDTO != null) {
                 model.addAttribute("countryName", cityDTO.getCountryDTO().getName());
                 model.addAttribute("city", cityDTO);
             } else {
+                LOGGER.error("City with id=" + id + " not found");
                 throw new EntityNotFoundException("City with id=" + id + " not found");
             }
 
@@ -54,6 +58,7 @@ public class CityController {
 
     @GetMapping("/delete/{id}")
     public String deleteCity(@PathVariable(value = "id") Long id) {
+        LOGGER.info("Delete city with id: " + id);
         Long idCountry = cityService.getCountryIdByCityId(id);
         cityService.delete(id);
         return "redirect:/country/" + idCountry + "/cities";
@@ -65,8 +70,9 @@ public class CityController {
                                 @RequestParam(name = "countryName") String countryName,
                                 BindingResult result,
                                 Model model) {
-
+        LOGGER.warn("Get add or edit city view");
         if (result.hasErrors()) {
+            LOGGER.warn("Validation errors");
             ApiError apiError = new ApiError();
             String message = "";
             for (FieldError str : result.getFieldErrors()) {
@@ -83,11 +89,13 @@ public class CityController {
 
             if (cityService.getCityIdByName(cityDTO.getName()) != null
                     && cityService.getCityIdByName(cityDTO.getName()) != cityDTO.getId()) {
+                LOGGER.error("City with name:" + cityDTO.getName() + " already exist");
                 throw new EditCityParametersExistException("City_with_this_name_already_exist", cityDTO, countryName);
             }
             cityService.saveOrUpdate(cityDTO, null);
         } else {
             if (cityService.getCityIdByName(cityDTO.getName()) != null) {
+                LOGGER.error("City with name:" + cityDTO.getName() + " already exist");
                 throw new EditCityParametersExistException("City_with_this_name_already_exist", cityDTO, countryName);
             }
             cityService.saveOrUpdate(cityDTO, countryName);

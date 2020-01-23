@@ -8,6 +8,8 @@ import by.sam_solutions.findtrip.repository.entity.OrderEntity;
 import by.sam_solutions.findtrip.repository.entity.UserEntity;
 import by.sam_solutions.findtrip.repository.entity.WalletEntity;
 import by.sam_solutions.findtrip.service.PaymentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.text.DecimalFormat;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private WalletRepository walletRepository;
 
@@ -29,6 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public boolean payOrder(OrderCreateUpdateDTO orderDTO, FlightEntity flightEntity, UserEntity userEntity) {
+        LOGGER.info("Pay order: " + orderDTO + ", flight: " + flightEntity + ",user: " + userEntity);
         WalletEntity walletEntity = walletRepository.findByOwnerId(userEntity.getId());
         Double mustPay = orderDTO.getCountSeats() * flightEntity.getPrice();
         Double currBalance = walletEntity.getSum();
@@ -37,6 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
             walletEntity.setSum(Double.parseDouble(decimalFormat.format(currBalance).replace(",", ".")));
             walletRepository.save(walletEntity);
         } else {
+            LOGGER.info("Wallet balance incorrect.\nBalance: " + walletEntity.getSum());
             throw new WalletIncorrectBalanceException("You need to replenish wallet balance.\nYour balance: " + walletEntity.getSum());
         }
         return true;
@@ -45,6 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public boolean returnMoney(OrderCreateUpdateDTO orderDTO, FlightEntity flightEntity, UserEntity userEntity) {
+        LOGGER.info("Return money for order: " + orderDTO + ", user: " + userEntity);
         WalletEntity walletEntity = walletRepository.findByOwnerId(userEntity.getId());
         Double mustReturn = orderDTO.getReturnTickets() * flightEntity.getPrice();
         Double currBalance = walletEntity.getSum() + mustReturn;
@@ -58,6 +64,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public boolean returnMoneyForFlightCancellation(FlightEntity flightEntity) {
+        LOGGER.info("Return money for flight cancellation. Flight: " + flightEntity);
         WalletEntity walletEntity;
         Double currBalance;
         for (OrderEntity orderEntity : flightEntity.getOrders()) {

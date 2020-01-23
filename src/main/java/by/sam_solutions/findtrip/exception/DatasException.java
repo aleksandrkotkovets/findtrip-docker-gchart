@@ -9,6 +9,7 @@ public class DatasException extends RuntimeException {
     CityDTO cityDTOArriv;
     String departureDate;
     FlightCriteriaDTO flightCriteriaDTO;
+
     public DatasException(String msg, CityDTO cityDTODepart, CityDTO cityDTOArriv, String departureDate, FlightCriteriaDTO flightCriteriaDTO) {
         super(msg);
         this.cityDTODepart = cityDTODepart;

@@ -18,7 +18,7 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(Long id, Double finalCost,OrderStatus status, Timestamp orderDate, UserDTO userDTO, FlightDTO flightDTO, List<TicketDTO> ticketDTOList) {
+    public OrderDTO(Long id, Double finalCost, OrderStatus status, Timestamp orderDate, UserDTO userDTO, FlightDTO flightDTO, List<TicketDTO> ticketDTOList) {
         this.id = id;
         this.finalCost = finalCost;
         this.status = status;
@@ -86,5 +86,18 @@ public class OrderDTO {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "id=" + id +
+                ", finalCost=" + finalCost +
+                ", status=" + status +
+                ", orderDate=" + orderDate +
+                ", userDTO=" + userDTO +
+                ", flightDTO=" + flightDTO +
+                ", ticketDTOList=" + ticketDTOList +
+                '}';
     }
 }
