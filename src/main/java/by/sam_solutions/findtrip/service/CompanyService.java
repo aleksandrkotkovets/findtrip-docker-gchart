@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CompanyService {
 
-    @Transactional
+
     Page<CompanyEntity> findAll(Pageable pageable);
 
     void deleteById(Long id);

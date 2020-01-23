@@ -38,18 +38,16 @@ public class FlightServiceImpl implements FlightService {
     private PlaneRepository planeRepository;
     private AirportRepository airportRepository;
     private CityService cityService;
-    private WalletRepository walletRepository;
     private PaymentService paymentService;
     private CityRepository cityRepository;
     private CompanyRepository companyRepository;
 
     @Autowired
-    public FlightServiceImpl(FlightRepository flightRepository, PlaneRepository planeRepository, AirportRepository airportRepository, CityService cityService, WalletRepository walletRepository, PaymentService paymentService, CityRepository cityRepository, CompanyRepository companyRepository) {
+    public FlightServiceImpl(FlightRepository flightRepository, PlaneRepository planeRepository, AirportRepository airportRepository, CityService cityService, PaymentService paymentService, CityRepository cityRepository, CompanyRepository companyRepository) {
         this.flightRepository = flightRepository;
         this.planeRepository = planeRepository;
         this.airportRepository = airportRepository;
         this.cityService = cityService;
-        this.walletRepository = walletRepository;
         this.paymentService = paymentService;
         this.cityRepository = cityRepository;
         this.companyRepository = companyRepository;
@@ -61,8 +59,8 @@ public class FlightServiceImpl implements FlightService {
     public void addFlight(FlightCreateUpdateDTO flightDTO) {
         Optional<PlaneEntity> planeEntity = planeRepository.findById(flightDTO.getPlaneId());
 
-        if (!planeEntity.isPresent()) {
-            throw new EntityNotFoundException("PlaneEntity with id=" + planeEntity.get().getId() + " not found");
+        if (planeEntity.isEmpty()) {
+            throw new EntityNotFoundException("PlaneEntity with id=" + flightDTO.getPlaneId() + " not found");
         }
 
         Timestamp dateDeparture = new Timestamp(flightDTO.getDateDeparture());
@@ -74,10 +72,12 @@ public class FlightServiceImpl implements FlightService {
 
         for (FlightEntity flightEntity : planeEntity.get().getFlights()) {
 
+            //first exception
             if (dateDeparture.after(flightEntity.getDepartureDate()) && dateDeparture.before(flightEntity.getArrivalDate())) {
                 throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
             }
 
+            //second exception
             if (dateArrival.after(flightEntity.getDepartureDate()) && dateArrival.before(flightEntity.getArrivalDate())) {
                 throw new FlightDateIncorrectException("This plane already has a flight in this time lapse", flightDTO);
             }

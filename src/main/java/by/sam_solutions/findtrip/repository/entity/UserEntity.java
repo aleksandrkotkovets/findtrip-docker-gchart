@@ -65,6 +65,20 @@ public class UserEntity extends BaseEntity {
 
     }
 
+
+    public UserEntity(@NotNull String login, String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, @NotNull String patronymic, @NotNull String phoneNumber, Set<OrderEntity> orders, WalletEntity wallet, RoleEntity roleEntity) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.phoneNumber = phoneNumber;
+        this.orders = orders;
+        this.wallet = wallet;
+        this.roleEntity = roleEntity;
+    }
+
     public String getLogin() {
         return login;
     }

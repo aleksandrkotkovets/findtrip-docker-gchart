@@ -18,6 +18,10 @@ public class RoleEntity extends BaseEntity{
         this.users = users;
     }
 
+    public RoleEntity(String role) {
+        this.role = role;
+    }
+
     public RoleEntity(){}
 
     public String getRole() {

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    UserEntity save(UserDTO userDTO, String role);
+    boolean save(UserDTO userDTO, String role);
 
     List<UserDTO> getUsersByRole(String role);
 

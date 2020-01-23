@@ -32,6 +32,11 @@ public class CompanyDTO {
         this.name = name;
     }
 
+    public CompanyDTO(String name, Rating rating) {
+        this.name = name;
+        this.rating = rating;
+    }
+
 
     public String getName() {
         return name;

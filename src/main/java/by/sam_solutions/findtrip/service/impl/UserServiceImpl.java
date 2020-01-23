@@ -3,17 +3,15 @@ package by.sam_solutions.findtrip.service.impl;
 import by.sam_solutions.findtrip.controller.dto.UserDTO;
 import by.sam_solutions.findtrip.exception.EditUsersParametersExistException;
 import by.sam_solutions.findtrip.exception.UserNotFoundException;
+import by.sam_solutions.findtrip.repository.RoleRepository;
 import by.sam_solutions.findtrip.repository.UserRepository;
 import by.sam_solutions.findtrip.repository.entity.UserEntity;
 import by.sam_solutions.findtrip.repository.entity.WalletEntity;
-import by.sam_solutions.findtrip.service.RoleService;
 import by.sam_solutions.findtrip.service.UserService;
-import by.sam_solutions.findtrip.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,20 +23,20 @@ public class UserServiceImpl implements UserService {
     private final Double DEFAULT_SUM = 0D;
 
     private UserRepository userRepository;
-    private RoleService roleService;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
     @Transactional
     @Override
-    public UserEntity save(UserDTO userDTO, String role) {
+    public boolean save(UserDTO userDTO, String role) {
 
         Long idExistUser = userRepository.getIdUserByEmail(userDTO.getEmail());
-        if ( idExistUser != null) {
+        if (idExistUser != null) {
             throw new EditUsersParametersExistException("User_with_this_email_already_exist", userDTO);
         }
 
@@ -49,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         idExistUser = userRepository.getIdUserByPhoneNumber(userDTO.getPhoneNumber());
         if (idExistUser != null) {
-            throw new EditUsersParametersExistException("This_phone_number_already_exist",userDTO);
+            throw new EditUsersParametersExistException("This_phone_number_already_exist", userDTO);
         }
 
         UserEntity userEntity = new UserEntity();
@@ -60,13 +58,14 @@ public class UserServiceImpl implements UserService {
         userEntity.setLastName(userDTO.getLastName());
         userEntity.setPatronymic(userDTO.getPatronymic());
         userEntity.setPhoneNumber(userDTO.getPhoneNumber());
-        userEntity.setRoleEntity(roleService.findByRole(role));
+        userEntity.setRoleEntity(roleRepository.findByRole(role));
 
-        if(role.equals("ROLE_CLIENT")){
+        if (role.equals("ROLE_CLIENT")) {
             userEntity.setWallet(new WalletEntity(DEFAULT_SUM));
         }
+        userRepository.save(userEntity);
 
-        return userRepository.save(userEntity);
+        return true;
     }
 
     @Override
@@ -105,20 +104,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findUserById(Long id) {
-        UserDTO userDTO = null;
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        if (userEntity.isPresent()) {
-            userDTO = new UserDTO();
-            userDTO.setId(userEntity.get().getId());
-            userDTO.setEmail(userEntity.get().getEmail());
-            userDTO.setLogin(userEntity.get().getLogin());
-            userDTO.setPassword(userEntity.get().getPassword());
-            userDTO.setFirstName(userEntity.get().getFirstName());
-            userDTO.setLastName(userEntity.get().getLastName());
-            userDTO.setPatronymic(userEntity.get().getPatronymic());
-            userDTO.setPhoneNumber(userEntity.get().getPhoneNumber());
-            userDTO.setRole(userEntity.get().getRoleEntity().getRole());
-        }
+        return userEntity.isPresent() ? mapUserDTO(userEntity.get()) : null;
+    }
+
+    private UserDTO mapUserDTO(UserEntity userEntity) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userEntity.getId());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setLogin(userEntity.getLogin());
+        userDTO.setPassword(userEntity.getPassword());
+        userDTO.setFirstName(userEntity.getFirstName());
+        userDTO.setLastName(userEntity.getLastName());
+        userDTO.setPatronymic(userEntity.getPatronymic());
+        userDTO.setPhoneNumber(userEntity.getPhoneNumber());
+        userDTO.setRole(userEntity.getRoleEntity().getRole());
         return userDTO;
     }
 
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
 
         Long idExistUser = userRepository.getIdUserByEmail(user.getEmail());
 
-        if (idExistUser != null &&  !idExistUser.equals(user.getId())) {
+        if (idExistUser != null && !idExistUser.equals(user.getId())) {
             throw new EditUsersParametersExistException("User_with_this_email_already_exist", user);
         }
 

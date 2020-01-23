@@ -22,8 +22,12 @@ import java.util.stream.Collectors;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-    @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    public CompanyServiceImpl(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     @Override
     public Page<CompanyEntity> findAll(Pageable pageable) {
@@ -69,12 +73,8 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     @Override
     public void save(CompanyDTO companyDTO) {
-
-        CompanyEntity companyEntity = new CompanyEntity();
-        companyEntity.setName(companyDTO.getName());
-        companyEntity.setRating(companyDTO.getRating());
+        CompanyEntity companyEntity = new CompanyEntity(companyDTO.getName(), companyDTO.getRating());
         companyRepository.save(companyEntity);
-
     }
 
     @Transactional
@@ -107,7 +107,6 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyDTO> findAll() {
         List<CompanyEntity> companyEntities = companyRepository.findAllAndOrderByName();
         return companyEntities.stream().map(a -> new CompanyDTO(a.getId(), a.getName())).collect(Collectors.toList());
-
     }
 
     @Override
