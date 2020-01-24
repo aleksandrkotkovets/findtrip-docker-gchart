@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,8 +58,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO add(OrderCreateUpdateDTO orderDTO) {
-        LOGGER.info("Add order: " + orderDTO);
-        OrderDTO savedOrder = null;
+        LOGGER.info("Add order: "+orderDTO );
+        OrderDTO savedOrder = new OrderDTO();
 
         if (orderRepository.getOrderIdByFlightIdAndUserId(orderDTO.getIdFlight(), orderDTO.getIdClient()) != null) {
             LOGGER.error("Order on this flight already exist");
@@ -66,9 +68,15 @@ public class OrderServiceImpl implements OrderService {
 
         FlightEntity flightEntity = flightRepository.findById(orderDTO.getIdFlight()).get();
 
+
         if (orderDTO.getCountSeats() > flightEntity.getFreeSeats()) {
             LOGGER.error("The number of free seats per flight is less than what you choose");
             throw new OrderSeatsException("The number of free seats per flight is less than what you choose");
+        }
+
+        if (orderDTO.getCountSeats() == 0) {
+            LOGGER.error("Count seats = 0");
+            throw new OrderSeatsException("Count seats = 0");
         }
 
         if (flightEntity.getFreeSeats() == 0) {
@@ -80,14 +88,16 @@ public class OrderServiceImpl implements OrderService {
         if (paymentService.payOrder(orderDTO, flightEntity, userEntity)) {
             Double finalCost = Double.parseDouble(decimalFormat.format(orderDTO.getCountSeats() * flightEntity.getPrice()).replace(',', '.'));
             OrderEntity orderEntity = orderRepository.save(new OrderEntity(finalCost, OrderStatus.ACTIVE, new Timestamp(new Date().getTime()), userEntity, flightEntity));
+            List<TicketEntity> savedTickets = new ArrayList<>();
             for (int i = 0; i < orderDTO.getCountSeats(); i++) {
-                ticketRepository.save(new TicketEntity(orderDTO.getPriceOneSeat(), orderEntity));
+                TicketEntity savedTicket = ticketRepository.save(new TicketEntity(orderDTO.getPriceOneSeat(), orderEntity));
+                savedTickets.add(savedTicket);
             }
 
             flightEntity.setFreeSeats(flightEntity.getFreeSeats() - orderDTO.getCountSeats());
             flightRepository.save(flightEntity);
 
-            orderEntity.setTickets(ticketRepository.findAllByOrderId(orderEntity.getId()));
+            orderEntity.setTickets(savedTickets);
             return mapOrderDTO(orderEntity);
         }
         return savedOrder;

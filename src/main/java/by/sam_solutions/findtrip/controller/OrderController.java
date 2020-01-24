@@ -38,6 +38,7 @@ public class OrderController {
         LOGGER.info("Buy flight tickets. Order: " + orderDTO + ", Client with login: " + currentUser.getLogin());
         orderDTO.setIdClient(currentUser.getId());
         return orderService.add(orderDTO);
+
     }
 
     @PreAuthorize("hasAnyRole('CLIENT')")

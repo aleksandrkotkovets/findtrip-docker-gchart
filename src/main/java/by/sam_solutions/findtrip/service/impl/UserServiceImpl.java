@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
             editUserEntity.get().setPassword(user.getPassword());
             editUserEntity.get().setEmail(user.getEmail());
             editUserEntity.get().setFirstName(user.getFirstName());
-            editUserEntity.get().setLastName(user.getFirstName());
+            editUserEntity.get().setLastName(user.getLastName());
             editUserEntity.get().setPatronymic(user.getPatronymic());
             editUserEntity.get().setPhoneNumber(user.getPhoneNumber());
 

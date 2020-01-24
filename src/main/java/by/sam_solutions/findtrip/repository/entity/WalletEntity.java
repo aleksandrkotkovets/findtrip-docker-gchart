@@ -59,12 +59,4 @@ public class WalletEntity extends BaseEntity {
         return Objects.hash(sum, owner);
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("WalletEntity{");
-        sb.append("sum=").append(sum);
-        sb.append(", owner=").append(owner);
-        sb.append('}');
-        return sb.toString();
-    }
 }

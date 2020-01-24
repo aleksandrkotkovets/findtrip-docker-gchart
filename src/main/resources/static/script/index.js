@@ -85,6 +85,8 @@ $('#buy').click(function () {
 
     };
     console.log(JSON.stringify(ticketDTO));
+    console.log(idFlight);
+    if(idFlight != null){
     $.ajax({
         url: localServerUrl + "findtrip/orders/checkout",
         contentType: "application/json",
@@ -105,6 +107,7 @@ $('#buy').click(function () {
         },
         dataType: "json"
     });
+    }
 
 });
 

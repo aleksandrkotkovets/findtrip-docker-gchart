@@ -1,17 +1,11 @@
 package by.sam_solutions.findtrip.repository.entity;
 
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Set;
 
-import static java.util.Objects.hash;
 import static javax.persistence.CascadeType.ALL;
 
 
@@ -144,19 +138,5 @@ public class FlightEntity extends BaseEntity {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "FlightEntity{" +
-                "freeSeats=" + freeSeats +
-                ", allSeats=" + allSeats +
-                ", price=" + price +
-                ", departureDate=" + departureDate +
-                ", arrivalDate=" + arrivalDate +
-                ", orders=" + orders +
-                ", plane=" + plane +
-                ", airportDeparture=" + airportDeparture +
-                ", airportArrival=" + airportArrival +
-                ", status=" + status +
-                '}';
-    }
+
 }
