@@ -75,8 +75,8 @@ public class CityController {
             LOGGER.warn("Validation errors");
             ApiError apiError = new ApiError();
             String message = "";
-            for (FieldError str : result.getFieldErrors()) {
-                message += str.getDefaultMessage();
+            for (FieldError error : result.getFieldErrors()) {
+                message += error.getDefaultMessage();
                 apiError.setMessage(message);
             }
             model.addAttribute("city", cityDTO);
