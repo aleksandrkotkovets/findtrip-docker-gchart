@@ -151,11 +151,11 @@ public class FlightServiceImplTest {
         orderEntityFirst.setTickets(Arrays.asList(new TicketEntity(), new TicketEntity(), new TicketEntity()));
         OrderEntity orderEntitySecond = new OrderEntity();
         orderEntitySecond.setTickets(Arrays.asList(new TicketEntity(), new TicketEntity()));
-        flightEntity.get().setOrders(Set.of(orderEntityFirst,orderEntitySecond));
+        flightEntity.get().setOrders(Set.of(orderEntityFirst, orderEntitySecond));
         when(flightRepository.findById(flightEntity.get().getId())).thenReturn(flightEntity);
         Integer actualNumberSoldTickets = flightService.getNumberSoldTicketById(flightEntity.get().getId());
         Integer expected = 5;
-        assertEquals(expected,actualNumberSoldTickets);
+        assertEquals(expected, actualNumberSoldTickets);
     }
 
     @Test(expected = FlightStatusIncorrectException.class)
