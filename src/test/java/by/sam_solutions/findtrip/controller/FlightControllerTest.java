@@ -4,13 +4,10 @@ import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
 import by.sam_solutions.findtrip.controller.dto.FlightCreateUpdateDTO;
 import by.sam_solutions.findtrip.controller.dto.FlightDTO;
 import by.sam_solutions.findtrip.controller.dto.PlaneDTO;
-import by.sam_solutions.findtrip.repository.entity.FlightStatus;
 import by.sam_solutions.findtrip.repository.entity.Rating;
 import by.sam_solutions.findtrip.service.impl.CompanyServiceImpl;
 import by.sam_solutions.findtrip.service.impl.FlightServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,29 +18,18 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.postgresql.hostchooser.HostRequirement.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.web.servlet.function.RequestPredicates.accept;
-import static org.springframework.web.servlet.function.RequestPredicates.param;
 
 
 @RunWith(SpringRunner.class)
@@ -67,23 +53,22 @@ public class FlightControllerTest {
     @Test
     public void getPlanes() throws Exception {
         List<PlaneDTO> planeDTOList = new ArrayList<>();
-        PlaneDTO planeDTOf = new PlaneDTO(2L, "Boing","B3434", new CompanyDTO(1L,"Fake",Rating.TWO_STARS));
-        PlaneDTO planeDTOs = new PlaneDTO(3L, "Boing","B3444", new CompanyDTO(1L,"Fake",Rating.TWO_STARS));
+        PlaneDTO planeDTOf = new PlaneDTO(2L, "Boeng", "B3434", new CompanyDTO(1L, "Fake", Rating.TWO_STARS));
+        PlaneDTO planeDTOs = new PlaneDTO(3L, "Boeng", "B3444", new CompanyDTO(1L, "Fake", Rating.TWO_STARS));
         planeDTOList.add(planeDTOf);
         planeDTOList.add(planeDTOs);
         CompanyDTO companyDTO = new CompanyDTO();
         companyDTO.setPlaneDTOList(planeDTOList);
         when(companyService.findOne(1L)).thenReturn(companyDTO);
 
-
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .get("/flights/companies/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
 
 
-        assertEquals(planeDTOList.size(),flightController.getPlanes(1L).size());
+        assertEquals(planeDTOList.size(), flightController.getPlanes(1L).size());
     }
 
     @Test
@@ -111,7 +96,7 @@ public class FlightControllerTest {
     public void getShowFlightView() throws Exception {
         FlightDTO flightDTOf = new FlightDTO();
         FlightDTO flightDTOs = new FlightDTO();
-        when(flightService.findAll()).thenReturn(Arrays.asList(flightDTOf,flightDTOs));
+        when(flightService.findAll()).thenReturn(Arrays.asList(flightDTOf, flightDTOs));
 
         mockMvc.perform(get("/flights"))
                 .andExpect(status().isOk())
