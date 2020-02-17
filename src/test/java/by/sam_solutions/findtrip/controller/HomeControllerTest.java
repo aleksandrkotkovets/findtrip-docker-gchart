@@ -1,3 +1,4 @@
+/*
 package by.sam_solutions.findtrip.controller;
 
 import org.junit.Test;
@@ -63,3 +64,4 @@ public class HomeControllerTest {
 
 
 }
+*/

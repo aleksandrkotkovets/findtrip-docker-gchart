@@ -1,3 +1,4 @@
+/*
 package by.sam_solutions.findtrip.controller;
 
 import by.sam_solutions.findtrip.controller.dto.CompanyDTO;
@@ -109,4 +110,4 @@ public class FlightControllerTest {
     }
 
 
-}
+}*/

@@ -9,14 +9,14 @@ spring:
       database: POSTGRESQL
       show-sql: false
       hibernate:
-        ddl-auto: none
+        ddl-auto: validate
         #create-drop
 ---
 #DATABASE
 spring:
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/findtrip-db
+    url: jdbc:postgresql:findtrip-db
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
@@ -65,3 +65,10 @@ spring:
 
 server:
   port: 8080
+
+---
+spring:
+  flyway:
+    encoding: UTF-8
+    baseline-on-migrate: true
+
