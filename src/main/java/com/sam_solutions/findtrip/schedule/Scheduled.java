@@ -1,7 +1,6 @@
 package com.sam_solutions.findtrip.schedule;
 
 import com.sam_solutions.findtrip.repository.FlightRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +15,9 @@ public class Scheduled {
         this.flightRepository = flightRepository;
     }
 
+    /**
+     * Update every 5 minutes
+     */
     @Transactional
     @org.springframework.scheduling.annotation.Scheduled(fixedDelay = 300000)
     public void setFlightStatusFinished() {
