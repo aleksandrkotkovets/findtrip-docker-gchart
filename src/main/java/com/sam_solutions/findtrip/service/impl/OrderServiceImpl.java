@@ -46,7 +46,13 @@ public class OrderServiceImpl implements OrderService {
     private PaymentService paymentService;
 
     @Autowired
-    public OrderServiceImpl(FlightRepository flightRepository, UserRepository userRepository, OrderRepository orderRepository, TicketRepository ticketRepository, FlightService flightService, TicketService ticketService, PaymentService paymentService) {
+    public OrderServiceImpl(FlightRepository flightRepository,
+                            UserRepository userRepository,
+                            OrderRepository orderRepository,
+                            TicketRepository ticketRepository,
+                            FlightService flightService,
+                            TicketService ticketService,
+                            PaymentService paymentService) {
         this.flightRepository = flightRepository;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;

@@ -23,8 +23,8 @@ public class CityServiceImpl implements CityService {
     private CityRepository cityRepository;
     private CountryRepository countryRepository;
 
-    @Autowired
-    public CityServiceImpl(CityRepository cityRepository, CountryRepository countryRepository) {
+    public CityServiceImpl(CityRepository cityRepository,
+                           CountryRepository countryRepository) {
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
     }

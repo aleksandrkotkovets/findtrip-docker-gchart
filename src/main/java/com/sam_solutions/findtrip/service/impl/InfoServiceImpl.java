@@ -1,6 +1,7 @@
 package com.sam_solutions.findtrip.service.impl;
 
 import com.sam_solutions.findtrip.controller.dto.ChartDto;
+import com.sam_solutions.findtrip.controller.dto.CityFrAndTo;
 import com.sam_solutions.findtrip.repository.CityRepository;
 import com.sam_solutions.findtrip.repository.FlightRepository;
 import com.sam_solutions.findtrip.repository.entity.AirportEntity;
@@ -8,7 +9,6 @@ import com.sam_solutions.findtrip.repository.entity.FlightEntity;
 import com.sam_solutions.findtrip.service.InfoService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

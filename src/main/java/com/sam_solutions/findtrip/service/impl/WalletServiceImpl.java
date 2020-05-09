@@ -18,8 +18,11 @@ public class WalletServiceImpl implements WalletService {
 
     private final Double MAX_BALANCE = 1_000_000D;
 
-    @Autowired
-    private WalletRepository walletRepository;
+    private final WalletRepository walletRepository;
+
+    public WalletServiceImpl(WalletRepository walletRepository) {
+        this.walletRepository = walletRepository;
+    }
 
     @Override
     public WalletDTO findByUserId(Long id) {

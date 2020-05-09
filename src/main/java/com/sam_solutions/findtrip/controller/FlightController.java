@@ -1,9 +1,5 @@
 package com.sam_solutions.findtrip.controller;
 
-import com.sam_solutions.findtrip.controller.dto.*;
-import com.sam_solutions.findtrip.repository.entity.FlightStatus;
-import com.sam_solutions.findtrip.repository.entity.Rating;
-import com.sam_solutions.findtrip.service.*;
 import com.sam_solutions.findtrip.controller.dto.AirportDTO;
 import com.sam_solutions.findtrip.controller.dto.CityDTO;
 import com.sam_solutions.findtrip.controller.dto.CompanyDTO;
@@ -13,6 +9,8 @@ import com.sam_solutions.findtrip.controller.dto.FlightCriteriaDTO;
 import com.sam_solutions.findtrip.controller.dto.FlightDTO;
 import com.sam_solutions.findtrip.controller.dto.OrderDTO;
 import com.sam_solutions.findtrip.controller.dto.PlaneDTO;
+import com.sam_solutions.findtrip.repository.entity.FlightStatus;
+import com.sam_solutions.findtrip.repository.entity.Rating;
 import com.sam_solutions.findtrip.service.CityService;
 import com.sam_solutions.findtrip.service.CompanyService;
 import com.sam_solutions.findtrip.service.CountryService;
@@ -21,13 +19,20 @@ import com.sam_solutions.findtrip.service.FlightService;
 import com.sam_solutions.findtrip.service.OrderService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -51,8 +56,12 @@ public class FlightController {
     private List<CountryDTO> countryDTOList;
     private List<CompanyDTO> companyDTOList;
 
-    @Autowired
-    public FlightController(FlightService flightService, CountryService countryService, CityService cityService, CompanyService companyService, EmailSender emailSender, OrderService orderService) {
+    public FlightController(FlightService flightService,
+                            CountryService countryService,
+                            CityService cityService,
+                            CompanyService companyService,
+                            EmailSender emailSender,
+                            OrderService orderService) {
         this.flightService = flightService;
         this.countryService = countryService;
         this.cityService = cityService;

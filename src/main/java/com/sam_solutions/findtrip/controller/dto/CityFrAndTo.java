@@ -1,4 +1,4 @@
-package com.sam_solutions.findtrip.service.impl;
+package com.sam_solutions.findtrip.controller.dto;
 
 import java.util.Objects;
 

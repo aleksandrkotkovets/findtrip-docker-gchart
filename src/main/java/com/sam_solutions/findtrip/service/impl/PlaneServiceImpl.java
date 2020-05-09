@@ -22,8 +22,8 @@ public class PlaneServiceImpl implements PlaneService {
     private PlaneRepository planeRepository;
     private CompanyRepository companyRepository;
 
-    @Autowired
-    public PlaneServiceImpl(PlaneRepository planeRepository, CompanyRepository companyRepository) {
+    public PlaneServiceImpl(PlaneRepository planeRepository,
+                            CompanyRepository companyRepository) {
         this.planeRepository = planeRepository;
         this.companyRepository = companyRepository;
     }

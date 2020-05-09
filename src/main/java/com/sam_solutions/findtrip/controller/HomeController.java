@@ -5,7 +5,6 @@ import com.sam_solutions.findtrip.controller.dto.UserDTO;
 import com.sam_solutions.findtrip.security.CustomUserDetail;
 import com.sam_solutions.findtrip.service.CountryService;
 import com.sam_solutions.findtrip.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,8 +23,8 @@ public class HomeController {
     private UserService userService;
     private CountryService countryService;
 
-    @Autowired
-    public HomeController(UserService userService, CountryService countryService) {
+    public HomeController(UserService userService,
+                          CountryService countryService) {
         this.userService = userService;
         this.countryService = countryService;
     }

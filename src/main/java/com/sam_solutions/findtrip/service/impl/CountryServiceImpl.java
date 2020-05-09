@@ -23,8 +23,11 @@ import java.util.stream.Collectors;
 @Service
 public class CountryServiceImpl implements CountryService {
 
-    @Autowired
-    private CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
+
+    public CountryServiceImpl(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
+    }
 
     @Override
     public Page<CountryEntity> findAll(Pageable pageable) {

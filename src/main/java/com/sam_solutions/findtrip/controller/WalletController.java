@@ -4,7 +4,6 @@ import com.sam_solutions.findtrip.controller.dto.ApiError;
 import com.sam_solutions.findtrip.controller.dto.BankCardDTO;
 import com.sam_solutions.findtrip.security.CustomUserDetail;
 import com.sam_solutions.findtrip.service.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +20,11 @@ import javax.validation.Valid;
 @RequestMapping("/wallet")
 public class WalletController {
 
-    @Autowired
-    private WalletService walletService;
+    private final WalletService walletService;
+
+    public WalletController(WalletService walletService) {
+        this.walletService = walletService;
+    }
 
     @GetMapping
     public String getWalletForUserView(Model model, @AuthenticationPrincipal CustomUserDetail currUser) {

@@ -22,7 +22,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     private WalletRepository walletRepository;
 
-    @Autowired
     public PaymentServiceImpl(WalletRepository walletRepository) {
         this.walletRepository = walletRepository;
     }

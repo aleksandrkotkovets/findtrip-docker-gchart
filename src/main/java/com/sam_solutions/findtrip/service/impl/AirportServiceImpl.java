@@ -10,7 +10,6 @@ import com.sam_solutions.findtrip.repository.CityRepository;
 import com.sam_solutions.findtrip.repository.entity.AirportEntity;
 import com.sam_solutions.findtrip.repository.entity.CityEntity;
 import com.sam_solutions.findtrip.service.AirportService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +25,8 @@ public class AirportServiceImpl implements AirportService {
     private AirportRepository airportRepository;
     private CityRepository cityRepository;
 
-    @Autowired
-
-    public AirportServiceImpl(AirportRepository airportRepository, CityRepository cityRepository) {
+    public AirportServiceImpl(AirportRepository airportRepository,
+                              CityRepository cityRepository) {
         this.airportRepository = airportRepository;
         this.cityRepository = cityRepository;
     }

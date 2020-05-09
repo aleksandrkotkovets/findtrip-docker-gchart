@@ -2,7 +2,7 @@ package com.sam_solutions.findtrip.repository;
 
 import com.sam_solutions.findtrip.repository.entity.FlightEntity;
 import com.sam_solutions.findtrip.repository.entity.FlightStatus;
-import com.sam_solutions.findtrip.service.impl.CityFrAndTo;
+import com.sam_solutions.findtrip.controller.dto.CityFrAndTo;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -15,7 +15,7 @@ public interface FlightRepository extends JpaRepository<FlightEntity, Long>, Jpa
 
     List<FlightEntity> findAllByStatus(FlightStatus status, Sort departureDate);
 
-    @Query("SELECT NEW com.sam_solutions.findtrip.service.impl.CityFrAndTo(fl.airportArrival.cityEntity.id,fl.airportDeparture.cityEntity.id) " +
+    @Query("SELECT NEW com.sam_solutions.findtrip.controller.dto.CityFrAndTo(fl.airportArrival.cityEntity.id,fl.airportDeparture.cityEntity.id) " +
             "FROM FlightEntity fl WHERE (fl.status = ?1 OR fl.status=?2)")
     Set<CityFrAndTo> findCityFrAndToAndSort(FlightStatus status1, FlightStatus status2);
 

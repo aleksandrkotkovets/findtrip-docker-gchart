@@ -1,9 +1,5 @@
 package com.sam_solutions.findtrip.service.impl;
 
-import com.sam_solutions.findtrip.controller.dto.*;
-import com.sam_solutions.findtrip.exception.*;
-import com.sam_solutions.findtrip.repository.*;
-import com.sam_solutions.findtrip.repository.entity.*;
 import com.sam_solutions.findtrip.controller.dto.AirportDTO;
 import com.sam_solutions.findtrip.controller.dto.CityDTO;
 import com.sam_solutions.findtrip.controller.dto.CompanyDTO;
@@ -33,7 +29,6 @@ import com.sam_solutions.findtrip.service.FlightService;
 import com.sam_solutions.findtrip.service.PaymentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.convert.QueryByExamplePredicateBuilder;
@@ -70,8 +65,14 @@ public class FlightServiceImpl implements FlightService {
     private CityRepository cityRepository;
     private CompanyRepository companyRepository;
 
-    @Autowired
-    public FlightServiceImpl(FlightRepository flightRepository, PlaneRepository planeRepository, AirportRepository airportRepository, CityService cityService, PaymentService paymentService, CityRepository cityRepository, CompanyRepository companyRepository) {
+
+    public FlightServiceImpl(FlightRepository flightRepository,
+                             PlaneRepository planeRepository,
+                             AirportRepository airportRepository,
+                             CityService cityService,
+                             PaymentService paymentService,
+                             CityRepository cityRepository,
+                             CompanyRepository companyRepository) {
         this.flightRepository = flightRepository;
         this.planeRepository = planeRepository;
         this.airportRepository = airportRepository;

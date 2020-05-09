@@ -24,7 +24,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     private CompanyRepository companyRepository;
 
-    @Autowired
     public CompanyServiceImpl(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
