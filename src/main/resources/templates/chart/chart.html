@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css">
+    <link href="jquery.datetimepicker.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="tail.select-bootstrap4.css">
+
+    <div th:replace="/home/adminHeader :: acss"></div>
+</head>
+
+<body>
+
+<div sec:authorize="hasRole('WORKER')">
+    <div th:replace="/home/workerHeader :: worker-header"/>
+</div>
+
+
+<div style="padding: 50px">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <div id="chart_div"></div>
+</div>
+
+</body>
+
+<script type="text/javascript" th:src="@{/static/script/chart.js}"></script>
+<script  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</html>

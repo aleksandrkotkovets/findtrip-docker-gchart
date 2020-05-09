@@ -16,7 +16,7 @@ public interface FlightRepository extends JpaRepository<FlightEntity, Long>, Jpa
     List<FlightEntity> findAllByStatus(FlightStatus status, Sort departureDate);
 
     @Query("SELECT NEW com.sam_solutions.findtrip.service.impl.CityFrAndTo(fl.airportArrival.cityEntity.id,fl.airportDeparture.cityEntity.id) " +
-            "FROM FlightEntity fl WHERE fl.status = ?1 OR fl.status=?2")
-    Set<CityFrAndTo> findCityFrAndToAndSort(FlightStatus status1, FlightStatus status2, Sort sort);
+            "FROM FlightEntity fl WHERE (fl.status = ?1 OR fl.status=?2)")
+    Set<CityFrAndTo> findCityFrAndToAndSort(FlightStatus status1, FlightStatus status2);
 
 }

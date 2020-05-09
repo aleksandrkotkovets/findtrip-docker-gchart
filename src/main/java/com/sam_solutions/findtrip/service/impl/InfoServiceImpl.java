@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -55,17 +56,14 @@ public class InfoServiceImpl implements InfoService {
 
                 chartDtoList.add(chartDto);
             }
+            chartDtoList.sort(Comparator.comparing(ChartDto::getCountFlight).reversed());
         }
         return chartDtoList;
     }
 
     @NotNull
     private Optional<Set<CityFrAndTo>> getCityFrAndToSet() {
-        Sort sort = Sort.by(
-                Sort.Order.asc("airportArrival.cityEntity.id"),
-                Sort.Order.asc("airportDeparture.cityEntity.id")
-        );
-        return Optional.of(flightRepository.findCityFrAndToAndSort(ACTIVE, FINISHED, sort));
+        return Optional.of(flightRepository.findCityFrAndToAndSort(ACTIVE, FINISHED));
     }
 
     @NotNull
@@ -79,6 +77,7 @@ public class InfoServiceImpl implements InfoService {
         AirportEntity airportEntityDepartures = new AirportEntity();
         airportEntityDepartures.setCityEntity(cityRepository.findById(cityFrAndTo.getCityTo()).get());
         flightEntity.setAirportDeparture(airportEntityDepartures);
+
         return flightEntity;
     }
 
