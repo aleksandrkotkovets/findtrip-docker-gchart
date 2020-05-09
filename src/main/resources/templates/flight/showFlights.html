@@ -75,7 +75,7 @@
                     </div>
 
                      <div style="padding-top: 37px">
-                           <input type="hidden" name="status" th:value="${T(by.sam_solutions.findtrip.repository.entity.FlightStatus).ACTIVE}">
+                           <input type="hidden" name="status" th:value="${T(com.sam_solutions.findtrip.repository.entity.FlightStatus).ACTIVE}">
                            <input type="submit" class="btn btn-success" id="showExample" th:value="#{text.show}">
                      </div>
 
@@ -103,7 +103,7 @@
                  <h1 for="city_from" class="col-form-label text-center" style="color: white"  th:text="#{text.rating}"></h1>
                 <select class="form-control col-lg-auto"  name="ratingCompany">
                 <option value="" th:text="'Select an Option...'" ></option>
-                <option th:each="state : ${T(by.sam_solutions.findtrip.repository.entity.Rating).values()}"
+                <option th:each="state : ${T(com.sam_solutions.findtrip.repository.entity.Rating).values()}"
                             th:value="${state}"
                             th:text="${state.name}">
                 </option>
