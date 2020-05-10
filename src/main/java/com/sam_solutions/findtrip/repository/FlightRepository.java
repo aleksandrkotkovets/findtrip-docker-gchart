@@ -21,10 +21,9 @@ public interface FlightRepository extends JpaRepository<FlightEntity, Long>, Jpa
             "FROM FlightEntity fl WHERE (fl.status = ?1 OR fl.status=?2)")
     Set<CityFrAndTo> findCityFrAndToAndSort(FlightStatus status1, FlightStatus status2);
 
-    @Modifying(clearAutomatically = true)
-    @Query("UPDATE FlightEntity fle " +
-            "SET fle.status = com.sam_solutions.findtrip.repository.entity.FlightStatus.FINISHED " +
-            "WHERE (fle.arrivalDate <:now AND fle.status<>com.sam_solutions.findtrip.repository.entity.FlightStatus.CANCELED)")
-    void setFlightStatusFinished(Date now);
+    @Modifying
+    @Query( "FROM FlightEntity fl " +
+            "WHERE (fl.status = com.sam_solutions.findtrip.repository.entity.FlightStatus.ACTIVE AND fl.arrivalDate<:now)")
+    List<FlightEntity> findAllByStatusActiveAndArrivalDateBefore(Date now);
 
 }
