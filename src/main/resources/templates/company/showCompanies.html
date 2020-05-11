@@ -8,15 +8,15 @@
     <title>Companies</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <div th:replace="/home/adminHeader :: acss"></div>
+    <div th:replace="home/adminHeader :: acss"></div>
 </head>
 
 <body>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <div th:replace="/home/adminHeader :: admin-header"/>
+    <div th:replace="home/adminHeader :: admin-header"/>
 </div>
 <div sec:authorize="hasRole('ROLE_WORKER')">
-  <div th:replace="/home/workerHeader :: worker-header"/>
+  <div th:replace="home/workerHeader :: worker-header"/>
 </div>
 
 <!--/*@thymesVar id="currentPage" type="com.sam_solutions.findtrip.controller.CountryController"*/-->

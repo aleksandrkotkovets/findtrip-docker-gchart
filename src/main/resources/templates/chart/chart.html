@@ -11,13 +11,13 @@
     <link href="jquery.datetimepicker.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="tail.select-bootstrap4.css">
 
-    <div th:replace="/home/adminHeader :: acss"></div>
+    <div th:replace="home/adminHeader :: acss"></div>
 </head>
 
 <body>
 
 <div sec:authorize="hasRole('WORKER')">
-    <div th:replace="/home/workerHeader :: worker-header"/>
+    <div th:replace="home/workerHeader :: worker-header"/>
 </div>
 
 

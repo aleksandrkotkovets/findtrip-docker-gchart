@@ -7,16 +7,16 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Airports</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <div th:replace="/home/adminHeader :: acss"></div>
+    <div th:replace="home/adminHeader :: acss"></div>
 </head>
 
 <body>
 <!--/*@thymesVar id="airports" type="com.sam_solutions.findtrip.controller.AirportController"*/-->
 <div sec:authorize="hasRole('ROLE_ADMIN')">
-  <div th:replace="/home/adminHeader :: admin-header"/>
+  <div th:replace="home/adminHeader :: admin-header"/>
 </div>
 <div sec:authorize="hasRole('ROLE_WORKER')">
-  <div th:replace="/home/workerHeader :: worker-header"/>
+  <div th:replace="home/workerHeader :: worker-header"/>
 </div>
 
 <div class="container my-2 col-lg-10" style="width: 40%">

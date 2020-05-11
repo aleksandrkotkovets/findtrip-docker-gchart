@@ -13,14 +13,14 @@
     <link  rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/scrollup/css/scrollup.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/scrollup/css/filter.css}" >
-    <div th:replace="/home/adminHeader :: acss"></div>
+    <div th:replace="home/adminHeader :: acss"></div>
 </head>
 <body>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <div th:replace="/home/adminHeader :: admin-header"/>
+    <div th:replace="home/adminHeader :: admin-header"/>
 </div>
 <div sec:authorize="hasRole('ROLE_WORKER')">
-  <div th:replace="/home/workerHeader :: worker-header"/>
+  <div th:replace="home/workerHeader :: worker-header"/>
 </div>
 
 <!--<div class="alert alert-success"   role="alert" id="alertCansFlightSuccessId" style="width: 400px;margin:5px 0 0 150vh;position: absolute"></div>

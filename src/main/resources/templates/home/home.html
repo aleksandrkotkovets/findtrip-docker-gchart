@@ -7,20 +7,20 @@
   <meta name="docsearch:language" content="en">
   <title>Home</title>
   <link  rel="stylesheet" type="text/css" th:href="@{/static/css/lang.css}" >
-<div th:replace="/home/adminHeader :: acss"></div>
+<div th:replace="home/adminHeader :: acss"></div>
 
 </head>
 
 <body>
 
 <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <div th:replace="/home/adminHeader :: admin-header"/>
+    <div th:replace="home/adminHeader :: admin-header"/>
 </div>
 <div sec:authorize="hasRole('ROLE_CLIENT')">
- <div th:replace="/home/clientHeader :: client-header"/>
+ <div th:replace="home/clientHeader :: client-header"/>
 </div>
 <div sec:authorize="hasRole('ROLE_WORKER')">
-  <div th:replace="/home/workerHeader :: worker-header"/>
+  <div th:replace="home/workerHeader :: worker-header"/>
 </div>
 
 <div class="starter-template">
@@ -40,7 +40,7 @@
         <h1>Home Page (Spring Security protected)</h1>
 </div>
     <div class="modal-footer" style="margin-top: 38%">
-    <div th:replace="/footer :: footer"/>
+    <div th:replace="footer :: footer"/>
     </div>
 </body>
 

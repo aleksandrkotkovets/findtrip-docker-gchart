@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -14,7 +14,7 @@
     <link  rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/datetimepicker/jquery.datetimepicker.css}" >
     <link  rel="stylesheet" type="text/css" th:href="@{/static/datetimepicker/jquery.datetimepicker.min.css}" >
-    <div th:replace="/home/adminHeader :: acss"></div>
+    <div th:replace="home/adminHeader :: acss"></div>
     <div th:replace="header :: header-css"/>
 </head>
 
@@ -23,13 +23,13 @@
      <div th:replace="header :: header"/>
 </div>
 <div sec:authorize="hasRole('CLIENT')">
-      <div th:replace="/home/clientHeader :: client-header"/>
+      <div th:replace="home/clientHeader :: client-header"/>
 </div>
 <div sec:authorize="hasRole('ADMIN')">
-      <div th:replace="/home/adminHeader :: admin-header"/>
+      <div th:replace="home/adminHeader :: admin-header"/>
 </div>
 <div sec:authorize="hasRole('WORKER')">
-      <div th:replace="/home/workerHeader :: worker-header"/>
+      <div th:replace="home/workerHeader :: worker-header"/>
 </div>
 
 <div class="d-flex " style="padding-left: 13%; margin-top: 15vh">
