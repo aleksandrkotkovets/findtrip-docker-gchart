@@ -35,11 +35,13 @@ Client:
     password: clientclient
    
 Docker:
+
     mvn package
     docker-compose up --build
     docker-compose down
     
 PostgreSQL docker container:
+    
     docker exec -it <container_id> psql -U postgres findtrip_db
     \dt
     
