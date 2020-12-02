@@ -40,12 +40,12 @@ INSERT INTO public.airport (id, code, name, city_id) VALUES (303, 'DNS', 'Donets
 INSERT INTO public.airport (id, code, name, city_id) VALUES (304, 'LON', 'London1', 202);
 INSERT INTO public.airport (id, code, name, city_id) VALUES (305, 'LOD', 'London2', 202);
 
--- INSERT INTO public.company (id, name, rating) VALUES (16, 'Belavia', 'FOUR_STARS');
--- INSERT INTO public.company (id, name, rating) VALUES (34, 'Pobeda', 'THREE_STARS');
+INSERT INTO public.company (id, name, rating) VALUES (16, 'Belavia', 'FOUR_STARS');
+INSERT INTO public.company (id, name, rating) VALUES (34, 'Pobeda', 'THREE_STARS');
 
 
 --
--- INSERT INTO public.plane (id, name, side_number, company_id) VALUES (35, 'Boing', 'P1111', 34);
--- INSERT INTO public.plane (id, name, side_number, company_id) VALUES (36, 'Boing', 'P1122', 34);
--- INSERT INTO public.plane (id, name, side_number, company_id) VALUES (37, 'Boing', 'B2233', 16);
--- INSERT INTO public.plane (id, name, side_number, company_id) VALUES (17, 'Boing', 'B2244', 16);
+INSERT INTO public.plane (id, name, side_number, company_id) VALUES (35, 'Boing', 'P1111', 34);
+INSERT INTO public.plane (id, name, side_number, company_id) VALUES (36, 'Boing', 'P1122', 34);
+INSERT INTO public.plane (id, name, side_number, company_id) VALUES (37, 'Boing', 'B2233', 16);
+INSERT INTO public.plane (id, name, side_number, company_id) VALUES (17, 'Boing', 'B2244', 16);
