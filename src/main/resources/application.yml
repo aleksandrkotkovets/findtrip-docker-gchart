@@ -73,9 +73,3 @@ spring:
   flyway:
     encoding: UTF-8
     baseline-on-migrate: true
-
-java:
- runtime:
-  version: 11
-maven:
-  versio: 3.6.3
