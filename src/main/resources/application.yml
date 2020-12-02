@@ -74,3 +74,6 @@ spring:
     encoding: UTF-8
     baseline-on-migrate: true
 
+java:
+  runtime:
+    version: 11
