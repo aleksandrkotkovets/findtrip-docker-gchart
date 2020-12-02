@@ -89,7 +89,7 @@ public class FlightServiceImpl implements FlightService {
         LOGGER.info("Create flight where flightDTO: " + flightDTO);
         Optional<PlaneEntity> planeEntity = planeRepository.findById(flightDTO.getPlaneId());
 
-        if (!planeEntity.isPresent()) {
+        if (planeEntity.isEmpty()) {
             LOGGER.error("PlaneEntity with id=" + flightDTO.getPlaneId() + " not found");
             throw new EntityNotFoundException("PlaneEntity with id=" + flightDTO.getPlaneId() + " not found");
         }
