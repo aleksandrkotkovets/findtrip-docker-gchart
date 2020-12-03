@@ -17,9 +17,9 @@ spring:
   datasource:
     platform: postgres
 #   For Docker
-    url: jdbc:postgresql://dbpostgresql:5432/findtrip_db
+#    url: jdbc:postgresql://dbpostgresql:5432/findtrip_db
 #    For Local host
-#    url: jdbc:postgresql://localhost:5432/findtrip-db
+    url: jdbc:postgresql://localhost:5432/findtrip-db
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver

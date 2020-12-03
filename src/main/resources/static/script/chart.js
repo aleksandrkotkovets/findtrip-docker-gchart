@@ -1,8 +1,11 @@
+protocol = $(location).attr('protocol') + '//';
+hostUrl = $(location).attr('host');
+localServerUrl = protocol+hostUrl+'/';
+
 google.charts.load('current', {packages: ['corechart', 'bar']});
 google.charts.setOnLoadCallback(drawBasic);
 
 function drawBasic() {
-    var localServerUrl = "http://localhost:8080/";
 
     var init = [
         ['Маршрут', 'Кол-во рейсов']
