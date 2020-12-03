@@ -1,5 +1,10 @@
+protocol = $(location).attr('protocol') + '//';
+hostUrl = $(location).attr('host');
+localServerUrl = protocol+hostUrl+'/';
+
 $(document).ready(function () {
 //timepicker
+
     $('#picker1').datetimepicker({
         timepicker: false,
         datepicker: true,
@@ -48,6 +53,7 @@ $(document).ready(function () {
 
 $('#buy').click(function () {
     // $('#error-dates').text("");
+
     var idFlight = $('#idFlight').val();
     var finalCost = $('#finalCost').val();
     var countSeats =parseInt($('#countSeats').val(), 10);
@@ -73,8 +79,6 @@ $('#buy').click(function () {
         "countSeats = " + countSeats + '\n'
     );
 
-    var localServerUrl = "http://localhost:8080/";
-
     var ticketDTO = {
         "idFlight": idFlight,
         "finalCost": finalCost,
@@ -84,6 +88,7 @@ $('#buy').click(function () {
         "id": null
 
     };
+
     console.log(JSON.stringify(ticketDTO));
     console.log(idFlight);
     if(idFlight != null){
@@ -110,7 +115,6 @@ $('#buy').click(function () {
     }
 
 });
-
 
 
 $('#takeMoreTicketsBtn').click(function () {
@@ -141,8 +145,6 @@ $('#takeMoreTicketsBtn').click(function () {
         "priceOneSeat = " + priceOneSeat + '\n' +
         "countSeats = " + countSeats + '\n'
     );
-
-    var localServerUrl = "http://localhost:8080/";
 
     var order = {
         "id": idOrder,
@@ -179,7 +181,7 @@ $('#takeMoreTicketsBtn').click(function () {
 
 function sendСonfirmPurchaseToEmail(order) {
     $.ajax({
-        url:"http://localhost:8080/findtrip"  + '/orders/sendСonfirmPurchaseToEmail',
+        url: localServerUrl  + 'findtrip/orders/sendСonfirmPurchaseToEmail',
         contentType: "application/json",
         method: "POST",
         data: JSON.stringify(order),

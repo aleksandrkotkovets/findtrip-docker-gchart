@@ -1,3 +1,7 @@
+protocol = $(location).attr('protocol') + '//';
+hostUrl = $(location).attr('host');
+localServerUrl = protocol+hostUrl+'/';
+
 $(document).ready(function() {
 
     const selectCity = document.getElementById('selectCity');
@@ -7,7 +11,7 @@ $(document).ready(function() {
         let id = select.value;
         const obj = {"id" :select.value};
         console.log(JSON.stringify(obj));
-        fetch( "http://localhost:8080/findtrip/airports/countries/"+id,{
+        fetch( localServerUrl+"findtrip/airports/countries/"+id,{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

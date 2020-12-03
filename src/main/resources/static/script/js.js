@@ -1,7 +1,9 @@
+protocol = $(location).attr('protocol') + '//';
+hostUrl = $(location).attr('host');
+localServerUrl = protocol+hostUrl+'/';
 
 $(document).ready(function () {
 
-    var localUrl = "http://localhost:8080/findtrip";
     // input-spinner
     $("input[type='number']").inputSpinner();
     var $countTickets = $("#countTickets");
@@ -32,13 +34,13 @@ $(document).ready(function () {
 
         console.log(JSON.stringify(orderDTO));
         $.ajax({
-            url: localUrl + "/orders/return",
+            url: localServerUrl + "findtrip/orders/return",
             contentType: "application/json",
             method: "POST",
             data: JSON.stringify(orderDTO),
             success: function (order) {
                 alert("You have successfully abandoned places. The money was returned.");
-                url = localUrl + "/orders/client";
+                url = localServerUrl + "findtrip/orders/client";
                 window.location.replace(url);
             },
             error: function (error) {

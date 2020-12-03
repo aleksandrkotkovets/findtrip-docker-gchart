@@ -1,4 +1,5 @@
 version: '3.1'
+
 services:
 
   app:
@@ -11,11 +12,17 @@ services:
       - dbpostgresql
 
   dbpostgresql:
+    container_name: postgres_db
     image: postgres
+    volumes:
+       - /var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=findtrip_db
-#    restart: on-failure
+    restart: on-failure
+
+volumes:
+  postgres_data:

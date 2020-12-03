@@ -1,7 +1,8 @@
-$(document).ready(function () {
-    protocol = $(location).attr('protocol') + '//';
-    hostUrl = $(location).attr('host');
+protocol = $(location).attr('protocol') + '//';
+hostUrl = $(location).attr('host');
+localServerUrl = protocol+hostUrl+'/';
 
+$(document).ready(function () {
 
     //City from
     const selectCity_fr = document.getElementById('select_city_fr');
@@ -11,7 +12,7 @@ $(document).ready(function () {
         const select = document.getElementById("select_country_fr");
         let id = select.value;
         console.log(id);
-        fetch(protocol + hostUrl + "/findtrip/flights/countries/" + id, {
+        fetch(localServerUrl + "findtrip/flights/countries/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -43,7 +44,7 @@ $(document).ready(function () {
         const select = document.getElementById("select_country_to");
         let id = select.value;
         console.log(id);
-        fetch(protocol + hostUrl + "/findtrip/flights/countries/" + id, {
+        fetch(localServerUrl + "findtrip/flights/countries/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -75,7 +76,7 @@ $(document).ready(function () {
         const select = document.getElementById("select_city_fr");
         let id = select.value;
         console.log(id);
-        fetch(protocol + hostUrl + "/findtrip/flights/cities/" + id, {
+        fetch(localServerUrl + "findtrip/flights/cities/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -107,7 +108,7 @@ $(document).ready(function () {
         const select = document.getElementById("select_city_to");
         let id = select.value;
         console.log(id);
-        fetch(protocol + hostUrl + "/findtrip/flights/cities/" + id, {
+        fetch(localServerUrl + "findtrip/flights/cities/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -139,7 +140,7 @@ $(document).ready(function () {
         const select = document.getElementById("select_company");
         let id = select.value;
         console.log(id);
-        fetch(protocol + hostUrl + "/findtrip/flights/companies/" + id, {
+        fetch(localServerUrl + "findtrip/flights/companies/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -262,7 +263,6 @@ $(document).ready(function () {
             return;
         }
 
-        flightLocalServerUrl = protocol + hostUrl;
         var flightDTO = {
             "cityFromId": cityFromId,
             "cityToId": cityToId,
@@ -280,14 +280,14 @@ $(document).ready(function () {
         };
         console.log(JSON.stringify(flightDTO));
         $.ajax({
-            url: flightLocalServerUrl + "/findtrip/flights",
+            url: localServerUrl + "findtrip/flights",
             contentType: "application/json",
             method: "POST",
             data: JSON.stringify(flightDTO),
-            success: function(flight){
+            success: function (flight) {
                 alert("Flight was created successfully");
-                url = protocol + hostUrl + "/findtrip/flights";
-                window.location.replace(url) ;
+                url = localServerUrl + "findtrip/flights";
+                window.location.replace(url);
             },
             error: function (error) {
                 if (error.status == 409) {
@@ -316,7 +316,7 @@ $(document).ready(function () {
             b.remove(0);
         }
 
-        fetch(protocol + hostUrl + "/findtrip/flights/countries", {
+        fetch(localServerUrl + "findtrip/flights/countries", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -355,7 +355,7 @@ $(document).ready(function () {
         }
 
 
-        fetch(protocol + hostUrl + "/findtrip/flights/countries", {
+        fetch(localServerUrl + "findtrip/flights/countries", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -389,7 +389,7 @@ $(document).ready(function () {
         }
 
         let id = $('#select_country_fr').val();
-        fetch(protocol + hostUrl + "/findtrip/flights/countries/" + id, {
+        fetch(localServerUrl + "findtrip/flights/countries/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -423,7 +423,7 @@ $(document).ready(function () {
         }
 
         let id = $('#select_country_to').val();
-        fetch(protocol + hostUrl + "/findtrip/flights/countries/" + id, {
+        fetch(localServerUrl + "findtrip/flights/countries/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -451,7 +451,7 @@ $(document).ready(function () {
     $("#edt_airport_from").click(function () {
 
         let id = $('#select_city_fr').val();
-        fetch(protocol + hostUrl + "/findtrip/flights/cities/" + id, {
+        fetch(localServerUrl + "findtrip/flights/cities/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -479,7 +479,7 @@ $(document).ready(function () {
     $("#edt_airport_to").click(function () {
 
         let id = $('#select_city_to').val();
-        fetch(protocol + hostUrl + "/findtrip/flights/cities/" + id, {
+        fetch(localServerUrl + "findtrip/flights/cities/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -509,7 +509,7 @@ $(document).ready(function () {
     $("#edt_company").click(function () {
         const select = document.getElementById("select_company");
 
-        fetch(protocol + hostUrl + "/findtrip/flights/companies", {
+        fetch(localServerUrl + "findtrip/flights/companies", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -540,7 +540,7 @@ $(document).ready(function () {
 
         let id = $('#select_company').val();
         console.log(id);
-        fetch(protocol + hostUrl + "/findtrip/flights/companies/" + id, {
+        fetch(localServerUrl + "findtrip/flights/companies/" + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -573,7 +573,7 @@ $(document).ready(function () {
     $allSeatsEdit.attr("min", $soldTickets.val());
 
     $allSeatsEdit.on("change", function (event) {
-        $freeSeatsEdit.attr("max", $allSeatsEdit.val()-$soldTickets.val());
+        $freeSeatsEdit.attr("max", $allSeatsEdit.val() - $soldTickets.val());
         $freeSeatsEdit.val($allSeatsEdit.val());
     });
 
@@ -638,7 +638,6 @@ $(document).ready(function () {
             return;
         }
 
-        flightLocalServerUrl = protocol + hostUrl;
         var flightDTO = {
 
             "cityFromId": cityFromId,
@@ -654,16 +653,17 @@ $(document).ready(function () {
             "ticketPrice": ticketPrice,
             "id": id
         };
+
         console.log(JSON.stringify(flightDTO));
         $.ajax({
-            url: flightLocalServerUrl + "/findtrip/flights/"+id,
+            url: localServerUrl + "findtrip/flights/" + id,
             contentType: "application/json",
             method: "POST",
             data: JSON.stringify(flightDTO),
-            success:function(flight){
+            success: function (flight) {
                 alert("Flight was edited successfully")
-                url = protocol + hostUrl + "/findtrip/flights";
-                window.location.replace(url) ;
+                url = localServerUrl + "findtrip/flights";
+                window.location.replace(url);
             },
             error: function (error) {
                 if (error.status == 409) {
