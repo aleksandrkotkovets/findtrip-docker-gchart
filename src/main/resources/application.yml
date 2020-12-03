@@ -9,7 +9,7 @@ spring:
       database: POSTGRESQL
       show-sql: false
       hibernate:
-        ddl-auto: create-drop
+        ddl-auto: validate
         #create-drop
 ---
 #DATABASE
